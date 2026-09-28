@@ -11,18 +11,30 @@
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Menú Lateral (Sidebar) -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark text-white sidebar collapse min-vh-100 p-3">
-                <h4 class="text-center py-3">Panel Admin</h4>
-                <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link text-white active">Inicio</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('admin.emprendedores') }}" class="nav-link text-white">Emprendedores</a>
-                    </li>
-                </ul>
-            </nav>
+           <!-- Menú Lateral (Sidebar) -->
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark text-white sidebar collapse min-vh-100 p-3 d-flex flex-column justify-content-between">
+    <div>
+        <h4 class="text-center py-3">Panel Admin</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link text-white active">Inicio</a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ route('admin.emprendedores') }}" class="nav-link text-white">Emprendedores</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Botón de Cerrar Sesión -->
+    <div class="pt-3 border-top border-secondary">
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="btn btn-outline-danger w-100">
+                Cerrar Sesión
+            </button>
+        </form>
+    </div>
+</nav>
 
             <!-- Contenido Principal -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">

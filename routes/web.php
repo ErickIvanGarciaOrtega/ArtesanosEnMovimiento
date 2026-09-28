@@ -33,11 +33,11 @@ Route::post('/login', function (Request $request) {
 
 // Cerrar sesión
 Route::post('/logout', function (Request $request) {
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect()->route('login');
-})->name('logout');
+    Auth::logout();                        // 1. Destruye la autenticación del usuario
+    $request->session()->invalidate();     // 2. Borra los datos de la sesión actual
+    $request->session()->regenerateToken();// 3. Genera un nuevo token CSRF por seguridad
+    return redirect()->route('login');     // 4. Redirige al login
+})->name('logout');  
 
 
 
@@ -50,6 +50,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Ruta para la gestión de emprendedores
     Route::get('/emprendedores', [AdminController::class, 'gestionarEmprendedores'])->name('admin.emprendedores');
 
+    Route::post('/admin/emprendedores', [AdminController::class, 'storeEmprendedor'])->name('admin.emprendedores.store');
+
+
+    Route::put('/admin/emprendedores/{id}', [AdminController::class, 'updateEmprendedor'])->name('admin.emprendedores.update');
+Route::put('/admin/emprendedores/{id}/reset-password', [AdminController::class, 'resetPasswordEmprendedor'])->name('admin.emprendedores.resetPassword');
 
     // Ruta temporal para evitar el error 500 al redirigir con el middleware 'auth'
 Route::get('/login', function () {
