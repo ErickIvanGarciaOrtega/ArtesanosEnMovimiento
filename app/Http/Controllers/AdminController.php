@@ -3,82 +3,114 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Emprendedor; // Importamos el modelo Emprendedor
-use Illuminate\Support\Facades\Hash;
+use App\Models\Emprendedor;
+use App\Models\User; // Importación del modelo nativo de administradores
+use Illuminate\Support\Facades\Hash; // Importación para el cifrado Bcrypt
 
 class AdminController extends Controller
 {
+    // Muestra la vista principal del dashboard
     public function index()
     {
         return view('admin.dashboard');
     }
 
+    // --- SECCIÓN: GESTIÓN DE EMPRENDEDORES ---
+
+    // Obtiene y muestra el listado de emprendedores
     public function gestionarEmprendedores()
     {
-        // Obtenemos todos los emprendedores ordenados del más reciente al más antiguo
         $emprendedores = Emprendedor::latest()->get();
-
-        // Enviamos la lista a la vista 'admin.emprendedores'
         return view('admin.emprendedores', compact('emprendedores'));
     }
 
+    // Registra un nuevo emprendedor
     public function storeEmprendedor(Request $request)
-{
-    $request->validate([
-        'nombre_completo' => 'required|string|max:255',
-        'username' => 'required|string|unique:emprendedores,username|max:255',
-        'password' => 'required|string|min:6',
-        'marca_o_giro' => 'required|string|max:255',
-        'telefono' => 'required|string|max:15',
-    ]);
+    {
+        $request->validate([
+            'nombre_completo' => 'required|string|max:255',
+            'username' => 'required|string|unique:emprendedores,username|max:255',
+            'password' => 'required|string|min:6',
+            'marca_o_giro' => 'required|string|max:255',
+            'telefono' => 'required|string|max:15',
+        ]);
 
-    Emprendedor::create([
-        'nombre_completo' => $request->nombre_completo,
-        'username' => $request->username,
-        'password' => Hash::make($request->password), // Encriptación Bcrypt
-        'marca_o_giro' => $request->marca_o_giro,
-        'telefono' => $request->telefono,
-        'estado' => true,
-    ]);
+        Emprendedor::create([
+            'nombre_completo' => $request->nombre_completo,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'marca_o_giro' => $request->marca_o_giro,
+            'telefono' => $request->telefono,
+            'estado' => true,
+        ]);
 
-    return redirect()->route('admin.emprendedores')->with('success', 'Emprendedor registrado correctamente.');
-}
+        return redirect()->route('admin.emprendedores')->with('success', 'Emprendedor registrado correctamente.');
+    }
 
-public function updateEmprendedor(Request $request, $id)
-{
-    $emprendedor = Emprendedor::findOrFail($id);
+    // Actualiza la información general del emprendedor
+    public function updateEmprendedor(Request $request, $id)
+    {
+        $emprendedor = Emprendedor::findOrFail($id);
 
-    $request->validate([
-        'nombre_completo' => 'required|string|max:255',
-        'username' => 'required|string|max:255|unique:emprendedores,username,' . $id,
-        'marca_o_giro' => 'required|string|max:255',
-        'telefono' => 'required|string|max:15',
-        'estado' => 'required|boolean',
-    ]);
+        $request->validate([
+            'nombre_completo' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:emprendedores,username,' . $id,
+            'marca_o_giro' => 'required|string|max:255',
+            'telefono' => 'required|string|max:15',
+            'estado' => 'required|boolean',
+        ]);
 
-    $emprendedor->update([
-        'nombre_completo' => $request->nombre_completo,
-        'username' => $request->username,
-        'marca_o_giro' => $request->marca_o_giro,
-        'telefono' => $request->telefono,
-        'estado' => $request->estado,
-    ]);
+        $emprendedor->update([
+            'nombre_completo' => $request->nombre_completo,
+            'username' => $request->username,
+            'marca_o_giro' => $request->marca_o_giro,
+            'telefono' => $request->telefono,
+            'estado' => $request->estado,
+        ]);
 
-    return redirect()->route('admin.emprendedores')->with('success', 'Datos actualizados correctamente.');
-}
+        return redirect()->route('admin.emprendedores')->with('success', 'Datos actualizados correctamente.');
+    }
 
-public function resetPasswordEmprendedor(Request $request, $id)
-{
-    $emprendedor = Emprendedor::findOrFail($id);
+    // Restablece la contraseña del emprendedor
+    public function resetPasswordEmprendedor(Request $request, $id)
+    {
+        $emprendedor = Emprendedor::findOrFail($id);
 
-    $request->validate([
-        'password' => 'required|string|min:6',
-    ]);
+        $request->validate([
+            'password' => 'required|string|min:6',
+        ]);
 
-    $emprendedor->update([
-        'password' => Hash::make($request->password),
-    ]);
+        $emprendedor->update([
+            'password' => Hash::make($request->password),
+        ]);
 
-    return redirect()->route('admin.emprendedores')->with('success', 'Contraseña restablecida con éxito.');
-}
+        return redirect()->route('admin.emprendedores')->with('success', 'Contraseña restablecida con éxito.');
+    }
+
+    // --- SECCIÓN: GESTIÓN DE ADMINISTRADORES (SUB-ADMINS) ---
+
+    // Obtiene y muestra el listado de usuarios administradores
+    public function gestionarUsuarios()
+    {
+        $administradores = User::latest()->get();
+        return view('admin.usuarios', compact('administradores'));
+    }
+
+    // Registra un nuevo usuario administrador
+    public function storeUsuario(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.usuarios')->with('success', 'Administrador registrado correctamente.');
+    }
 }

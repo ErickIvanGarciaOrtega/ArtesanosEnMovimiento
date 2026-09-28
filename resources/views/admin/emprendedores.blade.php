@@ -7,8 +7,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
-
 <body class="bg-light">
 
     <div class="container-fluid">
@@ -24,6 +22,9 @@
                         </li>
                         <li class="nav-item mb-2">
                             <a href="{{ route('admin.emprendedores') }}" class="nav-link text-white active fw-bold">Emprendedores</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="{{ route('admin.usuarios') }}" class="nav-link text-white-50">Administradores</a>
                         </li>
                     </ul>
                 </div>
@@ -68,115 +69,115 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-    @forelse ($emprendedores as $emprendedor)
-        <tr>
-            <td>{{ $emprendedor->id }}</td>
-            <td class="fw-bold">{{ $emprendedor->nombre_completo }}</td>
-            <td><code>{{ $emprendedor->username }}</code></td>
-            <td>{{ $emprendedor->marca_o_giro }}</td>
-            <td>
-                <a href="https://wa.me/52{{ $emprendedor->telefono }}" target="_blank" class="btn btn-sm btn-outline-success">
-                    WhatsApp ({{ $emprendedor->telefono }})
-                </a>
-            </td>
-            <td>
-                @if($emprendedor->estado)
-                    <span class="badge bg-success">Activo</span>
-                @else
-                    <span class="badge bg-secondary">Inactivo</span>
-                @endif
-            </td>
-            <td class="text-center">
-                <!-- Botón Editar -->
-                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#modalEditar{{ $emprendedor->id }}">
-                    Editar
-                </button>
-                <!-- Botón Restablecer Clave -->
-                <button class="btn btn-sm btn-info me-1 text-white" data-bs-toggle="modal" data-bs-target="#modalReset{{ $emprendedor->id }}">
-                    Restablecer Clave
-                </button>
-            </td>
-        </tr>
+                                    @forelse ($emprendedores as $emprendedor)
+                                        <tr>
+                                            <td>{{ $emprendedor->id }}</td>
+                                            <td class="fw-bold">{{ $emprendedor->nombre_completo }}</td>
+                                            <td><code>{{ $emprendedor->username }}</code></td>
+                                            <td>{{ $emprendedor->marca_o_giro }}</td>
+                                            <td>
+                                                <a href="https://wa.me/52{{ $emprendedor->telefono }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                                    WhatsApp ({{ $emprendedor->telefono }})
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @if($emprendedor->estado)
+                                                    <span class="badge bg-success">Activo</span>
+                                                @else
+                                                    <span class="badge bg-secondary">Inactivo</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <!-- Botón Editar -->
+                                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#modalEditar{{ $emprendedor->id }}">
+                                                    Editar
+                                                </button>
+                                                <!-- Botón Restablecer Clave -->
+                                                <button class="btn btn-sm btn-info me-1 text-white" data-bs-toggle="modal" data-bs-target="#modalReset{{ $emprendedor->id }}">
+                                                    Restablecer Clave
+                                                </button>
+                                            </td>
+                                        </tr>
 
-        <!-- Modal Editar Emprendedor -->
-        <div class="modal fade" id="modalEditar{{ $emprendedor->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning">
-                        <h5 class="modal-title fw-bold">Editar Emprendedor: {{ $emprendedor->nombre_completo }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('admin.emprendedores.update', $emprendedor->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" name="nombre_completo" value="{{ $emprendedor->nombre_completo }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Nombre de Usuario (Login)</label>
-                                <input type="text" class="form-control" name="username" value="{{ $emprendedor->username }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Marca o Giro Artesanal</label>
-                                <input type="text" class="form-control" name="marca_o_giro" value="{{ $emprendedor->marca_o_giro }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Teléfono (WhatsApp)</label>
-                                <input type="text" class="form-control" name="telefono" value="{{ $emprendedor->telefono }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Estado de la cuenta</label>
-                                <select class="form-select" name="estado">
-                                    <option value="1" {{ $emprendedor->estado ? 'selected' : '' }}>Activo</option>
-                                    <option value="0" {{ !$emprendedor->estado ? 'selected' : '' }}>Inactivo</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-warning">Actualizar Datos</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                                        <!-- Modal Editar Emprendedor -->
+                                        <div class="modal fade" id="modalEditar{{ $emprendedor->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-warning">
+                                                        <h5 class="modal-title fw-bold">Editar Emprendedor: {{ $emprendedor->nombre_completo }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('admin.emprendedores.update', $emprendedor->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Nombre Completo</label>
+                                                                <input type="text" class="form-control" name="nombre_completo" value="{{ $emprendedor->nombre_completo }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Nombre de Usuario (Login)</label>
+                                                                <input type="text" class="form-control" name="username" value="{{ $emprendedor->username }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Marca o Giro Artesanal</label>
+                                                                <input type="text" class="form-control" name="marca_o_giro" value="{{ $emprendedor->marca_o_giro }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Teléfono (WhatsApp)</label>
+                                                                <input type="text" class="form-control" name="telefono" value="{{ $emprendedor->telefono }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Estado de la cuenta</label>
+                                                                <select class="form-select" name="estado">
+                                                                    <option value="1" {{ $emprendedor->estado ? 'selected' : '' }}>Activo</option>
+                                                                    <option value="0" {{ !$emprendedor->estado ? 'selected' : '' }}>Inactivo</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-warning">Actualizar Datos</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
 
-        <!-- Modal Restablecer Contraseña -->
-        <div class="modal fade" id="modalReset{{ $emprendedor->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title fw-bold">Restablecer Contraseña</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('admin.emprendedores.resetPassword', $emprendedor->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <p>Asigna una nueva contraseña de acceso para el usuario: <strong>{{ $emprendedor->username }}</strong></p>
-                            <div class="mb-3">
-                                <label class="form-label">Nueva Contraseña</label>
-                                <input type="password" class="form-control" name="password" required placeholder="Ingresa la nueva clave (mín. 6 caracteres)">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-info text-white">Cambiar Contraseña</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @empty
-        <tr>
-            <td colspan="7" class="text-center text-muted py-4">
-                No hay emprendedores registrados aún. Haz clic en <strong>"Registrar Nuevo Emprendedor"</strong> para agregar el primero.
-            </td>
-        </tr>
-    @endforelse
-</tbody>
+                                        <!-- Modal Restablecer Contraseña -->
+                                        <div class="modal fade" id="modalReset{{ $emprendedor->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-info text-white">
+                                                        <h5 class="modal-title fw-bold">Restablecer Contraseña</h5>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('admin.emprendedores.resetPassword', $emprendedor->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-body">
+                                                            <p>Asigna una nueva contraseña de acceso para el usuario: <strong>{{ $emprendedor->username }}</strong></p>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Nueva Contraseña</label>
+                                                                <input type="password" class="form-control" name="password" required placeholder="Ingresa la nueva clave (mín. 6 caracteres)">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-info text-white">Cambiar Contraseña</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">
+                                                No hay emprendedores registrados aún. Haz clic en <strong>"Registrar Nuevo Emprendedor"</strong> para agregar el primero.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -186,49 +187,48 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Modal para Crear Emprendedor -->
-<div class="modal fade" id="modalCrearEmprendedor" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalLabel">Registrar Nuevo Emprendedor</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal para Crear Emprendedor -->
+    <div class="modal fade" id="modalCrearEmprendedor" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalLabel">Registrar Nuevo Emprendedor</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.emprendedores.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre_completo" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" name="nombre_completo" required placeholder="Ej: María Hernández">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nombre de Usuario (Login)</label>
+                            <input type="text" class="form-control" name="username" required placeholder="Ej: maria_artesanias">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña Inicial</label>
+                            <input type="password" class="form-control" name="password" required placeholder="Mínimo 6 caracteres">
+                        </div>
+                        <div class="mb-3">
+                            <label for="marca_o_giro" class="form-label">Marca o Giro Artesanal</label>
+                            <input type="text" class="form-control" name="marca_o_giro" required placeholder="Ej: Textiles Huastecos">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono (WhatsApp)</label>
+                            <input type="text" class="form-control" name="telefono" required placeholder="10 dígitos (Ej: 4811234567)">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Emprendedor</button>
+                    </div>
+                </form>
             </div>
-            <form action="{{ route('admin.emprendedores.store') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nombre_completo" class="form-label">Nombre Completo</label>
-                        <input type="text" class="form-control" name="nombre_completo" required placeholder="Ej: María Hernández">
-                    </div>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Nombre de Usuario (Login)</label>
-                        <input type="text" class="form-control" name="username" required placeholder="Ej: maria_artesanias">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña Inicial</label>
-                        <input type="password" class="form-control" name="password" required placeholder="Mínimo 6 caracteres">
-                    </div>
-                    <div class="mb-3">
-                        <label for="marca_o_giro" class="form-label">Marca o Giro Artesanal</label>
-                        <input type="text" class="form-control" name="marca_o_giro" required placeholder="Ej: Textiles Huastecos">
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono (WhatsApp)</label>
-                        <input type="text" class="form-control" name="telefono" required placeholder="10 dígitos (Ej: 4811234567)">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Emprendedor</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

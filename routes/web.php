@@ -56,6 +56,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/admin/emprendedores/{id}', [AdminController::class, 'updateEmprendedor'])->name('admin.emprendedores.update');
 Route::put('/admin/emprendedores/{id}/reset-password', [AdminController::class, 'resetPasswordEmprendedor'])->name('admin.emprendedores.resetPassword');
 
+Route::get('/admin/usuarios', [AdminController::class, 'gestionarUsuarios'])->name('admin.usuarios');
+Route::post('/admin/usuarios', [AdminController::class, 'storeUsuario'])->name('admin.usuarios.store');
+
     // Ruta temporal para evitar el error 500 al redirigir con el middleware 'auth'
 Route::get('/login', function () {
     return 'Pantalla de Inicio de Sesión';
