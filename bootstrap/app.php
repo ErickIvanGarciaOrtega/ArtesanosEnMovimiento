@@ -11,11 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    ->withMiddleware(function (Middleware $middleware) {
+        // Redirección condicional precisa para usuarios no autenticados
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if ($request->is('emprendedor/*') || $request->is('emprendedor')) {
+                return route('emprendedor.login');
+            }
+            return route('login');
+        });
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
-        );
+    ->withExceptions(function (Exceptions $exceptions) {
+        //
     })->create();

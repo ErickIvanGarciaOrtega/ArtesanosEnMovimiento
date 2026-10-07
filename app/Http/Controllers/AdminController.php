@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Emprendedor;
-use App\Models\User; // Importación del modelo nativo de administradores
-use Illuminate\Support\Facades\Hash; // Importación para el cifrado Bcrypt
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -27,12 +27,20 @@ class AdminController extends Controller
     // Registra un nuevo emprendedor
     public function storeEmprendedor(Request $request)
     {
+        // Limpiamos espacios antes de validar
+        $request->merge([
+            'telefono' => preg_replace('/\s+/', '', $request->telefono)
+        ]);
+
         $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'username' => 'required|string|unique:emprendedores,username|max:255',
             'password' => 'required|string|min:6',
             'marca_o_giro' => 'required|string|max:255',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|numeric|digits:10', // Exactamente 10 dígitos numéricos
+        ], [
+            'telefono.digits' => 'El teléfono de WhatsApp debe tener exactamente 10 dígitos numéricos.',
+            'telefono.numeric' => 'El teléfono solo debe contener números sin espacios ni caracteres especiales.',
         ]);
 
         Emprendedor::create([
@@ -52,12 +60,20 @@ class AdminController extends Controller
     {
         $emprendedor = Emprendedor::findOrFail($id);
 
+        // Limpiamos espacios antes de validar
+        $request->merge([
+            'telefono' => preg_replace('/\s+/', '', $request->telefono)
+        ]);
+
         $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:emprendedores,username,' . $id,
             'marca_o_giro' => 'required|string|max:255',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|numeric|digits:10', // Exactamente 10 dígitos numéricos
             'estado' => 'required|boolean',
+        ], [
+            'telefono.digits' => 'El teléfono de WhatsApp debe tener exactamente 10 dígitos numéricos.',
+            'telefono.numeric' => 'El teléfono solo debe contener números sin espacios ni caracteres especiales.',
         ]);
 
         $emprendedor->update([

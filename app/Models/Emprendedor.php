@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Importante
+use Illuminate\Notifications\Notifiable;
 
 class Emprendedor extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
 
     protected $table = 'emprendedores';
 
@@ -22,5 +22,6 @@ class Emprendedor extends Authenticatable
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 }

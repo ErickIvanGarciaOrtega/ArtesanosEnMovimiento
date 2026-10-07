@@ -52,6 +52,18 @@
                     </button>
                 </div>
 
+                <!-- Mostrar Mensajes de Error de Validación -->
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 <!-- Tabla de Emprendedores -->
                 <div class="card shadow-sm mt-4">
                     <div class="card-body">
@@ -107,25 +119,36 @@
                                                         <h5 class="modal-title fw-bold">Editar Emprendedor: {{ $emprendedor->nombre_completo }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('admin.emprendedores.update', $emprendedor->id) }}" method="POST">
+                                                    <form action="{{ route('admin.emprendedores.update', $emprendedor->id) }}" method="POST" autocomplete="off">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Nombre Completo</label>
-                                                                <input type="text" class="form-control" name="nombre_completo" value="{{ $emprendedor->nombre_completo }}" required>
+                                                                <input type="text" class="form-control" name="nombre_completo" value="{{ $emprendedor->nombre_completo }}" required autocomplete="off">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Nombre de Usuario (Login)</label>
-                                                                <input type="text" class="form-control" name="username" value="{{ $emprendedor->username }}" required>
+                                                                <input type="text" class="form-control" name="username" value="{{ $emprendedor->username }}" required autocomplete="off">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Marca o Giro Artesanal</label>
-                                                                <input type="text" class="form-control" name="marca_o_giro" value="{{ $emprendedor->marca_o_giro }}" required>
+                                                                <input type="text" class="form-control" name="marca_o_giro" value="{{ $emprendedor->marca_o_giro }}" required autocomplete="off">
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Teléfono (WhatsApp)</label>
-                                                                <input type="text" class="form-control" name="telefono" value="{{ $emprendedor->telefono }}" required>
+                                                                <label class="form-label">Teléfono (WhatsApp - 10 dígitos)</label>
+                                                                <input type="text" 
+                                                                       inputmode="numeric" 
+                                                                       class="form-control" 
+                                                                       name="telefono" 
+                                                                       value="{{ $emprendedor->telefono }}" 
+                                                                       maxlength="10" 
+                                                                       pattern="[0-9]{10}"
+                                                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                                                                       placeholder="4811234567" 
+                                                                       required 
+                                                                       autocomplete="off">
+                                                                <small class="text-muted">Solo 10 dígitos numéricos sin espacios ni guiones.</small>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Estado de la cuenta</label>
@@ -152,14 +175,14 @@
                                                         <h5 class="modal-title fw-bold">Restablecer Contraseña</h5>
                                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('admin.emprendedores.resetPassword', $emprendedor->id) }}" method="POST">
+                                                    <form action="{{ route('admin.emprendedores.resetPassword', $emprendedor->id) }}" method="POST" autocomplete="off">
                                                         @csrf
                                                         @method('PUT')
                                                         <div class="modal-body">
                                                             <p>Asigna una nueva contraseña de acceso para el usuario: <strong>{{ $emprendedor->username }}</strong></p>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Nueva Contraseña</label>
-                                                                <input type="password" class="form-control" name="password" required placeholder="Ingresa la nueva clave (mín. 6 caracteres)">
+                                                                <input type="password" class="form-control" name="password" required placeholder="Ingresa la nueva clave (mín. 6 caracteres)" autocomplete="new-password">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -195,28 +218,38 @@
                     <h5 class="modal-title" id="modalLabel">Registrar Nuevo Emprendedor</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('admin.emprendedores.store') }}" method="POST">
+                <form action="{{ route('admin.emprendedores.store') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nombre_completo" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" name="nombre_completo" required placeholder="Ej: María Hernández">
+                            <input type="text" class="form-control" name="nombre_completo" required placeholder="Ej: María Hernández" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Nombre de Usuario (Login)</label>
-                            <input type="text" class="form-control" name="username" required placeholder="Ej: maria_artesanias">
+                            <input type="text" class="form-control" name="username" required placeholder="Ej: maria_artesanias" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña Inicial</label>
-                            <input type="password" class="form-control" name="password" required placeholder="Mínimo 6 caracteres">
+                            <input type="password" class="form-control" name="password" required placeholder="Mínimo 6 caracteres" autocomplete="new-password">
                         </div>
                         <div class="mb-3">
                             <label for="marca_o_giro" class="form-label">Marca o Giro Artesanal</label>
-                            <input type="text" class="form-control" name="marca_o_giro" required placeholder="Ej: Textiles Huastecos">
+                            <input type="text" class="form-control" name="marca_o_giro" required placeholder="Ej: Textiles Huastecos" autocomplete="off">
                         </div>
                         <div class="mb-3">
-                            <label for="telefono" class="form-label">Teléfono (WhatsApp)</label>
-                            <input type="text" class="form-control" name="telefono" required placeholder="10 dígitos (Ej: 4811234567)">
+                            <label for="telefono" class="form-label">Teléfono (WhatsApp - 10 dígitos)</label>
+                            <input type="text" 
+                                   inputmode="numeric" 
+                                   class="form-control" 
+                                   name="telefono" 
+                                   maxlength="10" 
+                                   pattern="[0-9]{10}"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                                   required 
+                                   placeholder="Ej: 4811234567" 
+                                   autocomplete="off">
+                            <small class="text-muted">Solo 10 dígitos numéricos sin espacios ni guiones.</small>
                         </div>
                     </div>
                     <div class="modal-footer">
