@@ -11,16 +11,18 @@ return new class extends Migration
      */
 
     
-   public function up(): void
+public function up(): void
 {
     Schema::create('emprendedores', function (Blueprint $table) {
         $table->id();
-        $table->string('nombre_completo');
-        $table->string('username')->unique(); // Usuario para iniciar sesión
-        $table->string('password');           // Contraseña cifrada
-        $table->string('telefono');           // Número para WhatsApp
-        $table->string('marca_o_giro');       // Nombre de la marca o giro artesanal
-        $table->boolean('estado')->default(true); // Activo (1) o Inactivo (0)
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+        $table->string('foto_perfil')->nullable();
+        $table->text('biografia')->nullable();
+        $table->string('categoria_principal')->nullable();
+        $table->string('facebook')->nullable();
+        $table->string('instagram')->nullable();
+        $table->string('tiktok')->nullable();
+        $table->enum('status', ['activo', 'inactivo'])->default('activo');
         $table->timestamps();
     });
 }

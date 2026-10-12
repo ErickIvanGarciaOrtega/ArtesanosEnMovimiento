@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmprendedorAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,12 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/emprendedor/login', [EmprendedorAuthController::class, 'showLoginForm'])->name('emprendedor.login');
 Route::post('/emprendedor/login', [EmprendedorAuthController::class, 'login'])->name('emprendedor.login.post');
 Route::post('/emprendedor/logout', [EmprendedorAuthController::class, 'logout'])->name('emprendedor.logout');
+
+//Recuperacion de contraseña para administradores
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
 // Rutas protegidas para Emprendedores autenticados
 Route::middleware(['auth:emprendedor'])->group(function () {

@@ -44,6 +44,9 @@
                                 <label for="password" class="form-label">Contraseña</label>
                                 <input type="password" class="form-control" name="password" id="password" required>
                             </div>
+                            <div class="d-flex justify-content-end mb-3">
+    <a href="{{ route('password.request') }}" class="small text-decoration-none">¿Olvidaste tu contraseña?</a>
+</div>
                             <button type="submit" class="btn btn-dark w-100">Ingresar al Panel</button>
                         </form>
                         
