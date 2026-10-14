@@ -3,130 +3,159 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Emprendedor;
 use App\Models\User;
+use App\Models\Emprendedor;
+use App\Models\Marca;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    // Muestra la vista principal del dashboard
-    public function index()
+    /**
+     * Muestra el Dashboard principal con los contadores de resumen.
+     */
+    public function dashboard()
     {
-        return view('admin.dashboard');
+        $totalEmprendedores = Emprendedor::count();
+        $totalMarcas = Marca::count();
+        $totalProductos = Producto::count();
+        $totalUsuarios = User::count();
+
+        return view('admin.dashboard', compact(
+            'totalEmprendedores',
+            'totalMarcas',
+            'totalProductos',
+            'totalUsuarios'
+        ));
     }
 
-    // --- SECCIÓN: GESTIÓN DE EMPRENDEDORES ---
-
-    // Obtiene y muestra el listado de emprendedores
-    public function gestionarEmprendedores()
+    /**
+     * Muestra el listado completo de usuarios y sus perfiles de emprendedor.
+     */
+    public function usuariosIndex()
     {
-        $emprendedores = Emprendedor::latest()->get();
-        return view('admin.emprendedores', compact('emprendedores'));
+        $usuarios = User::with('emprendedor')->latest()->get();
+        return view('admin.usuarios.index', compact('usuarios'));
     }
 
-    // Registra un nuevo emprendedor
-    public function storeEmprendedor(Request $request)
+    /**
+     * Muestra el formulario para registrar un nuevo usuario/emprendedor.
+     */
+    public function usuariosCreate()
     {
-        // Limpiamos espacios antes de validar
-        $request->merge([
-            'telefono' => preg_replace('/\s+/', '', $request->telefono)
-        ]);
-
-        $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'username' => 'required|string|unique:emprendedores,username|max:255',
-            'password' => 'required|string|min:6',
-            'marca_o_giro' => 'required|string|max:255',
-            'telefono' => 'required|numeric|digits:10', // Exactamente 10 dígitos numéricos
-        ], [
-            'telefono.digits' => 'El teléfono de WhatsApp debe tener exactamente 10 dígitos numéricos.',
-            'telefono.numeric' => 'El teléfono solo debe contener números sin espacios ni caracteres especiales.',
-        ]);
-
-        Emprendedor::create([
-            'nombre_completo' => $request->nombre_completo,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'marca_o_giro' => $request->marca_o_giro,
-            'telefono' => $request->telefono,
-            'estado' => true,
-        ]);
-
-        return redirect()->route('admin.emprendedores')->with('success', 'Emprendedor registrado correctamente.');
+        return view('admin.usuarios.create');
     }
 
-    // Actualiza la información general del emprendedor
-    public function updateEmprendedor(Request $request, $id)
-    {
-        $emprendedor = Emprendedor::findOrFail($id);
-
-        // Limpiamos espacios antes de validar
-        $request->merge([
-            'telefono' => preg_replace('/\s+/', '', $request->telefono)
-        ]);
-
-        $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:emprendedores,username,' . $id,
-            'marca_o_giro' => 'required|string|max:255',
-            'telefono' => 'required|numeric|digits:10', // Exactamente 10 dígitos numéricos
-            'estado' => 'required|boolean',
-        ], [
-            'telefono.digits' => 'El teléfono de WhatsApp debe tener exactamente 10 dígitos numéricos.',
-            'telefono.numeric' => 'El teléfono solo debe contener números sin espacios ni caracteres especiales.',
-        ]);
-
-        $emprendedor->update([
-            'nombre_completo' => $request->nombre_completo,
-            'username' => $request->username,
-            'marca_o_giro' => $request->marca_o_giro,
-            'telefono' => $request->telefono,
-            'estado' => $request->estado,
-        ]);
-
-        return redirect()->route('admin.emprendedores')->with('success', 'Datos actualizados correctamente.');
-    }
-
-    // Restablece la contraseña del emprendedor
-    public function resetPasswordEmprendedor(Request $request, $id)
-    {
-        $emprendedor = Emprendedor::findOrFail($id);
-
-        $request->validate([
-            'password' => 'required|string|min:6',
-        ]);
-
-        $emprendedor->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('admin.emprendedores')->with('success', 'Contraseña restablecida con éxito.');
-    }
-
-    // --- SECCIÓN: GESTIÓN DE ADMINISTRADORES (SUB-ADMINS) ---
-
-    // Obtiene y muestra el listado de usuarios administradores
-    public function gestionarUsuarios()
-    {
-        $administradores = User::latest()->get();
-        return view('admin.usuarios', compact('administradores'));
-    }
-
-    // Registra un nuevo usuario administrador
-    public function storeUsuario(Request $request)
+    /**
+     * Guarda un nuevo usuario en la base de datos y crea su registro de emprendedor si corresponde.
+     */
+    public function usuariosStore(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:admin,emprendedor',
+            'status' => 'required|in:activo,inactivo',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.usuarios')->with('success', 'Administrador registrado correctamente.');
+        // Si el usuario es de rol emprendedor, creamos automáticamente su registro en la tabla emprendedores
+        if ($request->role === 'emprendedor') {
+            Emprendedor::create([
+                'user_id' => $user->id,
+                'status' => 'activo',
+            ]);
+        }
+
+        return redirect()->route('admin.usuarios.index')->with('status', 'Usuario registrado exitosamente.');
+    }
+
+    /**
+     * Muestra el formulario para editar un usuario existente.
+     */
+    public function usuariosEdit($id)
+    {
+        $usuario = User::with('emprendedor')->findOrFail($id);
+        return view('admin.usuarios.edit', compact('usuario'));
+    }
+
+    /**
+     * Actualiza la información del usuario en la base de datos.
+     */
+    public function usuariosUpdate(Request $request, $id)
+    {
+        $usuario = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|in:admin,emprendedor',
+            'status' => 'required|in:activo,inactivo',
+            'password' => 'nullable|string|min:6',
+        ]);
+
+        // Validación 1: Impedir desactivar tu propia cuenta activa
+    if (auth()->id() == $usuario->id && $request->status === 'inactivo') {
+        return redirect()->back()->with('status', 'No puedes desactivar tu propia cuenta de administrador.');
+    }
+
+    // Validación 2: Garantizar que siempre exista al menos un administrador activo
+    if ($usuario->role === 'admin' && $request->status === 'inactivo') {
+        $adminActivos = User::where('role', 'admin')
+            ->where('status', 'activo')
+            ->where('id', '!=', $usuario->id)
+            ->count();
+
+        if ($adminActivos === 0) {
+            return redirect()->back()->with('status', 'No puedes desactivar el único administrador activo del sistema.');
+        }
+    }
+
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->role = $request->role;
+        $usuario->status = $request->status;
+
+        if ($request->filled('password')) {
+            $usuario->password = Hash::make($request->password);
+        }
+
+        $usuario->save();
+
+        // Si cambió el rol a emprendedor y aún no tiene registro asociado, se lo creamos
+        if ($request->role === 'emprendedor' && !$usuario->emprendedor) {
+            Emprendedor::create([
+                'user_id' => $usuario->id,
+                'status' => 'activo',
+            ]);
+        }
+
+        return redirect()->route('admin.usuarios.index')->with('status', 'Usuario actualizado correctamente.');
+    }
+
+    /**
+     * Elimina un usuario de la base de datos.
+     */
+    public function usuariosDestroy($id)
+    {
+        $usuario = User::findOrFail($id);
+
+        // Previene eliminar al propio usuario autenticado
+        if (auth()->id() == $usuario->id) {
+            return redirect()->back()->with('status', 'No puedes eliminar tu propia cuenta de administrador.');
+        }
+        
+
+        $usuario->delete();
+
+        return redirect()->route('admin.usuarios.index')->with('status', 'Usuario eliminado correctamente.');
     }
 }

@@ -83,6 +83,33 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
+//Rutas del panel de administración
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    // Dashboard principal
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    // Gestión de Usuarios y Emprendedores (CRUD)
+    Route::get('/usuarios', [AdminController::class, 'usuariosIndex'])->name('admin.usuarios.index');
+    Route::get('/usuarios/crear', [AdminController::class, 'usuariosCreate'])->name('admin.usuarios.create');
+    Route::post('/usuarios', [AdminController::class, 'usuariosStore'])->name('admin.usuarios.store');
+    Route::get('/usuarios/{id}/editar', [AdminController::class, 'usuariosEdit'])->name('admin.usuarios.edit');
+    Route::put('/usuarios/{id}', [AdminController::class, 'usuariosUpdate'])->name('admin.usuarios.update');
+    Route::delete('/usuarios/{id}', [AdminController::class, 'usuariosDestroy'])->name('admin.usuarios.destroy');
+
+    // Rutas de Login para Emprendedores
+Route::get('/emprendedor/login', [EmprendedorAuthController::class, 'showLoginForm'])->name('emprendedor.login');
+Route::post('/emprendedor/login', [EmprendedorAuthController::class, 'login']);
+
+// Rutas protegidas del Portal Emprendedor
+Route::middleware(['auth'])->prefix('emprendedor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('emprendedores.dashboard');
+    })->name('emprendedor.dashboard');
+
+    Route::post('/logout', [EmprendedorAuthController::class, 'logout'])->name('emprendedor.logout');
+});
+});
+
 // Rutas protegidas para Emprendedores autenticados
 Route::middleware(['auth:emprendedor'])->group(function () {
     Route::get('/emprendedor/dashboard', function () {

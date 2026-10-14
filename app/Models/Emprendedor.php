@@ -4,24 +4,38 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable; // Importante
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Emprendedor extends Authenticatable
+class Emprendedor extends Model
 {
-    use Notifiable;
+    use HasFactory;
 
     protected $table = 'emprendedores';
 
     protected $fillable = [
-        'nombre_completo',
-        'username',
-        'password',
-        'telefono',
-        'marca_o_giro',
-        'estado',
+        'user_id',
+        'foto_perfil',
+        'biografia',
+        'categoria_principal',
+        'facebook',
+        'instagram',
+        'tiktok',
+        'status',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function marcas()
+    {
+        return $this->hasMany(Marca::class);
+    }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class);
+    }
 }
