@@ -19,18 +19,11 @@
             </div>
 
             <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="precio" class="form-label fw-bold">Precio ($ MXN)</label>
                     <input type="number" step="0.01" name="precio" id="precio" class="form-control" required placeholder="150.00">
                 </div>
-                <div class="col-md-6">
-                    <label for="stock" class="form-label fw-bold">Stock Disponible</label>
-                    <input type="number" name="stock" id="stock" class="form-control" required value="1">
-                </div>
-            </div>
-
-            <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="marca_id" class="form-label fw-bold">Marca Asociada</label>
                     <select name="marca_id" id="marca_id" class="form-select">
                         <option value="">-- Seleccionar Marca --</option>
@@ -39,7 +32,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="categoria_id" class="form-label fw-bold">Categoría</label>
                     <select name="categoria_id" id="categoria_id" class="form-select">
                         <option value="">-- Seleccionar Categoría --</option>

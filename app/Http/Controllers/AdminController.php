@@ -8,6 +8,8 @@ use App\Models\Emprendedor;
 use App\Models\Marca;
 use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Categoria;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -158,4 +160,71 @@ class AdminController extends Controller
 
         return redirect()->route('admin.usuarios.index')->with('status', 'Usuario eliminado correctamente.');
     }
+
+    // Listar categorías
+public function categoriasIndex()
+{
+    $categorias = Categoria::withCount('productos')->get();
+    return view('admin.categorias.index', compact('categorias'));
+}
+
+// Formulario para crear categoría
+public function categoriasCreate()
+{
+    return view('admin.categorias.create');
+}
+
+// Guardar categoría
+public function categoriasStore(Request $request)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255|unique:categorias,nombre',
+    ]);
+
+    Categoria::create([
+        'nombre' => $request->nombre,
+        'slug' => Str::slug($request->nombre), // Genera el slug automáticamente (ej. "bordados-huastecos")
+    ]);
+
+    return redirect()->route('admin.categorias.index')->with('status', 'Categoría creada con éxito.');
+}
+
+// Formulario para editar categoría
+public function categoriasEdit($id)
+{
+    $categoria = Categoria::findOrFail($id);
+    return view('admin.categorias.edit', compact('categoria'));
+}
+
+// Actualizar categoría
+public function categoriasUpdate(Request $request, $id)
+{
+    $categoria = Categoria::findOrFail($id);
+
+    $request->validate([
+        'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $categoria->id,
+    ]);
+
+    $categoria->update([
+        'nombre' => $request->nombre,
+        'slug' => Str::slug($request->nombre), // Actualiza también el slug
+    ]);
+
+    return redirect()->route('admin.categorias.index')->with('status', 'Categoría actualizada con éxito.');
+}
+
+// Eliminar categoría
+public function categoriasDestroy($id)
+{
+    $categoria = Categoria::findOrFail($id);
+
+    // Opcional: Desvincular productos si es necesario o impedir eliminación si tiene productos asignados
+    if ($categoria->productos()->count() > 0) {
+        return redirect()->back()->with('status', 'No se puede eliminar la categoría porque tiene productos asociados.');
+    }
+
+    $categoria->delete();
+
+    return redirect()->route('admin.categorias.index')->with('status', 'Categoría eliminada con éxito.');
+}
 }

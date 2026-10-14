@@ -23,8 +23,8 @@
                         <th>Marca</th>
                         <th>Categoría</th>
                         <th>Precio</th>
-                        <th>Stock</th>
                         <th>Estado</th>
+                        <th class="text-end pe-3">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,11 +34,21 @@
                             <td>{{ $producto->marca->nombre ?? 'Sin Marca' }}</td>
                             <td>{{ $producto->categoria->nombre ?? 'Sin Categoría' }}</td>
                             <td class="text-success fw-bold">${{ number_format($producto->precio, 2) }}</td>
-                            <td>{{ $producto->stock }} unidades</td>
                             <td>
                                 <span class="badge bg-success">{{ ucfirst($producto->estado) }}</span>
                             </td>
-                            
+                            <td class="text-end pe-3">
+                                <a href="{{ route('emprendedor.productos.edit', $producto->id) }}" class="btn btn-sm btn-outline-warning me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ route('emprendedor.productos.destroy', $producto->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este producto?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>

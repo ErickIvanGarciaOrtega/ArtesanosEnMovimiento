@@ -48,7 +48,8 @@ class EmprendedorController extends Controller
         return redirect()->back()->with('status', 'Perfil actualizado con éxito.');
     }
 
-    // Listado de Marcas del Emprendedor
+    // --- MÓDULO DE MARCAS ---
+
     public function marcasIndex()
     {
         $emprendedor = Auth::user()->emprendedor;
@@ -57,13 +58,11 @@ class EmprendedorController extends Controller
         return view('emprendedores.marcas.index', compact('marcas'));
     }
 
-    // Crear Marca
     public function marcasCreate()
     {
         return view('emprendedores.marcas.create');
     }
 
-    // Guardar Marca
     public function marcasStore(Request $request)
     {
         $request->validate([
@@ -82,9 +81,46 @@ class EmprendedorController extends Controller
         return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca registrada con éxito.');
     }
 
+    // Editar Marca
+    public function marcasEdit($id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+
+        return view('emprendedores.marcas.edit', compact('marca'));
+    }
+
+    // Actualizar Marca
+    public function marcasUpdate(Request $request, $id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $marca->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+        ]);
+
+        return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca actualizada con éxito.');
+    }
+
+    // Eliminar Marca
+    public function marcasDestroy($id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $marca->delete();
+
+        return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca eliminada con éxito.');
+    }
+
     // --- MÓDULO DE PRODUCTOS ---
 
-    // Listado de Productos
     public function productosIndex()
     {
         $emprendedor = Auth::user()->emprendedor;
@@ -93,7 +129,6 @@ class EmprendedorController extends Controller
         return view('emprendedores.productos.index', compact('productos'));
     }
 
-    // Formulario Crear Producto
     public function productosCreate()
     {
         $emprendedor = Auth::user()->emprendedor;
@@ -103,13 +138,11 @@ class EmprendedorController extends Controller
         return view('emprendedores.productos.create', compact('marcas', 'categorias'));
     }
 
-    // Guardar Producto
     public function productosStore(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'marca_id' => 'nullable|exists:marcas,id',
             'categoria_id' => 'nullable|exists:categorias,id',
             'descripcion' => 'nullable|string',
@@ -124,10 +157,53 @@ class EmprendedorController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'precio' => $request->precio,
-            'stock' => $request->stock,
+            'stock' => 1,
             'estado' => 'activo',
         ]);
 
         return redirect()->route('emprendedor.productos.index')->with('status', 'Producto publicado exitosamente.');
+    }
+
+    public function productosEdit($id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $marcas = $emprendedor->marcas;
+        $categorias = Categoria::all();
+
+        return view('emprendedores.productos.edit', compact('producto', 'marcas', 'categorias'));
+    }
+
+    public function productosUpdate(Request $request, $id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'marca_id' => 'nullable|exists:marcas,id',
+            'categoria_id' => 'nullable|exists:categorias,id',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $producto->update([
+            'marca_id' => $request->marca_id,
+            'categoria_id' => $request->categoria_id,
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'precio' => $request->precio,
+        ]);
+
+        return redirect()->route('emprendedor.productos.index')->with('status', 'Producto actualizado correctamente.');
+    }
+
+    public function productosDestroy($id)
+    {
+        $emprendedor = Auth::user()->emprendedor;
+        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $producto->delete();
+
+        return redirect()->route('emprendedor.productos.index')->with('status', 'Producto eliminado con éxito.');
     }
 }

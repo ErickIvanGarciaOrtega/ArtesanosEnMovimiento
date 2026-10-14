@@ -17,9 +17,22 @@
     @forelse($marcas as $marca)
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
+                <div class="card-body p-4 d-flex flex-column">
                     <h5 class="fw-bold text-primary mb-2">{{ $marca->nombre }}</h5>
-                    <p class="text-muted small mb-0">{{ $marca->descripcion ?? 'Sin descripción registrada.' }}</p>
+                    <p class="text-muted small mb-4 flex-grow-1">{{ $marca->descripcion ?? 'Sin descripción registrada.' }}</p>
+                    
+                    <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                        <a href="{{ route('emprendedor.marcas.edit', $marca->id) }}" class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-pencil me-1"></i> Editar
+                        </a>
+                        <form action="{{ route('emprendedor.marcas.destroy', $marca->id) }}" method="POST" onsubmit="return confirm('¿Eliminar esta marca?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash me-1"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
