@@ -6,6 +6,7 @@ use App\Http\Controllers\EmprendedorAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\EmprendedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,4 +116,44 @@ Route::middleware(['auth:emprendedor'])->group(function () {
     Route::get('/emprendedor/dashboard', function () {
         return view('emprendedores.dashboard');
     })->name('emprendedor.dashboard');
+});
+
+Route::middleware(['auth'])->prefix('emprendedor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('emprendedores.dashboard');
+    })->name('emprendedor.dashboard');
+
+    // Perfil
+    Route::get('/perfil', [EmprendedorController::class, 'perfil'])->name('emprendedor.perfil');
+    Route::put('/perfil', [EmprendedorController::class, 'perfilUpdate'])->name('emprendedor.perfil.update');
+
+    // Marcas
+    Route::get('/marcas', [EmprendedorController::class, 'marcasIndex'])->name('emprendedor.marcas.index');
+    Route::get('/marcas/crear', [EmprendedorController::class, 'marcasCreate'])->name('emprendedor.marcas.create');
+    Route::post('/marcas', [EmprendedorController::class, 'marcasStore'])->name('emprendedor.marcas.store');
+
+    Route::post('/logout', [EmprendedorAuthController::class, 'logout'])->name('emprendedor.logout');
+});
+
+// Rutas protegidas del Portal Emprendedor
+Route::middleware(['auth'])->prefix('emprendedor')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('emprendedores.dashboard');
+    })->name('emprendedor.dashboard');
+
+    // Perfil
+    Route::get('/perfil', [EmprendedorController::class, 'perfil'])->name('emprendedor.perfil');
+    Route::put('/perfil', [EmprendedorController::class, 'perfilUpdate'])->name('emprendedor.perfil.update');
+
+    // Marcas
+    Route::get('/marcas', [EmprendedorController::class, 'marcasIndex'])->name('emprendedor.marcas.index');
+    Route::get('/marcas/crear', [EmprendedorController::class, 'marcasCreate'])->name('emprendedor.marcas.create');
+    Route::post('/marcas', [EmprendedorController::class, 'marcasStore'])->name('emprendedor.marcas.store');
+
+    // Productos
+    Route::get('/productos', [EmprendedorController::class, 'productosIndex'])->name('emprendedor.productos.index');
+    Route::get('/productos/crear', [EmprendedorController::class, 'productosCreate'])->name('emprendedor.productos.create');
+    Route::post('/productos', [EmprendedorController::class, 'productosStore'])->name('emprendedor.productos.store');
+
+    Route::post('/logout', [EmprendedorAuthController::class, 'logout'])->name('emprendedor.logout');
 });

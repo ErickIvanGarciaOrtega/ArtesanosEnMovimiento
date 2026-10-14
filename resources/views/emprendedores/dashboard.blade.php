@@ -1,33 +1,68 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Emprendedor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-</head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-        <div class="container px-4">
-            <a class="navbar-brand fw-bold" href="#">
-                <i class="bi bi-shop me-2"></i>Mi Portal de Emprendedor
-            </a>
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3 small">Hola, {{ auth()->user()->name }}</span>
-                <form action="{{ route('emprendedor.logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-light btn-sm">Cerrar Sesión</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+@extends('layouts.emprendedor')
 
-    <div class="container py-5">
-        <div class="card border-0 shadow-sm p-4">
-            <h2 class="fw-bold">¡Bienvenido a tu panel de control!</h2>
-            <p class="text-muted">Desde aquí podrás administrar tus marcas y productos en el colectivo artesanal.</p>
+@section('content')
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">¡Bienvenido a tu panel de control!</h2>
+    <span class="badge bg-primary fs-6">
+        <i class="bi bi-person-check-fill me-1"></i> Rol: Emprendedor
+    </span>
+</div>
+
+<p class="text-muted mb-4">Desde aquí podrás administrar tu perfil, registrar tus marcas y publicar tus productos en el colectivo artesanal.</p>
+
+<div class="row g-4 mb-4">
+    {{-- Tarjeta Mi Perfil --}}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-primary text-white rounded p-3 me-3">
+                    <i class="bi bi-person-gear fs-2"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Mi Perfil</h5>
+                    <p class="text-muted small mb-0">Gestiona tu nombre comercial, biografía y redes sociales.</p>
+                </div>
+            </div>
+            <a href="{{ route('emprendedor.perfil') }}" class="btn btn-outline-primary mt-auto w-100">
+                Editar Perfil <i class="bi bi-arrow-right ms-1"></i>
+            </a>
         </div>
     </div>
-</body>
-</html>
+
+    {{-- Tarjeta Mis Marcas --}}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-success text-white rounded p-3 me-3">
+                    <i class="bi bi-tags fs-2"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Mis Marcas</h5>
+                    <p class="text-muted small mb-0">Registra y administra las marcas de tus productos artesanos.</p>
+                </div>
+            </div>
+            <a href="{{ route('emprendedor.marcas.index') }}" class="btn btn-outline-success mt-auto w-100">
+                Gestionar Marcas <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+
+    {{-- Tarjeta Mis Productos --}}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="d-flex align-items-center mb-3">
+                <div class="bg-warning text-dark rounded p-3 me-3">
+                    <i class="bi bi-box-seam fs-2"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Mis Productos</h5>
+                    <p class="text-muted small mb-0">Publica nuevos artículos, asigna precios y gestiona tu catálogo.</p>
+                </div>
+            </div>
+            <a href="{{ route('emprendedor.productos.index') }}" class="btn btn-outline-warning mt-auto w-100 text-dark">
+                Gestionar Productos <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+@endsection
