@@ -19,6 +19,7 @@ class Producto extends Model
         'imagen',
         'stock',
         'estado',
+        'imagen'
     ];
 
     public function emprendedor()

@@ -20,6 +20,11 @@ Route::get('/emprendedores', [PublicController::class, 'emprendedores'])->name('
 Route::get('/quienes-somos', [PublicController::class, 'quienesSomos'])->name('public.quienes_somos');
 Route::get('/contacto', [PublicController::class, 'contacto'])->name('public.contacto');
 
+// NUEVA RUTA PÚBLICA: Detalle de Producto (Fuera de cualquier middleware)
+Route::get('/producto/{id}', [PublicController::class, 'productoDetalle'])
+    ->name('public.producto.detalle')
+    ->where('id', '[0-9]+');
+
 // Rutas de autenticación pública para Emprendedores (colocadas ANTES de /emprendedor/{id})
 Route::get('/emprendedor/login', [EmprendedorAuthController::class, 'showLoginForm'])->name('emprendedor.login');
 Route::post('/emprendedor/login', [EmprendedorAuthController::class, 'login'])->name('emprendedor.login.post');
@@ -93,7 +98,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/categorias/{id}/editar', [AdminController::class, 'categoriasEdit'])->name('admin.categorias.edit');
     Route::put('/categorias/{id}', [AdminController::class, 'categoriasUpdate'])->name('admin.categorias.update');
     Route::delete('/categorias/{id}', [AdminController::class, 'categoriasDestroy'])->name('admin.categorias.destroy');
-});
+
+    // Módulo: Gestión de Contenidos (CMS)
+    Route::get('/configuraciones', [AdminController::class, 'configuracionesIndex'])->name('admin.configuraciones.index');
+    Route::put('/configuraciones', [AdminController::class, 'configuracionesUpdate'])->name('admin.configuraciones.update');
+
+    });
 
 /*
 |--------------------------------------------------------------------------

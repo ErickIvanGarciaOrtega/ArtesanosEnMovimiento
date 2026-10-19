@@ -3,59 +3,49 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Emprendedor;
 use App\Models\Marca;
-use App\Models\Categoria;
 use App\Models\Producto;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Categoria;
 
 class EmprendedorController extends Controller
 {
-    // Ver / Editar Perfil del Emprendedor
-public function perfil()
-{
-    $user = Auth::user();
-    $emprendedor = $user->emprendedor;
-    $categorias = Categoria::all(); // Cargar categorías para el desplegable
-
-    return view('emprendedores.perfil', compact('user', 'emprendedor', 'categorias'));
-}
-
-    // Actualizar Perfil (sin foto)
-    public function perfilUpdate(Request $request)
+    // ==========================================
+    // PERFIL DEL EMPRENDEDOR
+    // ==========================================
+    public function perfil()
     {
         $user = Auth::user();
         $emprendedor = $user->emprendedor;
+        $categorias = Categoria::all(); // Categorías para el desplegable
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'categoria_principal' => 'nullable|string|max:255',
-            'biografia' => 'nullable|string',
-            'facebook' => 'nullable|string|max:255',
-            'instagram' => 'nullable|string|max:255',
-            'tiktok' => 'nullable|string|max:255',
-        ]);
-
-        $user->update(['name' => $request->name]);
-
-        $emprendedor->update([
-            'categoria_principal' => $request->categoria_principal,
-            'biografia' => $request->biografia,
-            'facebook' => $request->facebook,
-            'instagram' => $request->instagram,
-            'tiktok' => $request->tiktok,
-        ]);
-
-        return redirect()->back()->with('status', 'Perfil actualizado con éxito.');
+        return view('emprendedores.perfil', compact('user', 'emprendedor', 'categorias'));
     }
 
-    // --- MÓDULO DE MARCAS ---
+    public function perfilUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'categoria_principal' => 'nullable|string|max:255',
+            'biografia' => 'nullable|string',
+            'facebook' => 'nullable|url',
+            'instagram' => 'nullable|string',
+            'tiktok' => 'nullable|string',
+        ]);
 
+        $user->emprendedor->update($request->all());
+
+        return redirect()->route('emprendedor.perfil')->with('success', 'Perfil actualizado correctamente.');
+    }
+
+    // ==========================================
+    // MARCAS (CRUD Básico)
+    // ==========================================
     public function marcasIndex()
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $marcas = $emprendedor ? $emprendedor->marcas : collect();
-
+        $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
         return view('emprendedores.marcas.index', compact('marcas'));
     }
 
@@ -66,145 +56,123 @@ public function perfil()
 
     public function marcasStore(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
-
-        $emprendedor = Auth::user()->emprendedor;
-
-        Marca::create([
-            'emprendedor_id' => $emprendedor->id,
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-        ]);
-
-        return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca registrada con éxito.');
+        $request->validate(['nombre' => 'required|string|max:255', 'descripcion' => 'nullable|string']);
+        $data = $request->all();
+        $data['emprendedor_id'] = Auth::user()->emprendedor->id;
+        Marca::create($data);
+        return redirect()->route('emprendedor.marcas.index')->with('success', 'Marca creada.');
     }
 
-    // Editar Marca
     public function marcasEdit($id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
-
+        $marca = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         return view('emprendedores.marcas.edit', compact('marca'));
     }
 
-    // Actualizar Marca
     public function marcasUpdate(Request $request, $id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
-
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
-
-        $marca->update([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-        ]);
-
-        return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca actualizada con éxito.');
+        $marca = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
+        $request->validate(['nombre' => 'required|string|max:255', 'descripcion' => 'nullable|string']);
+        $marca->update($request->all());
+        return redirect()->route('emprendedor.marcas.index')->with('success', 'Marca actualizada.');
     }
 
-    // Eliminar Marca
     public function marcasDestroy($id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $marca = Marca::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $marca = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         $marca->delete();
-
-        return redirect()->route('emprendedor.marcas.index')->with('status', 'Marca eliminada con éxito.');
+        return redirect()->route('emprendedor.marcas.index')->with('success', 'Marca eliminada.');
     }
 
-    // --- MÓDULO DE PRODUCTOS ---
-
+    // ==========================================
+    // PRODUCTOS (CRUD con Imágenes)
+    // ==========================================
     public function productosIndex()
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $productos = $emprendedor ? $emprendedor->productos()->with(['marca', 'categoria'])->get() : collect();
-
+        $productos = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
         return view('emprendedores.productos.index', compact('productos'));
     }
 
     public function productosCreate()
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $marcas = $emprendedor ? $emprendedor->marcas : collect();
         $categorias = Categoria::all();
-
-        return view('emprendedores.productos.create', compact('marcas', 'categorias'));
+        $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
+        return view('emprendedores.productos.create', compact('categorias', 'marcas'));
     }
 
     public function productosStore(Request $request)
     {
+        $user = Auth::user();
+        
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
-            'marca_id' => 'nullable|exists:marcas,id',
-            'categoria_id' => 'nullable|exists:categorias,id',
             'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric',
+            'categoria_id' => 'required|exists:categorias,id',
+            'marca_id' => 'nullable|exists:marcas,id',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validación de imagen
         ]);
 
-        $emprendedor = Auth::user()->emprendedor;
+        $data = $request->all();
+        $data['emprendedor_id'] = $user->emprendedor->id;
+        $data['estado'] = 'activo';
 
-        Producto::create([
-            'emprendedor_id' => $emprendedor->id,
-            'marca_id' => $request->marca_id,
-            'categoria_id' => $request->categoria_id,
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-            'stock' => 1,
-            'estado' => 'activo',
-        ]);
+        // Guardar imagen si se subió
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
 
-        return redirect()->route('emprendedor.productos.index')->with('status', 'Producto publicado exitosamente.');
+        Producto::create($data);
+        return redirect()->route('emprendedor.productos.index')->with('success', 'Producto creado exitosamente.');
     }
 
     public function productosEdit($id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
-        $marcas = $emprendedor->marcas;
+        $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         $categorias = Categoria::all();
-
-        return view('emprendedores.productos.edit', compact('producto', 'marcas', 'categorias'));
+        $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
+        
+        return view('emprendedores.productos.edit', compact('producto', 'categorias', 'marcas'));
     }
 
     public function productosUpdate(Request $request, $id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $user = Auth::user();
+        $producto = Producto::where('emprendedor_id', $user->emprendedor->id)->findOrFail($id);
 
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
-            'marca_id' => 'nullable|exists:marcas,id',
-            'categoria_id' => 'nullable|exists:categorias,id',
             'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric',
+            'categoria_id' => 'required|exists:categorias,id',
+            'marca_id' => 'nullable|exists:marcas,id',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $producto->update([
-            'marca_id' => $request->marca_id,
-            'categoria_id' => $request->categoria_id,
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'precio' => $request->precio,
-        ]);
+        $data = $request->all();
 
-        return redirect()->route('emprendedor.productos.index')->with('status', 'Producto actualizado correctamente.');
+        // Si sube una nueva imagen, eliminar la anterior y guardar la nueva
+        if ($request->hasFile('imagen')) {
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+        }
+
+        $producto->update($data);
+        return redirect()->route('emprendedor.productos.index')->with('success', 'Producto actualizado exitosamente.');
     }
 
     public function productosDestroy($id)
     {
-        $emprendedor = Auth::user()->emprendedor;
-        $producto = Producto::where('emprendedor_id', $emprendedor->id)->findOrFail($id);
+        $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
+        
+        // Eliminar imagen del servidor si existe
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
+        }
+        
         $producto->delete();
-
-        return redirect()->route('emprendedor.productos.index')->with('status', 'Producto eliminado con éxito.');
+        return redirect()->route('emprendedor.productos.index')->with('success', 'Producto eliminado exitosamente.');
     }
 }
