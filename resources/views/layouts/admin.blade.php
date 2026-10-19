@@ -47,6 +47,12 @@
                             <i class="bi bi-grid-fill me-2"></i> Categorías
                         </a>
                     </li>
+                    <!-- NUEVO ENLACE: Gestión de Contenidos (CMS) -->
+                    <li>
+                        <a href="{{ route('admin.configuraciones.index') }}" class="nav-link text-white">
+                            <i class="bi bi-gear me-2"></i> Gestión de Contenidos
+                        </a>
+                    </li>
                 </ul>
                 <hr>
                 <div class="dropdown">

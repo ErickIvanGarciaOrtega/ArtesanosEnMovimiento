@@ -48,18 +48,42 @@
             @forelse($productos as $producto)
                 <div class="col-md-6 col-lg-3">
                     <div class="card border-0 rounded-0 h-100 bg-transparent">
-                        <!-- Contenedor de imagen vacío -->
-                        <div class="bg-light border mb-3 position-relative" style="height: 260px; width: 100%;">
-                            @if($producto->marca)
-                                <span class="position-absolute bottom-0 start-0 bg-white text-dark small fw-bold px-2 py-1 m-2 shadow-sm">
-                                    {{ $producto->marca->nombre }}
-                                </span>
-                            @endif
-                        </div>
-                        <!-- Información del Producto -->
+                        <!-- Contenedor de imagen vinculado al detalle -->
+                        <a href="{{ route('public.producto.detalle', $producto->id) }}" class="text-decoration-none">
+                            <div class="bg-light border mb-3 position-relative" style="height: 260px; width: 100%;">
+                                
+                                @if($producto->imagen)
+                                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
+                                @else
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image text-muted fs-3"></i>
+                                    </div>
+                                @endif
+
+                                @if($producto->marca)
+                                    <span class="position-absolute bottom-0 start-0 bg-white text-dark small fw-bold px-2 py-1 m-2 shadow-sm">
+                                        {{ $producto->marca->nombre }}
+                                    </span>
+                                @endif
+                            </div>
+                        </a>
+                        <!-- Información del Producto con enlace al detalle -->
                         <div class="card-body p-0">
-                            <h6 class="fw-bold text-dark mb-1 text-truncate">{{ $producto->nombre }}</h6>
-                            <p class="small text-muted mb-1">Por {{ $producto->emprendedor->user->name ?? 'Texto de ejemplo' }}</p>
+                            <h6 class="fw-bold text-dark mb-1 text-truncate">
+                                <a href="{{ route('public.producto.detalle', $producto->id) }}" class="text-decoration-none text-dark">
+                                    {{ $producto->nombre }}
+                                </a>
+                            </h6>
+                            <p class="small text-muted mb-1">
+                                Por 
+                                @if($producto->emprendedor)
+                                    <a href="{{ route('public.emprendedor.detalle', $producto->emprendedor->id) }}" class="text-decoration-none text-muted">
+                                        {{ $producto->emprendedor->user->name ?? 'Texto de ejemplo' }}
+                                    </a>
+                                @else
+                                    Texto de ejemplo
+                                @endif
+                            </p>
                             <p class="small text-brand mb-2"><i class="bi bi-tag me-1"></i>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</p>
                             <p class="text-accent fw-bold fs-5">${{ number_format($producto->precio, 2) }} <span class="fs-6 text-muted fw-normal">MXN</span></p>
                         </div>

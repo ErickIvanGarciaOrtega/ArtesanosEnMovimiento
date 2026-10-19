@@ -10,6 +10,7 @@ use App\Models\Producto;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Categoria;
 use Illuminate\Support\Str;
+use App\Models\Configuracion;
 
 class AdminController extends Controller
 {
@@ -227,4 +228,38 @@ public function categoriasDestroy($id)
 
     return redirect()->route('admin.categorias.index')->with('status', 'Categoría eliminada con éxito.');
 }
+
+// ==========================================
+    // GESTIÓN DE CONTENIDOS (CMS)
+    // ==========================================
+    public function configuracionesIndex()
+    {
+        // Traemos todas las configuraciones y las convertimos en un formato clave => valor (pluck)
+        // para que sea más fácil mostrarlas en la vista.
+        $config = Configuracion::pluck('valor', 'clave')->toArray();
+        
+        return view('admin.configuraciones', compact('config'));
+    }
+
+public function configuracionesUpdate(Request $request)
+    {
+        // Excluimos tokens y el campo de archivo crudo
+        $datos = $request->except(['_token', '_method', 'home_banner_image']);
+
+        // Procesar y guardar la imagen si se subió una
+        if ($request->hasFile('home_banner_image')) {
+            $rutaImagen = $request->file('home_banner_image')->store('cms', 'public');
+            $datos['home_banner_image'] = $rutaImagen;
+        }
+
+        // Guardar todos los datos (textos e imagen)
+        foreach ($datos as $clave => $valor) {
+            Configuracion::updateOrCreate(
+                ['clave' => $clave],
+                ['valor' => $valor]
+            );
+        }
+
+        return redirect()->route('admin.configuraciones.index')->with('success', 'Contenidos actualizados correctamente.');
+    }
 }
