@@ -19,10 +19,17 @@
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
             </div>
 
-            <div class="mb-3">
-                <label for="categoria_principal" class="form-label fw-bold">Categoría Principal (Ej. Cerámica, Textiles, Joyería)</label>
-                <input type="text" name="categoria_principal" id="categoria_principal" class="form-control" value="{{ old('categoria_principal', $emprendedor->categoria_principal ?? '') }}">
-            </div>
+<div class="mb-3">
+    <label for="categoria_principal" class="form-label fw-bold">Categoría Principal</label>
+    <select name="categoria_principal" id="categoria_principal" class="form-select">
+        <option value="">-- Selecciona una categoría --</option>
+        @foreach($categorias as $cat)
+            <option value="{{ $cat->nombre }}" {{ (old('categoria_principal', $emprendedor->categoria_principal) == $cat->nombre) ? 'selected' : '' }}>
+                {{ $cat->nombre }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
             <div class="mb-3">
                 <label for="biografia" class="form-label fw-bold">Biografía / Historia del Emprendimiento</label>

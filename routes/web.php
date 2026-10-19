@@ -11,22 +11,32 @@ use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
-| Ruta Pública Principal (Landing / Catálogo Abierto)
+| Rutas Públicas (Landing, Catálogo y Directorio Abierto)
 |--------------------------------------------------------------------------
 */
 Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/productos', [PublicController::class, 'productos'])->name('public.productos');
+Route::get('/emprendedores', [PublicController::class, 'emprendedores'])->name('public.emprendedores');
+Route::get('/quienes-somos', [PublicController::class, 'quienesSomos'])->name('public.quienes_somos');
+Route::get('/contacto', [PublicController::class, 'contacto'])->name('public.contacto');
+
+// Rutas de autenticación pública para Emprendedores (colocadas ANTES de /emprendedor/{id})
+Route::get('/emprendedor/login', [EmprendedorAuthController::class, 'showLoginForm'])->name('emprendedor.login');
+Route::post('/emprendedor/login', [EmprendedorAuthController::class, 'login'])->name('emprendedor.login.post');
+
+Route::get('/emprendedor/{id}', [PublicController::class, 'emprendedorPerfil'])
+    ->name('public.emprendedor.detalle')
+    ->where('id', '[0-9]+'); // <--- Esto obliga a que el ID sea solo numérico
 
 /*
 |--------------------------------------------------------------------------
 | Rutas Públicas de Administradores (Autenticación)
 |--------------------------------------------------------------------------
 */
-// Formulario de inicio de sesión para Administradores
 Route::get('/login', function () {
     return view('admin.login');
 })->name('login');
 
-// Procesar inicio de sesión del Administrador
 Route::post('/login', function (Request $request) {
     $credentials = $request->validate([
         'email' => ['required', 'email'],
@@ -43,7 +53,6 @@ Route::post('/login', function (Request $request) {
     ]);
 })->name('login.post');
 
-// Cierre de sesión de Administrador
 Route::post('/logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
@@ -63,19 +72,10 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])->name
 
 /*
 |--------------------------------------------------------------------------
-| Rutas del Módulo de Emprendedores (Autenticación Pública)
-|--------------------------------------------------------------------------
-*/
-Route::get('/emprendedor/login', [EmprendedorAuthController::class, 'showLoginForm'])->name('emprendedor.login');
-Route::post('/emprendedor/login', [EmprendedorAuthController::class, 'login'])->name('emprendedor.login.post');
-
-/*
-|--------------------------------------------------------------------------
 | Rutas Protegidas del Panel de Administradores (/admin)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    // Dashboard principal
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Gestión de Usuarios y Emprendedores (CRUD)

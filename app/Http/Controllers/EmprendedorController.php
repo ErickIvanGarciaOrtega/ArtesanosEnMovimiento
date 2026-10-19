@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Auth;
 class EmprendedorController extends Controller
 {
     // Ver / Editar Perfil del Emprendedor
-    public function perfil()
-    {
-        $user = Auth::user();
-        $emprendedor = $user->emprendedor;
+public function perfil()
+{
+    $user = Auth::user();
+    $emprendedor = $user->emprendedor;
+    $categorias = Categoria::all(); // Cargar categorías para el desplegable
 
-        return view('emprendedores.perfil', compact('user', 'emprendedor'));
-    }
+    return view('emprendedores.perfil', compact('user', 'emprendedor', 'categorias'));
+}
 
     // Actualizar Perfil (sin foto)
     public function perfilUpdate(Request $request)

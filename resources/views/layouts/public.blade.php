@@ -40,8 +40,8 @@
         .bg-brand { background-color: var(--huasteca-green) !important; }
         
         .footer { background-color: #111d13; color: #fefae0; }
-        .footer a { color: #d4a373; text-decoration: none; }
-        .footer a:hover { color: #ffffff; }
+        .footer a { color: #ffffff; text-decoration: none; }
+        .footer a:hover { color: #d4a373; }
     </style>
 </head>
 <body>
@@ -58,10 +58,10 @@
             <div class="collapse navbar-collapse" id="navPublic">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('home') }}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link px-2" href="#">Quienes Somos</a></li>
-                    <li class="nav-item"><a class="nav-link px-2" href="#">Emprendedores</a></li>
-                    <li class="nav-item"><a class="nav-link px-2" href="#">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link px-2" href="#">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.quienes_somos') }}">Quienes Somos</a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.emprendedores') }}">Emprendedores</a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.productos') }}">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.contacto') }}">Contacto</a></li>
                 </ul>
             </div>
         </div>
@@ -83,9 +83,9 @@
                 <div class="col-md-4">
                     <h6 class="fw-bold text-white mb-3">Navegación</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="opacity: 0.85;">Texto de ejemplo</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="opacity: 0.85;">Texto de ejemplo</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="opacity: 0.85;">Texto de ejemplo</a></li>
+                        <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Quienes Somos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Catálogo de Productos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Directorio de Emprendedores</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

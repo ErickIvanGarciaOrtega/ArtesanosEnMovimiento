@@ -1,0 +1,78 @@
+@extends('layouts.public')
+
+@section('content')
+
+<!-- Encabezado de la Sección -->
+<section class="py-5 bg-white border-bottom text-center">
+    <div class="container py-4">
+        <span class="text-uppercase tracking-wider fw-semibold mb-2 d-block text-muted" style="letter-spacing: 2px;">Texto de ejemplo</span>
+        <h1 class="fw-bold mb-3 text-brand">Texto de ejemplo</h1>
+        <p class="text-muted mx-auto mb-4" style="max-width: 600px;">Texto de ejemplo</p>
+
+        <!-- Formulario de Filtros y Búsqueda -->
+        <form action="{{ route('public.productos') }}" method="GET" class="row g-3 justify-content-center mt-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control rounded-0" placeholder="Texto de ejemplo (Buscar)..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="categoria_id" class="form-select rounded-0">
+                    <option value="">Texto de ejemplo (Todas las categorías)</option>
+                    @foreach($categorias as $cat)
+                        <option value="{{ $cat->id }}" {{ request('categoria_id') == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="marca_id" class="form-select rounded-0">
+                    <option value="">Texto de ejemplo (Todas las marcas)</option>
+                    @foreach($marcas as $marca)
+                        <option value="{{ $marca->id }}" {{ request('marca_id') == $marca->id ? 'selected' : '' }}>
+                            {{ $marca->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn bg-brand text-white w-100 rounded-0">Filtrar</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Cuadrícula del Catálogo -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            @forelse($productos as $producto)
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 rounded-0 h-100 bg-transparent">
+                        <!-- Contenedor de imagen vacío -->
+                        <div class="bg-light border mb-3 position-relative" style="height: 260px; width: 100%;">
+                            @if($producto->marca)
+                                <span class="position-absolute bottom-0 start-0 bg-white text-dark small fw-bold px-2 py-1 m-2 shadow-sm">
+                                    {{ $producto->marca->nombre }}
+                                </span>
+                            @endif
+                        </div>
+                        <!-- Información del Producto -->
+                        <div class="card-body p-0">
+                            <h6 class="fw-bold text-dark mb-1 text-truncate">{{ $producto->nombre }}</h6>
+                            <p class="small text-muted mb-1">Por {{ $producto->emprendedor->user->name ?? 'Texto de ejemplo' }}</p>
+                            <p class="small text-brand mb-2"><i class="bi bi-tag me-1"></i>{{ $producto->categoria->nombre ?? 'Sin categoría' }}</p>
+                            <p class="text-accent fw-bold fs-5">${{ number_format($producto->precio, 2) }} <span class="fs-6 text-muted fw-normal">MXN</span></p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                    <p class="text-muted">Texto de ejemplo (No se encontraron productos con estos filtros).</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
+@endsection
