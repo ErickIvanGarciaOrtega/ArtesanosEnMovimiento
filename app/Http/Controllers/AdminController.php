@@ -243,16 +243,20 @@ public function categoriasDestroy($id)
 
 public function configuracionesUpdate(Request $request)
     {
-        // Excluimos tokens y el campo de archivo crudo
-        $datos = $request->except(['_token', '_method', 'home_banner_image']);
+        // Excluimos tokens y los campos de las imágenes
+        $datos = $request->except(['_token', '_method', 'home_banner_image', 'home_promo_image']);
 
-        // Procesar y guardar la imagen si se subió una
+        // Procesar imagen del Hero Banner (Fondo oscurecido)
         if ($request->hasFile('home_banner_image')) {
-            $rutaImagen = $request->file('home_banner_image')->store('cms', 'public');
-            $datos['home_banner_image'] = $rutaImagen;
+            $datos['home_banner_image'] = $request->file('home_banner_image')->store('cms', 'public');
         }
 
-        // Guardar todos los datos (textos e imagen)
+        // Procesar imagen del Banner Promocional (Emprendedores)
+        if ($request->hasFile('home_promo_image')) {
+            $datos['home_promo_image'] = $request->file('home_promo_image')->store('cms', 'public');
+        }
+
+        // Guardar todos los datos (textos e imágenes)
         foreach ($datos as $clave => $valor) {
             Configuracion::updateOrCreate(
                 ['clave' => $clave],

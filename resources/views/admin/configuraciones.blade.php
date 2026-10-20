@@ -18,10 +18,12 @@
         <!-- Sección INICIO -->
         <div class="card border-0 shadow-sm rounded-0 mb-4">
             <div class="card-header bg-dark text-white rounded-0">
-                <h5 class="mb-0">Página de Inicio (Hero Banner)</h5>
+                <h5 class="mb-0">Página de Inicio</h5>
             </div>
             <div class="card-body p-4">
                 
+                <h6 class="fw-bold text-dark mb-3">Hero Banner Principal</h6>
+
                 <div class="mb-4 bg-light p-3 border">
                     <label class="form-label fw-bold">Imagen de Fondo Oscurecida</label>
                     @if(isset($config['home_banner_image']))
@@ -46,6 +48,35 @@
                     <label class="form-label fw-bold">Descripción / Mensaje de Bienvenida</label>
                     <textarea name="home_descripcion" rows="3" class="form-control rounded-0">{{ $config['home_descripcion'] ?? 'Apoya a los artesanos locales y lleva un pedazo de nuestra cultura a tu hogar.' }}</textarea>
                 </div>
+
+                <!-- BANNER PROMOCIONAL (AHORA DENTRO DE INICIO) -->
+                <hr class="my-4">
+                <h6 class="fw-bold text-dark mb-3">Banner Promocional (Directorio)</h6>
+
+                <div class="mb-4 bg-light p-3 border">
+                    <label class="form-label fw-bold">Imagen Promocional</label>
+                    @if(isset($config['home_promo_image']))
+                        <div class="mb-3">
+                            <span class="d-block small text-muted mb-1">Imagen actual:</span>
+                            <img src="{{ asset('storage/' . $config['home_promo_image']) }}" alt="Promocional Actual" class="img-thumbnail" style="height: 100px; object-fit: cover;">
+                        </div>
+                    @endif
+                    <input type="file" name="home_promo_image" class="form-control rounded-0" accept="image/jpeg, image/png, image/webp">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título Promocional</label>
+                    <input type="text" name="home_promo_titulo" class="form-control rounded-0" value="{{ $config['home_promo_titulo'] ?? 'Descubre el talento de nuestra región' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea name="home_promo_descripcion" rows="2" class="form-control rounded-0">{{ $config['home_promo_descripcion'] ?? 'Conoce a los creadores detrás de cada pieza y apoya el comercio local.' }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Texto del Botón</label>
+                    <input type="text" name="home_promo_boton" class="form-control rounded-0" value="{{ $config['home_promo_boton'] ?? 'Directorio de Emprendedores' }}">
+                </div>
+
             </div>
         </div>
 
@@ -75,6 +106,41 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sección PIE DE PÁGINA (FOOTER) -->
+        <div class="card border-0 shadow-sm rounded-0 mb-4">
+            <div class="card-header bg-dark text-white rounded-0">
+                <h5 class="mb-0">Pie de Página (Footer)</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción Corta</label>
+                    <textarea name="footer_descripcion" rows="2" class="form-control rounded-0">{{ $config['footer_descripcion'] ?? 'Plataforma dedicada a la promoción de artesanías locales.' }}</textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">Enlace de Instagram</label>
+                        <input type="url" name="footer_instagram" class="form-control rounded-0" placeholder="https://instagram.com/..." value="{{ $config['footer_instagram'] ?? '' }}">
+                        <div class="form-text">Déjalo en blanco para ocultar el ícono.</div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">Enlace de Facebook</label>
+                        <input type="url" name="footer_facebook" class="form-control rounded-0" placeholder="https://facebook.com/..." value="{{ $config['footer_facebook'] ?? '' }}">
+                        <div class="form-text">Déjalo en blanco para ocultar el ícono.</div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">Enlace de TikTok</label>
+                        <input type="url" name="footer_tiktok" class="form-control rounded-0" placeholder="https://tiktok.com/..." value="{{ $config['footer_tiktok'] ?? '' }}">
+                        <div class="form-text">Déjalo en blanco para ocultar el ícono.</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Texto de Copyright (Derechos Reservados)</label>
+                    <input type="text" name="footer_copyright" class="form-control rounded-0" value="{{ $config['footer_copyright'] ?? 'Artesanías Huasteca. Todos los derechos reservados.' }}">
+                </div>
+            </div>
+        </div>
+
 
         <!-- Botón Guardar -->
         <div class="text-end sticky-bottom bg-white p-3 border-top shadow">

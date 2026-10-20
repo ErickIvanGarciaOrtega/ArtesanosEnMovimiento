@@ -9,7 +9,7 @@
     <style>
         /* Paleta de Colores inspirada en la Huasteca Potosina */
         :root {
-            --huasteca-green: #1b4332;       /* Verde profundo selva */
+            --huasteca-green: #1b4332;      /* Verde profundo selva */
             --huasteca-turquoise: #2d6a4f;   /* Verde río / vegetación */
             --huasteca-accent: #bc6c25;      /* Terracota cálido (barro/artesanía) */
             --huasteca-bg: #fefae0;          /* Crema suave de fondo */
@@ -72,31 +72,57 @@
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="footer py-5 mt-5">
+    <!-- PIE DE PÁGINA (FOOTER) -->
+    @php
+        // Extraemos la configuración directamente para que esté disponible en TODAS las páginas
+        $footerConfig = \App\Models\Configuracion::pluck('valor', 'clave')->toArray();
+    @endphp
+    
+    <footer style="background-color: #1a2219;" class="text-white py-5 mt-auto">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5 class="fw-bold mb-3 text-white"><i class="bi bi-tree-fill me-2"></i>Huasteca Potosina</h5>
-                    <p class="small text-light mb-0" style="opacity: 0.85;">Texto de ejemplo</p>
+            <div class="row">
+                <!-- Columna 1: Descripción -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-tree-fill me-2"></i> Huasteca Potosina</h5>
+                    <p class="text-muted small" style="opacity: 0.8;">
+                        {{ $footerConfig['footer_descripcion'] ?? 'Texto de ejemplo' }}
+                    </p>
                 </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold text-white mb-3">Navegación</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Quienes Somos</a></li>
-                        <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Catálogo de Productos</a></li>
-                        <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-light text-decoration-none" style="opacity: 0.85;">Directorio de Emprendedores</a></li>
+                
+                <!-- Columna 2: Navegación -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3">Navegación</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Quiénes Somos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Catálogo de Productos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Directorio de Emprendedores</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold text-white mb-3">Síguenos</h6>
-                    <a href="#" class="fs-5 me-3 text-light"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="fs-5 me-3 text-light"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="fs-5 text-light"><i class="bi bi-tiktok"></i></a>
+                
+                <!-- Columna 3: Redes Sociales -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3">Síguenos</h5>
+                    <div class="d-flex gap-3">
+                        @if(!empty($footerConfig['footer_instagram']))
+                            <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                        @endif
+                        
+                        @if(!empty($footerConfig['footer_facebook']))
+                            <a href="{{ $footerConfig['footer_facebook'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                        @endif
+                        
+                        @if(!empty($footerConfig['footer_tiktok']))
+                            <a href="{{ $footerConfig['footer_tiktok'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-tiktok"></i></a>
+                        @endif
+                    </div>
                 </div>
             </div>
-            <div class="text-center small text-light mt-5 pt-3 border-top border-secondary" style="opacity: 0.75;">
-                &copy; {{ date('Y') }} Texto de ejemplo. Todos los derechos reservados.
+            
+            <hr class="border-secondary mt-2 mb-4" style="opacity: 0.3;">
+            
+            <!-- Copyright dinámico -->
+            <div class="text-center text-white small" style="opacity: 0.7;">
+                &copy; {{ date('Y') }} {{ $footerConfig['footer_copyright'] ?? 'Texto de ejemplo. Todos los derechos reservados.' }}
             </div>
         </div>
     </footer>

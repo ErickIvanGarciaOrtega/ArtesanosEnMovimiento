@@ -120,16 +120,31 @@
 <section class="py-5 bg-light my-5">
     <div class="container">
         <div class="row align-items-center">
+            
+            <!-- Columna de la Imagen -->
             <div class="col-md-6 mb-4 mb-md-0">
-                <div class="bg-white border rounded-0 d-flex align-items-center justify-content-center" style="height: 380px; width: 100%;">
-                    <i class="bi bi-shop fs-1 text-muted"></i>
-                </div>
+                @if(isset($config['home_promo_image']))
+                    <img src="{{ asset('storage/' . $config['home_promo_image']) }}" alt="Promocional" class="img-fluid border rounded-0 w-100" style="height: 380px; object-fit: cover;">
+                @else
+                    <div class="bg-white border rounded-0 d-flex align-items-center justify-content-center" style="height: 380px; width: 100%;">
+                        <i class="bi bi-shop fs-1 text-muted"></i>
+                    </div>
+                @endif
             </div>
+
+            <!-- Columna de los Textos -->
             <div class="col-md-5 offset-md-1">
-                <h2 class="fw-bold mb-4">Descubre el talento de nuestra región</h2>
-                <p class="text-muted mb-4 lead fs-6">Conoce a los creadores detrás de cada pieza y apoya el comercio local.</p>
-                <a href="{{ route('public.emprendedores') }}" class="btn btn-outline-dark rounded-0 px-4 py-2 fw-bold">Directorio de Emprendedores</a>
+                <h2 class="fw-bold mb-4">
+                    {{ $config['home_promo_titulo'] ?? 'Descubre el talento de nuestra región' }}
+                </h2>
+                <p class="text-muted mb-4 lead fs-6">
+                    {{ $config['home_promo_descripcion'] ?? 'Conoce a los creadores detrás de cada pieza y apoya el comercio local.' }}
+                </p>
+                <a href="{{ route('public.emprendedores') }}" class="btn btn-outline-dark rounded-0 px-4 py-2 fw-bold">
+                    {{ $config['home_promo_boton'] ?? 'Directorio de Emprendedores' }}
+                </a>
             </div>
+            
         </div>
     </div>
 </section>
