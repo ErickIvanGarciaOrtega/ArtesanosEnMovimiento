@@ -74,7 +74,6 @@
 
     <!-- PIE DE PÁGINA (FOOTER) -->
     @php
-        // Extraemos la configuración directamente para que esté disponible en TODAS las páginas
         $footerConfig = \App\Models\Configuracion::pluck('valor', 'clave')->toArray();
     @endphp
     
@@ -83,25 +82,25 @@
             <div class="row">
                 <!-- Columna 1: Descripción -->
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-tree-fill me-2"></i> Huasteca Potosina</h5>
-                    <p class="text-muted small" style="opacity: 0.8;">
+                    <h5 class="fw-bold mb-3 text-white"><i class="bi bi-tree-fill me-2"></i> Huasteca Potosina</h5>
+                    <p class="text-light small" style="opacity: 0.9;">
                         {{ $footerConfig['footer_descripcion'] ?? 'Texto de ejemplo' }}
                     </p>
                 </div>
                 
                 <!-- Columna 2: Navegación -->
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-3">Navegación</h5>
+                    <h5 class="fw-bold mb-3 text-white">Navegación</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Quiénes Somos</a></li>
-                        <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Catálogo de Productos</a></li>
-                        <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-white text-decoration-none small" style="opacity: 0.8;">Directorio de Emprendedores</a></li>
+                        <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Quiénes Somos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Catálogo de Productos</a></li>
+                        <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Directorio de Emprendedores</a></li>
                     </ul>
                 </div>
                 
                 <!-- Columna 3: Redes Sociales -->
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-3">Síguenos</h5>
+                    <h5 class="fw-bold mb-3 text-white">Síguenos</h5>
                     <div class="d-flex gap-3">
                         @if(!empty($footerConfig['footer_instagram']))
                             <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
@@ -121,7 +120,7 @@
             <hr class="border-secondary mt-2 mb-4" style="opacity: 0.3;">
             
             <!-- Copyright dinámico -->
-            <div class="text-center text-white small" style="opacity: 0.7;">
+            <div class="text-center text-light small" style="opacity: 0.8;">
                 &copy; {{ date('Y') }} {{ $footerConfig['footer_copyright'] ?? 'Texto de ejemplo. Todos los derechos reservados.' }}
             </div>
         </div>
