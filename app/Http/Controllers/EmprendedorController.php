@@ -27,15 +27,30 @@ class EmprendedorController extends Controller
     public function perfilUpdate(Request $request)
     {
         $user = Auth::user();
+        $emprendedor = $user->emprendedor;
+
         $request->validate([
             'categoria_principal' => 'nullable|string|max:255',
-            'biografia' => 'nullable|string',
-            'facebook' => 'nullable|url',
-            'instagram' => 'nullable|string',
-            'tiktok' => 'nullable|string',
+            'biografia'           => 'nullable|string',
+            'facebook'            => 'nullable|url|max:255',
+            'instagram'           => 'nullable|string|max:255',
+            'tiktok'              => 'nullable|string|max:255',
+            'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validación de imagen de perfil
         ]);
 
-        $user->emprendedor->update($request->all());
+        $data = $request->except('imagen');
+
+        // Procesar subida de imagen de perfil
+        if ($request->hasFile('imagen')) {
+            // Eliminar imagen anterior si existe
+            if ($emprendedor->imagen) {
+                Storage::disk('public')->delete($emprendedor->imagen);
+            }
+            // Guardar la nueva imagen en la carpeta 'emprendedores'
+            $data['imagen'] = $request->file('imagen')->store('emprendedores', 'public');
+        }
+
+        $emprendedor->update($data);
 
         return redirect()->route('emprendedor.perfil')->with('success', 'Perfil actualizado correctamente.');
     }
@@ -105,19 +120,18 @@ class EmprendedorController extends Controller
         $user = Auth::user();
         
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'precio' => 'required|numeric',
+            'nombre'       => 'required|string|max:255',
+            'descripcion'  => 'nullable|string',
+            'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
-            'marca_id' => 'nullable|exists:marcas,id',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validación de imagen
+            'marca_id'     => 'nullable|exists:marcas,id',
+            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $data = $request->all();
         $data['emprendedor_id'] = $user->emprendedor->id;
         $data['estado'] = 'activo';
 
-        // Guardar imagen si se subió
         if ($request->hasFile('imagen')) {
             $data['imagen'] = $request->file('imagen')->store('productos', 'public');
         }
@@ -141,17 +155,16 @@ class EmprendedorController extends Controller
         $producto = Producto::where('emprendedor_id', $user->emprendedor->id)->findOrFail($id);
 
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'precio' => 'required|numeric',
+            'nombre'       => 'required|string|max:255',
+            'descripcion'  => 'nullable|string',
+            'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
-            'marca_id' => 'nullable|exists:marcas,id',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'marca_id'     => 'nullable|exists:marcas,id',
+            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $data = $request->all();
 
-        // Si sube una nueva imagen, eliminar la anterior y guardar la nueva
         if ($request->hasFile('imagen')) {
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
@@ -167,7 +180,6 @@ class EmprendedorController extends Controller
     {
         $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         
-        // Eliminar imagen del servidor si existe
         if ($producto->imagen) {
             Storage::disk('public')->delete($producto->imagen);
         }

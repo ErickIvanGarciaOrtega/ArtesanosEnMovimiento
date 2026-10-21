@@ -22,6 +22,7 @@ class Emprendedor extends Model
         'instagram',
         'tiktok',
         'status',
+        'imagen',
     ];
 
     public function user()

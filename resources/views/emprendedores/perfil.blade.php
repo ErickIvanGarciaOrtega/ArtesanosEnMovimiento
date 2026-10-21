@@ -10,26 +10,59 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4">
-        <form action="{{ route('emprendedor.perfil.update') }}" method="POST">
+        
+        <!-- Mensaje de Éxito -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Mensajes de Error (NUEVO: Esto nos dirá por qué no guarda) -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- IMPORTANTE: Se agregó enctype="multipart/form-data" -->
+        <form action="{{ route('emprendedor.perfil.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
+            <!-- NUEVO: Campo para Subir Fotografía / Logotipo -->
+            <div class="mb-4 bg-light p-3 border rounded">
+                <label class="form-label fw-bold">Fotografía o Logotipo de Perfil</label>
+                @if(isset($emprendedor->imagen) && $emprendedor->imagen)
+                    <div class="mb-3">
+                        <img src="{{ asset('storage/' . $emprendedor->imagen) }}" alt="Foto de perfil" class="rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                @endif
+                <input type="file" name="imagen" class="form-control" accept="image/jpeg, image/png, image/webp">
+                <div class="form-text">Sube una imagen cuadrada para que se ajuste perfectamente (Max: 2MB).</div>
+            </div>
 
             <div class="mb-3">
                 <label for="name" class="form-label fw-bold">Nombre Completo / Comercial</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
             </div>
 
-<div class="mb-3">
-    <label for="categoria_principal" class="form-label fw-bold">Categoría Principal</label>
-    <select name="categoria_principal" id="categoria_principal" class="form-select">
-        <option value="">-- Selecciona una categoría --</option>
-        @foreach($categorias as $cat)
-            <option value="{{ $cat->nombre }}" {{ (old('categoria_principal', $emprendedor->categoria_principal) == $cat->nombre) ? 'selected' : '' }}>
-                {{ $cat->nombre }}
-            </option>
-        @endforeach
-    </select>
-</div>
+            <div class="mb-3">
+                <label for="categoria_principal" class="form-label fw-bold">Categoría Principal</label>
+                <select name="categoria_principal" id="categoria_principal" class="form-select">
+                    <option value="">-- Selecciona una categoría --</option>
+                    @foreach($categorias as $cat)
+                        <option value="{{ $cat->nombre }}" {{ (old('categoria_principal', $emprendedor->categoria_principal) == $cat->nombre) ? 'selected' : '' }}>
+                            {{ $cat->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
             <div class="mb-3">
                 <label for="biografia" class="form-label fw-bold">Biografía / Historia del Emprendimiento</label>
@@ -45,12 +78,12 @@
 
             <div class="mb-3">
                 <label for="instagram" class="form-label">Instagram</label>
-                <input type="text" name="instagram" id="instagram" class="form-control" placeholder="@tuusuario" value="{{ old('instagram', $emprendedor->instagram ?? '') }}">
+                <input type="text" name="instagram" id="instagram" class="form-control" placeholder="https://instagram.com/tuusuario" value="{{ old('instagram', $emprendedor->instagram ?? '') }}">
             </div>
 
             <div class="mb-4">
                 <label for="tiktok" class="form-label">TikTok</label>
-                <input type="text" name="tiktok" id="tiktok" class="form-control" placeholder="@tuusuario" value="{{ old('tiktok', $emprendedor->tiktok ?? '') }}">
+                <input type="text" name="tiktok" id="tiktok" class="form-control" placeholder="https://tiktok.com/@tuusuario" value="{{ old('tiktok', $emprendedor->tiktok ?? '') }}">
             </div>
 
             <button type="submit" class="btn btn-primary px-4">
