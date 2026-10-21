@@ -49,7 +49,7 @@
                     <textarea name="home_descripcion" rows="3" class="form-control rounded-0">{{ $config['home_descripcion'] ?? 'Apoya a los artesanos locales y lleva un pedazo de nuestra cultura a tu hogar.' }}</textarea>
                 </div>
 
-                <!-- BANNER PROMOCIONAL (AHORA DENTRO DE INICIO) -->
+                <!-- BANNER PROMOCIONAL -->
                 <hr class="my-4">
                 <h6 class="fw-bold text-dark mb-3">Banner Promocional (Directorio)</h6>
 
@@ -107,6 +107,115 @@
             </div>
         </div>
 
+        <!-- Sección EMPRENDEDORES -->
+        <div class="card border-0 shadow-sm rounded-0 mb-4">
+            <div class="card-header bg-dark text-white rounded-0">
+                <h5 class="mb-0">Página de Emprendedores</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Subtítulo Pequeño</label>
+                    <input type="text" name="emprendedores_subtitulo" class="form-control rounded-0" value="{{ $config['emprendedores_subtitulo'] ?? 'Nuestros Creadores' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título Principal</label>
+                    <input type="text" name="emprendedores_titulo" class="form-control rounded-0" value="{{ $config['emprendedores_titulo'] ?? 'Directorio de Emprendedores' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea name="emprendedores_descripcion" rows="3" class="form-control rounded-0">{{ $config['emprendedores_descripcion'] ?? 'Conoce a las manos talentosas detrás de cada producto.' }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección PRODUCTOS -->
+        <div class="card border-0 shadow-sm rounded-0 mb-4">
+            <div class="card-header bg-dark text-white rounded-0">
+                <h5 class="mb-0">Página de Productos (Catálogo)</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Subtítulo Pequeño</label>
+                    <input type="text" name="productos_subtitulo" class="form-control rounded-0" value="{{ $config['productos_subtitulo'] ?? 'Catálogo' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título Principal</label>
+                    <input type="text" name="productos_titulo" class="form-control rounded-0" value="{{ $config['productos_titulo'] ?? 'Nuestros Productos' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea name="productos_descripcion" rows="2" class="form-control rounded-0">{{ $config['productos_descripcion'] ?? 'Explora las piezas artesanales elaboradas por nuestros creadores.' }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección CONTACTO -->
+        <div class="card border-0 shadow-sm rounded-0 mb-4">
+            <div class="card-header bg-dark text-white rounded-0">
+                <h5 class="mb-0">Página de Contacto</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Subtítulo Pequeño</label>
+                    <input type="text" name="contacto_subtitulo" class="form-control rounded-0" value="{{ $config['contacto_subtitulo'] ?? 'Contáctanos' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título Principal</label>
+                    <input type="text" name="contacto_titulo" class="form-control rounded-0" value="{{ $config['contacto_titulo'] ?? 'Ponte en contacto con nosotros' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea name="contacto_descripcion" rows="2" class="form-control rounded-0">{{ $config['contacto_descripcion'] ?? 'Estamos aquí para resolver tus dudas y escuchar tus propuestas.' }}</textarea>
+                </div>
+                
+                <hr class="my-4">
+                <h6 class="fw-bold text-dark mb-3">Información de Contacto y Ubicación</h6>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título del Bloque de Información</label>
+                    <input type="text" name="contacto_info_titulo" class="form-control rounded-0" value="{{ $config['contacto_info_titulo'] ?? 'Información de Contacto' }}">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Etiqueta Dirección</label>
+                        <input type="text" name="contacto_dir_label" class="form-control rounded-0" value="{{ $config['contacto_dir_label'] ?? 'Ubicación' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Texto Dirección</label>
+                        <input type="text" name="contacto_dir_texto" class="form-control rounded-0" value="{{ $config['contacto_dir_texto'] ?? 'Ciudad Valles, San Luis Potosí' }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Etiqueta Correo</label>
+                        <input type="text" name="contacto_email_label" class="form-control rounded-0" value="{{ $config['contacto_email_label'] ?? 'Correo Electrónico' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Texto Correo</label>
+                        <input type="text" name="contacto_email_texto" class="form-control rounded-0" value="{{ $config['contacto_email_texto'] ?? 'contacto@artesanos.com' }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Etiqueta Teléfono</label>
+                        <input type="text" name="contacto_tel_label" class="form-control rounded-0" value="{{ $config['contacto_tel_label'] ?? 'Teléfono' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Texto Teléfono</label>
+                        <input type="text" name="contacto_tel_texto" class="form-control rounded-0" value="{{ $config['contacto_tel_texto'] ?? '+52 (481) 000 0000' }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Título o Mensaje Adicional (Pie de Tarjeta)</label>
+                    <input type="text" name="contacto_extra_titulo" class="form-control rounded-0" value="{{ $config['contacto_extra_titulo'] ?? 'Horarios de atención' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción Adicional</label>
+                    <textarea name="contacto_extra_desc" rows="2" class="form-control rounded-0">{{ $config['contacto_extra_desc'] ?? 'Lunes a Viernes de 9:00 AM a 6:00 PM.' }}</textarea>
+                </div>
+            </div>
+        </div>
+
         <!-- Sección PIE DE PÁGINA (FOOTER) -->
         <div class="card border-0 shadow-sm rounded-0 mb-4">
             <div class="card-header bg-dark text-white rounded-0">
@@ -115,7 +224,7 @@
             <div class="card-body p-4">
                 <div class="mb-3">
                     <label class="form-label fw-bold">Descripción Corta</label>
-                    <textarea name="footer_descripcion" rows="2" class="form-control rounded-0">{{ $config['footer_descripcion'] ?? 'Plataforma dedicada a la promoción de artesanías locales.' }}</textarea>
+                    <textarea name="footer_descripcion" rows="2" class="form-control rounded-0">{{ $config['footer_descripcion'] ?? 'Plataforma dedicada a la promoción de artesanos y emprendedores locales.' }}</textarea>
                 </div>
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -136,11 +245,10 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Texto de Copyright (Derechos Reservados)</label>
-                    <input type="text" name="footer_copyright" class="form-control rounded-0" value="{{ $config['footer_copyright'] ?? 'Artesanías Huasteca. Todos los derechos reservados.' }}">
+                    <input type="text" name="footer_copyright" class="form-control rounded-0" value="{{ $config['footer_copyright'] ?? 'Artesanos y Emprendedores en Movimiento. Todos los derechos reservados.' }}">
                 </div>
             </div>
         </div>
-
 
         <!-- Botón Guardar -->
         <div class="text-end sticky-bottom bg-white p-3 border-top shadow">

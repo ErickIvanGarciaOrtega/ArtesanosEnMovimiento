@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colectivo Artesanal | Huasteca Potosina</title>
+    <title>Artesanos y Emprendedores en Movimiento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        /* Paleta de Colores inspirada en la Huasteca Potosina */
         :root {
-            --huasteca-green: #1b4332;      /* Verde profundo selva */
-            --huasteca-turquoise: #2d6a4f;   /* Verde río / vegetación */
-            --huasteca-accent: #bc6c25;      /* Terracota cálido (barro/artesanía) */
-            --huasteca-bg: #fefae0;          /* Crema suave de fondo */
-            --huasteca-text: #283618;        /* Texto oscuro natural */
+            --huasteca-green: #1b4332;      
+            --huasteca-turquoise: #2d6a4f;   
+            --huasteca-accent: #bc6c25;      
+            --huasteca-bg: #fefae0;          
+            --huasteca-text: #283618;        
         }
         body {
             background-color: var(--huasteca-bg);
@@ -38,10 +37,6 @@
         .text-brand { color: var(--huasteca-green) !important; }
         .text-accent { color: var(--huasteca-accent) !important; }
         .bg-brand { background-color: var(--huasteca-green) !important; }
-        
-        .footer { background-color: #111d13; color: #fefae0; }
-        .footer a { color: #ffffff; text-decoration: none; }
-        .footer a:hover { color: #d4a373; }
     </style>
 </head>
 <body>
@@ -49,8 +44,10 @@
     <!-- Navegación Pública -->
     <nav class="navbar navbar-expand-lg navbar-public py-3 sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4 text-brand" href="{{ route('home') }}">
-                <i class="bi bi-tree-fill me-2"></i>Artesanías Huasteca
+            <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}">
+                <!-- LOGO INSTITUCIONAL -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded-circle border">
+                <span>Artesanos y Emprendedores en Movimiento</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic">
                 <span class="navbar-toggler-icon"></span>
@@ -80,11 +77,14 @@
     <footer style="background-color: #1a2219;" class="text-white py-5 mt-auto">
         <div class="container">
             <div class="row">
-                <!-- Columna 1: Descripción -->
+                <!-- Columna 1: Logo y Descripción -->
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-3 text-white"><i class="bi bi-tree-fill me-2"></i> Huasteca Potosina</h5>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 35px; height: 35px; object-fit: cover;" class="rounded-circle border">
+                        <h5 class="fw-bold mb-0 text-white">Artesanos y Emprendedores</h5>
+                    </div>
                     <p class="text-light small" style="opacity: 0.9;">
-                        {{ $footerConfig['footer_descripcion'] ?? 'Texto de ejemplo' }}
+                        {{ $footerConfig['footer_descripcion'] ?? 'Plataforma dedicada a la promoción de artesanos y emprendedores locales.' }}
                     </p>
                 </div>
                 
@@ -121,7 +121,7 @@
             
             <!-- Copyright dinámico -->
             <div class="text-center text-light small" style="opacity: 0.8;">
-                &copy; {{ date('Y') }} {{ $footerConfig['footer_copyright'] ?? 'Texto de ejemplo. Todos los derechos reservados.' }}
+                &copy; {{ date('Y') }} {{ $footerConfig['footer_copyright'] ?? 'Artesanos y Emprendedores en Movimiento. Todos los derechos reservados.' }}
             </div>
         </div>
     </footer>
