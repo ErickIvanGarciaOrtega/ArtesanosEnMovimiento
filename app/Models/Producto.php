@@ -27,6 +27,11 @@ class Producto extends Model
         return $this->belongsTo(Emprendedor::class);
     }
 
+    public function imagenes()
+{
+    return $this->hasMany(ProductoImagen::class);
+}
+
     public function marca()
     {
         return $this->belongsTo(Marca::class);

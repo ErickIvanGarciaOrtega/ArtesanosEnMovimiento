@@ -134,6 +134,7 @@ Route::middleware(['auth'])->prefix('emprendedor')->group(function () {
     Route::get('/productos/{id}/editar', [EmprendedorController::class, 'productosEdit'])->name('emprendedor.productos.edit');
     Route::put('/productos/{id}', [EmprendedorController::class, 'productosUpdate'])->name('emprendedor.productos.update');
     Route::delete('/productos/{id}', [EmprendedorController::class, 'productosDestroy'])->name('emprendedor.productos.destroy');
+    Route::delete('/emprendedor/productos/imagen/{id}', [App\Http\Controllers\EmprendedorController::class, 'eliminarImagen'])->name('emprendedor.productos.imagen.eliminar');
 
     // Cierre de sesión de Emprendedor
     Route::post('/logout', [EmprendedorAuthController::class, 'logout'])->name('emprendedor.logout');

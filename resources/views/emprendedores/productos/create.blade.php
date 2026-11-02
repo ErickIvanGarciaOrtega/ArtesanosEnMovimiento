@@ -9,6 +9,17 @@
         </a>
     </div>
 
+    <!-- Mostrar errores de validación generales -->
+    @if ($errors->any())
+        <div class="alert alert-danger rounded-0">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="card border-0 shadow-sm rounded-0">
         <div class="card-body p-4">
             <!-- IMPORTANTE: enctype para permitir archivos -->
@@ -56,11 +67,12 @@
                     <textarea name="descripcion" id="descripcion" rows="4" class="form-control rounded-0">{{ old('descripcion') }}</textarea>
                 </div>
 
-                <!-- CAMPO DE IMAGEN -->
-                <div class="mb-4">
-                    <label for="imagen" class="form-label fw-bold">Fotografía del Producto (Opcional)</label>
-                    <input type="file" name="imagen" id="imagen" class="form-control rounded-0" accept="image/jpeg, image/png, image/webp">
-                    <div class="form-text">Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 2MB.</div>
+                <!-- CAMPO DE IMÁGENES MÚLTIPLES -->
+                <div class="mb-4 bg-light p-3 border rounded-0">
+                    <label for="imagenes" class="form-label fw-bold">Fotografías del Producto (Opcional - Máximo 10)</label>
+                    <!-- Nota el name="imagenes[]" y el atributo "multiple" -->
+                    <input type="file" name="imagenes[]" id="imagenes" class="form-control rounded-0" accept="image/jpeg, image/png, image/webp" multiple>
+                    <div class="form-text">Puedes seleccionar varias imágenes al mismo tiempo. Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo por imagen: 2MB.</div>
                 </div>
 
                 <div class="text-end">

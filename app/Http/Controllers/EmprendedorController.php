@@ -9,6 +9,7 @@ use App\Models\Emprendedor;
 use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\ProductoImagen; // Importamos el modelo de imágenes
 
 class EmprendedorController extends Controller
 {
@@ -32,7 +33,7 @@ class EmprendedorController extends Controller
         $request->validate([
             'categoria_principal' => 'nullable|string|max:255',
             'biografia'           => 'nullable|string',
-            'facebook'            => 'nullable|url|max:255',
+            'facebook'            => 'nullable|string|max:255',
             'instagram'           => 'nullable|string|max:255',
             'tiktok'              => 'nullable|string|max:255',
             'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validación de imagen de perfil
@@ -100,7 +101,7 @@ class EmprendedorController extends Controller
     }
 
     // ==========================================
-    // PRODUCTOS (CRUD con Imágenes)
+    // PRODUCTOS (CRUD con Múltiples Imágenes)
     // ==========================================
     public function productosIndex()
     {
@@ -125,18 +126,25 @@ class EmprendedorController extends Controller
             'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
             'marca_id'     => 'nullable|exists:marcas,id',
-            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'imagenes'     => 'nullable|array|max:10', // Acepta arreglo de máximo 10
+            'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Valida cada archivo
         ]);
 
-        $data = $request->all();
+        $data = $request->except('imagenes'); // Evita insertar el arreglo directo al crear el producto
         $data['emprendedor_id'] = $user->emprendedor->id;
         $data['estado'] = 'activo';
 
-        if ($request->hasFile('imagen')) {
-            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+        // 1. Crear el registro principal del producto
+        $producto = Producto::create($data); 
+
+        // 2. Procesar y guardar el arreglo de imágenes asociadas a este producto
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $file) {
+                $ruta = $file->store('productos', 'public');
+                $producto->imagenes()->create(['ruta' => $ruta]); // Usando la relación definida en el modelo
+            }
         }
 
-        Producto::create($data);
         return redirect()->route('emprendedor.productos.index')->with('success', 'Producto creado exitosamente.');
     }
 
@@ -160,19 +168,30 @@ class EmprendedorController extends Controller
             'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
             'marca_id'     => 'nullable|exists:marcas,id',
-            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'imagenes'     => 'nullable|array|max:10', 
+            'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->except('imagenes');
+        $producto->update($data); // 1. Actualizar datos base
 
-        if ($request->hasFile('imagen')) {
-            if ($producto->imagen) {
-                Storage::disk('public')->delete($producto->imagen);
+        // 2. Procesar nuevas imágenes si se envían
+        if ($request->hasFile('imagenes')) {
+            // Validar límite total de imágenes (las que ya tiene + las que intenta subir)
+            $imagenesActuales = $producto->imagenes()->count();
+            $nuevasImagenes = count($request->file('imagenes'));
+            
+            if (($imagenesActuales + $nuevasImagenes) > 10) {
+                return back()->withErrors(['imagenes' => 'No puedes superar el límite de 10 imágenes por producto en total.']);
             }
-            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+
+            // Guardar nuevas rutas
+            foreach ($request->file('imagenes') as $file) {
+                $ruta = $file->store('productos', 'public');
+                $producto->imagenes()->create(['ruta' => $ruta]);
+            }
         }
 
-        $producto->update($data);
         return redirect()->route('emprendedor.productos.index')->with('success', 'Producto actualizado exitosamente.');
     }
 
@@ -180,11 +199,36 @@ class EmprendedorController extends Controller
     {
         $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         
-        if ($producto->imagen) {
-            Storage::disk('public')->delete($producto->imagen);
+        // Eliminar archivos físicos de todas las imágenes asociadas antes de borrar el registro
+        if ($producto->imagenes->count() > 0) {
+            foreach ($producto->imagenes as $imagen) {
+                Storage::disk('public')->delete($imagen->ruta);
+            }
         }
         
-        $producto->delete();
+        $producto->delete(); // Elimina el producto (Las relaciones en cascada borrarán los registros en BD)
+        
         return redirect()->route('emprendedor.productos.index')->with('success', 'Producto eliminado exitosamente.');
+    }
+
+    // ==========================================
+    // ELIMINAR IMAGEN INDIVIDUAL DEL PRODUCTO
+    // ==========================================
+    public function eliminarImagen($id)
+    {
+        $imagen = ProductoImagen::findOrFail($id);
+        
+        // Medida de seguridad: Validar que la imagen pertenezca a un producto de este emprendedor
+        if ($imagen->producto->emprendedor_id !== Auth::user()->emprendedor->id) {
+            abort(403, 'Acción no autorizada.');
+        }
+
+        // Eliminar del almacenamiento físico (storage)
+        Storage::disk('public')->delete($imagen->ruta);
+        
+        // Eliminar registro de la base de datos
+        $imagen->delete();
+
+        return back()->with('success', 'Imagen eliminada correctamente.');
     }
 }

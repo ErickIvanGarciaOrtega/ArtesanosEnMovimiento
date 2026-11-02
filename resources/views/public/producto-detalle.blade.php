@@ -14,27 +14,59 @@
         </nav>
 
         <div class="row g-5">
-<!-- Imagen del Producto -->
-<div class="col-md-6">
-    <div class="bg-white border rounded-0 p-3 position-relative d-flex align-items-center justify-content-center" style="min-height: 400px;">
-        
-        @if($producto->imagen)
-            <!-- Muestra la imagen real -->
-            <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid w-100 h-100" style="object-fit: cover; max-height: 500px;">
-        @else
-            <!-- Placeholder si no hay imagen -->
-            <div class="bg-light border d-flex align-items-center justify-content-center w-100 h-100" style="min-height: 380px;">
-                <i class="bi bi-image text-muted fs-1"></i>
-            </div>
-        @endif
+            <!-- Columna del Carrusel de Imágenes -->
+            <div class="col-md-6">
+                <div class="bg-white border rounded-0 p-1 position-relative d-flex align-items-center justify-content-center" style="min-height: 400px;">
+                    
+                    @if($producto->imagenes->count() > 0)
+                        <!-- Carrusel Bootstrap -->
+                        <div id="carruselProducto{{ $producto->id }}" class="carousel slide w-100 h-100" data-bs-ride="carousel">
+                            
+                            <!-- Indicadores -->
+                            @if($producto->imagenes->count() > 1)
+                                <div class="carousel-indicators">
+                                    @foreach($producto->imagenes as $index => $img)
+                                        <button type="button" data-bs-target="#carruselProducto{{ $producto->id }}" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                                    @endforeach
+                                </div>
+                            @endif
 
-        @if($producto->marca)
-            <span class="position-absolute top-0 start-0 bg-dark text-white small fw-bold px-3 py-1 m-4">
-                {{ $producto->marca->nombre }}
-            </span>
-        @endif
-    </div>
-</div>
+                            <!-- Imágenes del Carrusel -->
+                            <div class="carousel-inner h-100 bg-light">
+                                @foreach($producto->imagenes as $index => $img)
+                                    <div class="carousel-item h-100 {{ $index == 0 ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $img->ruta) }}" class="d-block w-100 h-100" style="object-fit: contain; max-height: 500px;" alt="{{ $producto->nombre }}">
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Controles Anterior/Siguiente -->
+                            @if($producto->imagenes->count() > 1)
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carruselProducto{{ $producto->id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-2 shadow" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Anterior</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carruselProducto{{ $producto->id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon bg-dark rounded-circle p-2 shadow" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Siguiente</span>
+                                </button>
+                            @endif
+                        </div>
+                    @else
+                        <!-- Placeholder si no hay imagen -->
+                        <div class="bg-light border d-flex align-items-center justify-content-center w-100 h-100" style="min-height: 380px;">
+                            <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                        </div>
+                    @endif
+
+                    <!-- Etiqueta de Marca -->
+                    @if($producto->marca)
+                        <span class="position-absolute top-0 start-0 bg-dark text-white small fw-bold px-3 py-1 m-3 z-3 shadow-sm">
+                            {{ $producto->marca->nombre }}
+                        </span>
+                    @endif
+                </div>
+            </div>
 
             <!-- Detalles del Producto -->
             <div class="col-md-6">
@@ -52,18 +84,27 @@
                     <div class="mb-4">
                         <h6 class="fw-bold text-dark mb-2">Descripción del Producto</h6>
                         <p class="text-muted leading-relaxed">
-                            {{ $producto->descripcion ?: 'Texto de ejemplo (Sin descripción registrada por el creador).' }}
+                            {{ $producto->descripcion ?: 'Este producto no cuenta con una descripción registrada por el creador.' }}
                         </p>
                     </div>
 
                     <!-- Ficha del Creador/Emprendedor -->
-                    <div class="p-4 bg-white border rounded-0 mb-4">
+                    <div class="p-4 bg-white border rounded-0 mb-4 shadow-sm">
                         <div class="d-flex align-items-center">
-                            <div class="bg-light border rounded-circle me-3 flex-shrink-0" style="width: 60px; height: 60px;"></div>
+                            
+                            <!-- Foto Dinámica del Emprendedor -->
+                            @if(isset($producto->emprendedor->imagen) && $producto->emprendedor->imagen)
+                                <img src="{{ asset('storage/' . $producto->emprendedor->imagen) }}" alt="{{ $producto->emprendedor->user->name }}" class="border rounded-circle me-3 flex-shrink-0" style="width: 60px; height: 60px; object-fit: cover;">
+                            @else
+                                <div class="bg-light border rounded-circle me-3 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="bi bi-person text-muted fs-4"></i>
+                                </div>
+                            @endif
+
                             <div>
                                 <span class="text-uppercase tracking-wider text-muted small d-block">Elaborado por</span>
-                                <h6 class="fw-bold text-dark mb-0">{{ $producto->emprendedor->user->name ?? 'Texto de ejemplo' }}</h6>
-                                <p class="small text-brand mb-0">{{ $producto->emprendedor->categoria_principal ?? 'Artesano' }}</p>
+                                <h6 class="fw-bold text-dark mb-0">{{ $producto->emprendedor->user->name ?? 'Emprendedor' }}</h6>
+                                <p class="small text-brand mb-0">{{ $producto->emprendedor->categoria_principal ?? 'Artesano Local' }}</p>
                             </div>
                         </div>
                         <a href="{{ route('public.emprendedor.detalle', $producto->emprendedor->id) }}" class="btn btn-outline-dark btn-sm rounded-0 w-100 mt-3 fw-bold">
@@ -85,7 +126,18 @@
             @foreach($productosRelacionados as $rel)
                 <div class="col-md-6 col-lg-3">
                     <div class="card border-0 rounded-0 h-100 bg-transparent">
-                        <div class="bg-light border mb-3 position-relative" style="height: 220px; width: 100%;"></div>
+                        <a href="{{ route('public.producto.detalle', $rel->id) }}" class="text-decoration-none">
+                            <div class="bg-light border mb-3 position-relative" style="height: 220px; width: 100%;">
+                                <!-- Mostrar primera imagen del producto relacionado -->
+                                @if($rel->imagenes->count() > 0)
+                                    <img src="{{ asset('storage/' . $rel->imagenes->first()->ruta) }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ $rel->nombre }}">
+                                @else
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image text-muted fs-3"></i>
+                                    </div>
+                                @endif
+                            </div>
+                        </a>
                         <div class="card-body p-0">
                             <h6 class="fw-bold text-dark mb-1 text-truncate">
                                 <a href="{{ route('public.producto.detalle', $rel->id) }}" class="text-decoration-none text-dark">
