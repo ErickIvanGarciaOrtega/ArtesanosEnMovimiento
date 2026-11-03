@@ -14,52 +14,68 @@
     <div class="container py-5">
         
         <span class="text-uppercase tracking-wider fw-semibold mb-2 d-block {{ $bgImage ? 'text-light' : 'text-muted' }}" style="letter-spacing: 2px;">
-            {{ $config['home_subtitulo'] ?? 'Descubre el arte de nuestra tierra' }}
+            {{ $config['home_subtitulo'] ?? 'Manos que dan vida a la Huasteca' }}
         </span>
         
         <h1 class="display-4 fw-bold mb-3 {{ $bgImage ? 'text-white' : 'text-brand' }}">
-            {{ $config['home_titulo'] ?? 'Artesanías de la Huasteca Potosina' }}
+            {{ $config['home_titulo'] ?? 'Artesanos y Emprendedores en Movimiento' }}
         </h1>
         
         <p class="lead mb-4 mx-auto {{ $bgImage ? 'text-light' : 'text-muted' }}" style="max-width: 600px;">
-            {{ $config['home_descripcion'] ?? 'Apoya a los artesanos locales y lleva un pedazo de nuestra cultura a tu hogar.' }}
+            {{ $config['home_descripcion'] ?? 'Descubre la autenticidad, el arte y la pasión de nuestros creadores locales y lleva un pedazo de nuestra cultura a tu hogar.' }}
         </p>
         
         <a href="{{ route('public.productos') }}" class="btn bg-brand text-white rounded-0 px-4 border-0">Ver Catálogo</a>
     </div>
 </section>
 
-<!-- Sección Técnicas / Categorías -->
+<!-- Sección Técnicas / Categorías (Scroll Horizontal) -->
 <section class="py-5 my-4">
     <div class="container text-center">
-        <!-- Vuelve a ser texto estático -->
-        <h2 class="fw-bold mb-5 text-dark">Explora nuestras categorías</h2>
+        <h2 class="fw-bold mb-2" style="color: var(--huasteca-verde);">Explora nuestras categorías</h2>
+        <p class="text-muted small mb-4">Desliza para conocer todo el talento local</p>
         
-        <div class="row g-4 justify-content-center">
+        <!-- Contenedor con scroll horizontal fluido -->
+        <div class="categorias-scroll-container d-flex flex-row flex-nowrap overflow-auto py-3 px-2 gap-4 justify-start justify-lg-center align-items-center" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
             @forelse($categorias as $cat)
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a href="{{ route('public.productos', ['categoria_id' => $cat->id]) }}" class="text-decoration-none text-dark">
-                        <div class="card border-0 bg-transparent text-center h-100">
-                            <div class="rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 90px; height: 90px; border: 1px solid #eaeaea;">
-                                <i class="bi bi-stars fs-3 text-brand"></i>
-                            </div>
-                            <h6 class="fw-bold text-dark">{{ $cat->nombre }}</h6>
-                        </div>
-                    </a>
-                </div>
+                <a href="{{ route('public.productos', ['categoria_id' => $cat->id]) }}" class="text-decoration-none text-center flex-shrink-0" style="width: 110px;">
+                    <div class="rounded-circle bg-white shadow-sm d-flex align-items-center justify-content-center mx-auto mb-2 categoria-circulo border border-2" style="width: 85px; height: 85px; transition: all 0.2s;">
+                        <i class="bi bi-stars fs-3" style="color: var(--huasteca-verde);"></i>
+                    </div>
+                    <span class="small fw-bold text-dark d-block text-truncate">{{ $cat->nombre }}</span>
+                </a>
             @empty
-                <p class="text-muted">Aún no hay categorías registradas.</p>
+                <p class="text-muted w-100 text-center">Aún no hay categorías registradas.</p>
             @endforelse
         </div>
     </div>
 </section>
+
+<style>
+    /* Estilos para ocultar la barra de desplazamiento pero mantener el scroll táctil y con mouse */
+    .categorias-scroll-container::-webkit-scrollbar {
+        height: 6px;
+    }
+    .categorias-scroll-container::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.03);
+        border-radius: 10px;
+    }
+    .categorias-scroll-container::-webkit-scrollbar-thumb {
+        background: var(--huasteca-verde);
+        border-radius: 10px;
+    }
+    .categoria-circulo:hover {
+        transform: translateY(-5px);
+        border-color: var(--huasteca-magenta) !important;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>
 
 <!-- Sección Productos Destacados -->
 <section class="py-5 bg-white border-top">
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
-                <!-- Vuelven a ser textos estáticos -->
                 <h2 class="fw-bold text-dark mb-1">Productos Destacados</h2>
                 <p class="text-muted mb-0">Lo más reciente de nuestros creadores</p>
             </div>
@@ -72,8 +88,9 @@
                     <div class="card border-0 rounded-0 h-100 bg-transparent">
                         <a href="{{ route('public.producto.detalle', $producto->id) }}" class="text-decoration-none">
                             <div class="bg-light border mb-3 position-relative" style="height: 250px; width: 100%;">
-                                @if($producto->imagen)
-                                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
+                                <!-- ACTUALIZADO: Muestra la primera imagen asociada -->
+                                @if($producto->imagenPrincipal)
+                                    <img src="{{ asset('storage/' . $producto->imagenPrincipal->ruta) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
                                 @else
                                     <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                                         <i class="bi bi-image text-muted fs-3"></i>

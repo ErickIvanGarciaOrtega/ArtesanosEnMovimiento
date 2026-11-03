@@ -27,9 +27,14 @@ class Producto extends Model
         return $this->belongsTo(Emprendedor::class);
     }
 
-    public function imagenes()
+public function imagenes()
 {
-    return $this->hasMany(ProductoImagen::class);
+    return $this->hasMany(ProductoImagen::class, 'producto_id');
+}
+
+public function imagenPrincipal()
+{
+    return $this->hasOne(ProductoImagen::class, 'producto_id')->oldest();
 }
 
     public function marca()

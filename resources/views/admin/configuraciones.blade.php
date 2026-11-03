@@ -72,10 +72,7 @@
                     <label class="form-label fw-bold">Descripción</label>
                     <textarea name="home_promo_descripcion" rows="2" class="form-control rounded-0">{{ $config['home_promo_descripcion'] ?? 'Conoce a los creadores detrás de cada pieza y apoya el comercio local.' }}</textarea>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Texto del Botón</label>
-                    <input type="text" name="home_promo_boton" class="form-control rounded-0" value="{{ $config['home_promo_boton'] ?? 'Directorio de Emprendedores' }}">
-                </div>
+
 
             </div>
         </div>

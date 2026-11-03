@@ -58,8 +58,9 @@
                     <div class="card border-0 rounded-0 h-100 bg-transparent">
                         <a href="{{ route('public.producto.detalle', $producto->id) }}" class="text-decoration-none">
                             <div class="bg-light border mb-3 position-relative" style="height: 250px; width: 100%;">
-                                @if($producto->imagen)
-                                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
+                                <!-- ACTUALIZADO: Muestra la primera imagen de la relación nueva -->
+                                @if($producto->imagenPrincipal)
+                                    <img src="{{ asset('storage/' . $producto->imagenPrincipal->ruta) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
                                 @else
                                     <div class="w-100 h-100 d-flex align-items-center justify-content-center">
                                         <i class="bi bi-image text-muted fs-3"></i>
