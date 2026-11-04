@@ -1,0 +1,433 @@
+{
+  "work": "C:\\Users\\user\\AppData\\Local\\Temp\\artesanos-browser-JPWmIB",
+  "checks": [
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /productos",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedores",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /quienes-somos",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /contacto",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /producto/1",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/1",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /productos",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "public search finds product",
+      "ok": true
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/login",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "login creator",
+      "ok": true,
+      "detail": "http://127.0.0.1:18765/emprendedor/dashboard"
+    },
+    {
+      "name": "GET /emprendedor/marcas/crear",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "create brand in browser",
+      "ok": true
+    },
+    {
+      "name": "GET /emprendedor/productos/crear",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "create product in browser",
+      "ok": true
+    },
+    {
+      "name": "GET /emprendedor/perfil",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /login",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "login admin",
+      "ok": true,
+      "detail": "http://127.0.0.1:18765/admin/dashboard"
+    },
+    {
+      "name": "GET /admin/categorias/crear",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "create category in browser",
+      "ok": true
+    },
+    {
+      "name": "GET /admin/usuarios",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /admin/configuraciones",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "cms text visible publicly",
+      "ok": true
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /admin/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /admin/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /admin/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /admin/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "GET /emprendedor/dashboard",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "creator logout",
+      "ok": true,
+      "detail": "http://127.0.0.1:18765/emprendedor/login"
+    },
+    {
+      "name": "admin logout",
+      "ok": true,
+      "detail": "http://127.0.0.1:18765/login"
+    }
+  ],
+  "axe": [
+    {
+      "name": "public catalog",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "count": 2,
+          "targets": [
+            [
+              "select[name=\"categoria_id\"]"
+            ],
+            [
+              "select[name=\"marca_id\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public home",
+      "violations": []
+    },
+    {
+      "name": "creator profile",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 3,
+          "targets": [
+            [
+              ".active"
+            ],
+            [
+              "strong"
+            ],
+            [
+              ".btn-outline-secondary"
+            ]
+          ]
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "count": 1,
+          "targets": [
+            [
+              "input[type=\"file\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin users",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "count": 2,
+          "targets": [
+            [
+              "tr:nth-child(1) > .text-end.pe-3 > .d-inline > .btn-outline-danger"
+            ],
+            [
+              "tr:nth-child(2) > .text-end.pe-3 > .d-inline > .btn-outline-danger"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 5,
+          "targets": [
+            [
+              "small"
+            ],
+            [
+              "li:nth-child(1) > .nav-link"
+            ],
+            [
+              ".active"
+            ]
+          ]
+        },
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "count": 2,
+          "targets": [
+            [
+              "tr:nth-child(1) > .text-end.pe-3 > .btn-outline-warning.me-1.btn-sm"
+            ],
+            [
+              "tr:nth-child(2) > .text-end.pe-3 > .btn-outline-warning.me-1.btn-sm"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin cms",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 5,
+          "targets": [
+            [
+              "small"
+            ],
+            [
+              "li:nth-child(1) > a"
+            ],
+            [
+              "li:nth-child(2) > a"
+            ]
+          ]
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "count": 31,
+          "targets": [
+            [
+              "input[name=\"home_banner_image\"]"
+            ],
+            [
+              "input[name=\"home_subtitulo\"]"
+            ],
+            [
+              "input[name=\"home_titulo\"]"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "mobile": [
+    {
+      "role": "visitor",
+      "width": 320,
+      "viewport": 320,
+      "scrollWidth": 475,
+      "bodyWidth": 475,
+      "navVisible": true
+    },
+    {
+      "role": "admin",
+      "width": 320,
+      "viewport": 320,
+      "scrollWidth": 375,
+      "bodyWidth": 375,
+      "navVisible": false
+    },
+    {
+      "role": "creator",
+      "width": 320,
+      "viewport": 320,
+      "scrollWidth": 333,
+      "bodyWidth": 333,
+      "navVisible": true
+    },
+    {
+      "role": "visitor",
+      "width": 375,
+      "viewport": 375,
+      "scrollWidth": 475,
+      "bodyWidth": 475,
+      "navVisible": true
+    },
+    {
+      "role": "admin",
+      "width": 375,
+      "viewport": 375,
+      "scrollWidth": 378,
+      "bodyWidth": 378,
+      "navVisible": false
+    },
+    {
+      "role": "creator",
+      "width": 375,
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyWidth": 375,
+      "navVisible": true
+    },
+    {
+      "role": "visitor",
+      "width": 414,
+      "viewport": 414,
+      "scrollWidth": 475,
+      "bodyWidth": 475,
+      "navVisible": true
+    },
+    {
+      "role": "admin",
+      "width": 414,
+      "viewport": 414,
+      "scrollWidth": 414,
+      "bodyWidth": 414,
+      "navVisible": false
+    },
+    {
+      "role": "creator",
+      "width": 414,
+      "viewport": 414,
+      "scrollWidth": 414,
+      "bodyWidth": 414,
+      "navVisible": true
+    },
+    {
+      "role": "visitor",
+      "width": 768,
+      "viewport": 768,
+      "scrollWidth": 768,
+      "bodyWidth": 768,
+      "navVisible": true
+    },
+    {
+      "role": "admin",
+      "width": 768,
+      "viewport": 768,
+      "scrollWidth": 768,
+      "bodyWidth": 768,
+      "navVisible": true
+    },
+    {
+      "role": "creator",
+      "width": 768,
+      "viewport": 768,
+      "scrollWidth": 768,
+      "bodyWidth": 768,
+      "navVisible": true
+    }
+  ],
+  "consoleErrors": []
+}
