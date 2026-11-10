@@ -9,7 +9,7 @@ use App\Models\Emprendedor;
 use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\Categoria;
-use App\Models\ProductoImagen; // Importamos el modelo de imágenes
+use App\Models\ProductoImagen;
 
 class EmprendedorController extends Controller
 {
@@ -20,41 +20,46 @@ class EmprendedorController extends Controller
     {
         $user = Auth::user();
         $emprendedor = $user->emprendedor;
-        $categorias = Categoria::all(); // Categorías para el desplegable
+        $categorias = Categoria::all();
 
         return view('emprendedores.perfil', compact('user', 'emprendedor', 'categorias'));
     }
 
-    public function perfilUpdate(Request $request)
-    {
-        $user = Auth::user();
-        $emprendedor = $user->emprendedor;
+public function perfilUpdate(Request $request)
+{
+    $user = Auth::user();
+    $emprendedor = $user->emprendedor;
 
-        $request->validate([
-            'categoria_principal' => 'nullable|string|max:255',
-            'biografia'           => 'nullable|string',
-            'facebook'            => 'nullable|string|max:255',
-            'instagram'           => 'nullable|string|max:255',
-            'tiktok'              => 'nullable|string|max:255',
-            'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validación de imagen de perfil
+    // Si el emprendedor escribió un sitio web sin http:// o https://, se lo agregamos automáticamente
+    if ($request->filled('sitio_web') && !preg_match("~^(?:f|ht)tps?://~i", $request->sitio_web)) {
+        $request->merge([
+            'sitio_web' => 'https://' . trim($request->sitio_web)
         ]);
-
-        $data = $request->except('imagen');
-
-        // Procesar subida de imagen de perfil
-        if ($request->hasFile('imagen')) {
-            // Eliminar imagen anterior si existe
-            if ($emprendedor->imagen) {
-                Storage::disk('public')->delete($emprendedor->imagen);
-            }
-            // Guardar la nueva imagen en la carpeta 'emprendedores'
-            $data['imagen'] = $request->file('imagen')->store('emprendedores', 'public');
-        }
-
-        $emprendedor->update($data);
-
-        return redirect()->route('emprendedor.perfil')->with('success', 'Perfil actualizado correctamente.');
     }
+
+    $request->validate([
+        'categoria_principal' => 'nullable|string|max:255',
+        'biografia'           => 'nullable|string',
+        'facebook'            => 'nullable|string|max:255',
+        'instagram'           => 'nullable|string|max:255',
+        'tiktok'              => 'nullable|string|max:255',
+        'sitio_web'           => 'nullable|string|max:255', // Cambiado a string para que no rechace dominios sin protocolo
+        'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+    ]);
+
+    $data = $request->except('imagen');
+
+    if ($request->hasFile('imagen')) {
+        if ($emprendedor->imagen) {
+            Storage::disk('public')->delete($emprendedor->imagen);
+        }
+        $data['imagen'] = $request->file('imagen')->store('emprendedores', 'public');
+    }
+
+    $emprendedor->update($data);
+
+    return redirect()->route('emprendedor.perfil')->with('success', 'Perfil actualizado correctamente.');
+}
 
     // ==========================================
     // MARCAS (CRUD Básico)
@@ -126,22 +131,20 @@ class EmprendedorController extends Controller
             'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
             'marca_id'     => 'nullable|exists:marcas,id',
-            'imagenes'     => 'nullable|array|max:10', // Acepta arreglo de máximo 10
-            'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048', // Valida cada archivo
+            'imagenes'     => 'nullable|array|max:10',
+            'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->except('imagenes'); // Evita insertar el arreglo directo al crear el producto
+        $data = $request->except('imagenes');
         $data['emprendedor_id'] = $user->emprendedor->id;
         $data['estado'] = 'activo';
 
-        // 1. Crear el registro principal del producto
         $producto = Producto::create($data); 
 
-        // 2. Procesar y guardar el arreglo de imágenes asociadas a este producto
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $file) {
                 $ruta = $file->store('productos', 'public');
-                $producto->imagenes()->create(['ruta' => $ruta]); // Usando la relación definida en el modelo
+                $producto->imagenes()->create(['ruta' => $ruta]);
             }
         }
 
@@ -173,11 +176,11 @@ class EmprendedorController extends Controller
         ]);
 
         $data = $request->except('imagenes');
-        $producto->update($data); // 1. Actualizar datos base
 
-        // 2. Procesar nuevas imágenes si se envían
+        /** @var \App\Models\Producto $producto */
+        $producto->update($data);
+
         if ($request->hasFile('imagenes')) {
-            // Validar límite total de imágenes (las que ya tiene + las que intenta subir)
             $imagenesActuales = $producto->imagenes()->count();
             $nuevasImagenes = count($request->file('imagenes'));
             
@@ -185,7 +188,6 @@ class EmprendedorController extends Controller
                 return back()->withErrors(['imagenes' => 'No puedes superar el límite de 10 imágenes por producto en total.']);
             }
 
-            // Guardar nuevas rutas
             foreach ($request->file('imagenes') as $file) {
                 $ruta = $file->store('productos', 'public');
                 $producto->imagenes()->create(['ruta' => $ruta]);
@@ -199,14 +201,13 @@ class EmprendedorController extends Controller
     {
         $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         
-        // Eliminar archivos físicos de todas las imágenes asociadas antes de borrar el registro
         if ($producto->imagenes->count() > 0) {
             foreach ($producto->imagenes as $imagen) {
                 Storage::disk('public')->delete($imagen->ruta);
             }
         }
         
-        $producto->delete(); // Elimina el producto (Las relaciones en cascada borrarán los registros en BD)
+        $producto->delete();
         
         return redirect()->route('emprendedor.productos.index')->with('success', 'Producto eliminado exitosamente.');
     }
@@ -218,15 +219,11 @@ class EmprendedorController extends Controller
     {
         $imagen = ProductoImagen::findOrFail($id);
         
-        // Medida de seguridad: Validar que la imagen pertenezca a un producto de este emprendedor
         if ($imagen->producto->emprendedor_id !== Auth::user()->emprendedor->id) {
             abort(403, 'Acción no autorizada.');
         }
 
-        // Eliminar del almacenamiento físico (storage)
         Storage::disk('public')->delete($imagen->ruta);
-        
-        // Eliminar registro de la base de datos
         $imagen->delete();
 
         return back()->with('success', 'Imagen eliminada correctamente.');

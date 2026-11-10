@@ -23,6 +23,7 @@ class Emprendedor extends Model
         'tiktok',
         'status',
         'imagen',
+        'sitio_web',
     ];
 
     public function user()

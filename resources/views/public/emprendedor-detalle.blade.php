@@ -29,17 +29,20 @@
                     {{ $emprendedor->biografia ?? 'Este creador aún no ha agregado una biografía a su perfil.' }}
                 </p>
                 
-                <!-- Redes Sociales (Ocultas si están vacías) -->
-                @if($emprendedor->facebook || $emprendedor->instagram || $emprendedor->tiktok)
+                <!-- Redes Sociales y Sitio Web (Ocultas si están vacías) -->
+                @if($emprendedor->sitio_web || $emprendedor->facebook || $emprendedor->instagram || $emprendedor->tiktok)
                     <div class="d-flex gap-3">
+                        @if($emprendedor->sitio_web)
+                            <a href="{{ $emprendedor->sitio_web }}" target="_blank" class="text-dark fs-5" title="Visitar Sitio Web propio"><i class="bi bi-globe"></i></a>
+                        @endif
                         @if($emprendedor->facebook)
-                            <a href="{{ $emprendedor->facebook }}" target="_blank" class="text-dark fs-5"><i class="bi bi-facebook"></i></a>
+                            <a href="{{ $emprendedor->facebook }}" target="_blank" class="text-dark fs-5" title="Facebook"><i class="bi bi-facebook"></i></a>
                         @endif
                         @if($emprendedor->instagram)
-                            <a href="{{ $emprendedor->instagram }}" target="_blank" class="text-dark fs-5"><i class="bi bi-instagram"></i></a>
+                            <a href="{{ $emprendedor->instagram }}" target="_blank" class="text-dark fs-5" title="Instagram"><i class="bi bi-instagram"></i></a>
                         @endif
                         @if($emprendedor->tiktok)
-                            <a href="{{ $emprendedor->tiktok }}" target="_blank" class="text-dark fs-5"><i class="bi bi-tiktok"></i></a>
+                            <a href="{{ $emprendedor->tiktok }}" target="_blank" class="text-dark fs-5" title="TikTok"><i class="bi bi-tiktok"></i></a>
                         @endif
                     </div>
                 @endif

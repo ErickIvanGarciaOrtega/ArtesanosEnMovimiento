@@ -36,7 +36,7 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Fotografía -->
+                        <!-- Fotografía / Logotipo -->
                         <div class="mb-4 bg-light p-4 border rounded-0 text-center">
                             <label class="form-label fw-bold d-block text-start">Fotografía o Logotipo de Perfil</label>
                             <div class="d-flex flex-column align-items-start gap-3">
@@ -60,7 +60,7 @@
                             <input type="text" name="name" id="name" class="form-control rounded-0" value="{{ old('name', $user->name ?? '') }}" required>
                         </div>
 
-                        <!-- Menú Desplegable de Categoría (Intacto) -->
+                        <!-- Menú Desplegable de Categoría -->
                         <div class="mb-4">
                             <label for="categoria_principal" class="form-label fw-bold">Categoría Principal *</label>
                             <select name="categoria_principal" id="categoria_principal" class="form-select rounded-0" required>
@@ -81,14 +81,23 @@
 
                         <hr class="mb-4 border-light">
 
-                        <!-- Redes Sociales -->
-                        <h6 class="fw-bold mb-3" style="color: var(--huasteca-texto);"><i class="bi bi-share me-2"></i>Redes Sociales (Opcional)</h6>
+                        <!-- Redes Sociales y Sitio Web -->
+                        <h6 class="fw-bold mb-3" style="color: var(--huasteca-texto);"><i class="bi bi-share me-2"></i>Redes Sociales y Sitio Web (Opcional)</h6>
+
+                        <!-- Sitio Web Propio -->
+                        <div class="mb-3">
+                            <label for="sitio_web" class="form-label small fw-bold">Sitio Web Propio</label>
+                            <div class="input-group">
+                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-globe text-primary"></i></span>
+                                <input type="text" name="sitio_web" id="sitio_web" class="form-control rounded-0" placeholder="https://tu-pagina-web.com o tu-pagina.com" value="{{ old('sitio_web', $emprendedor->sitio_web ?? '') }}">
+                            </div>
+                        </div>
 
                         <div class="mb-3">
                             <label for="facebook" class="form-label small fw-bold">Facebook</label>
                             <div class="input-group">
                                 <span class="input-group-text rounded-0 bg-light"><i class="bi bi-facebook" style="color: #1877F2;"></i></span>
-                                <input type="url" name="facebook" id="facebook" class="form-control rounded-0" placeholder="https://facebook.com/tupagina" value="{{ old('facebook', $emprendedor->facebook ?? '') }}">
+                                <input type="text" name="facebook" id="facebook" class="form-control rounded-0" placeholder="https://facebook.com/tupagina" value="{{ old('facebook', $emprendedor->facebook ?? '') }}">
                             </div>
                         </div>
 
@@ -96,7 +105,7 @@
                             <label for="instagram" class="form-label small fw-bold">Instagram</label>
                             <div class="input-group">
                                 <span class="input-group-text rounded-0 bg-light"><i class="bi bi-instagram" style="color: #E4405F;"></i></span>
-                                <input type="url" name="instagram" id="instagram" class="form-control rounded-0" placeholder="https://instagram.com/tuusuario" value="{{ old('instagram', $emprendedor->instagram ?? '') }}">
+                                <input type="text" name="instagram" id="instagram" class="form-control rounded-0" placeholder="https://instagram.com/tuusuario" value="{{ old('instagram', $emprendedor->instagram ?? '') }}">
                             </div>
                         </div>
 
@@ -104,7 +113,7 @@
                             <label for="tiktok" class="form-label small fw-bold">TikTok</label>
                             <div class="input-group">
                                 <span class="input-group-text rounded-0 bg-light"><i class="bi bi-tiktok text-dark"></i></span>
-                                <input type="url" name="tiktok" id="tiktok" class="form-control rounded-0" placeholder="https://tiktok.com/@tuusuario" value="{{ old('tiktok', $emprendedor->tiktok ?? '') }}">
+                                <input type="text" name="tiktok" id="tiktok" class="form-control rounded-0" placeholder="https://tiktok.com/@tuusuario" value="{{ old('tiktok', $emprendedor->tiktok ?? '') }}">
                             </div>
                         </div>
 
