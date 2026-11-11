@@ -47,7 +47,9 @@ public function perfilUpdate(Request $request)
         'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
 
-    $data = $request->except('imagen');
+  $data = $request->only([
+        'categoria_principal', 'biografia', 'facebook', 'instagram', 'tiktok', 'sitio_web'
+    ]);
 
     if ($request->hasFile('imagen')) {
         if ($emprendedor->imagen) {
@@ -75,11 +77,14 @@ public function perfilUpdate(Request $request)
         return view('emprendedores.marcas.create');
     }
 
-    public function marcasStore(Request $request)
+public function marcasStore(Request $request)
     {
         $request->validate(['nombre' => 'required|string|max:255', 'descripcion' => 'nullable|string']);
-        $data = $request->all();
+        
+        // S01 FIX: Evitamos $request->all()
+        $data = $request->only(['nombre', 'descripcion']);
         $data['emprendedor_id'] = Auth::user()->emprendedor->id;
+        
         Marca::create($data);
         return redirect()->route('emprendedor.marcas.index')->with('success', 'Marca creada.');
     }
@@ -90,11 +95,14 @@ public function perfilUpdate(Request $request)
         return view('emprendedores.marcas.edit', compact('marca'));
     }
 
-    public function marcasUpdate(Request $request, $id)
+public function marcasUpdate(Request $request, $id)
     {
         $marca = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         $request->validate(['nombre' => 'required|string|max:255', 'descripcion' => 'nullable|string']);
-        $marca->update($request->all());
+        
+        // S01 FIX: Extraemos estrictamente nombre y descripción
+        $marca->update($request->only(['nombre', 'descripcion']));
+        
         return redirect()->route('emprendedor.marcas.index')->with('success', 'Marca actualizada.');
     }
 
@@ -135,7 +143,9 @@ public function perfilUpdate(Request $request)
             'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->except('imagenes');
+  $data = $request->only([
+            'nombre', 'descripcion', 'precio', 'categoria_id', 'marca_id'
+        ]);
         $data['emprendedor_id'] = $user->emprendedor->id;
         $data['estado'] = 'activo';
 
@@ -175,7 +185,9 @@ public function perfilUpdate(Request $request)
             'imagenes.*'   => 'image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = $request->except('imagenes');
+$data = $request->only([
+            'nombre', 'descripcion', 'precio', 'categoria_id', 'marca_id'
+        ]);
 
         /** @var \App\Models\Producto $producto */
         $producto->update($data);
