@@ -83,16 +83,22 @@
                             <i class="bi bi-box-seam me-1"></i> Mis Productos
                         </a>
                     </li>
+                    <!-- U02 FIX: Botón extra para ir al catálogo general fácilmente -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning btn-sm mt-1 fw-bold text-dark w-100 text-start" href="{{ route('home') }}" target="_blank">
+                            <i class="bi bi-shop me-1"></i> Ver Catálogo
+                        </a>
+                    </li>
                 </ul>
 
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
                     <span class="text-white small d-none d-lg-inline">Hola, <strong class="text-warning">{{ Auth::user()->name }}</strong></span>
-<form action="{{ route('emprendedor.logout') }}" method="POST" class="m-0">
-    @csrf
-    <button type="submit" class="btn btn-outline-light btn-sm rounded-0 fw-bold">
-        <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
-    </button>
-</form>
+                    <!-- U07 FIX: Eliminada la etiqueta </form> duplicada y huérfana -->
+                    <form action="{{ route('emprendedor.logout') }}" method="POST" class="m-0 w-100">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light btn-sm rounded-0 fw-bold w-100 text-start">
+                            <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                        </button>
                     </form>
                 </div>
             </div>
