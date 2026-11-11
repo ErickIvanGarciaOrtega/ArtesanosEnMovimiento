@@ -32,6 +32,6 @@ public function up(): void
      */
     public function down(): void
     {
-        Schema::dropIfExists('emprendedors');
+        Schema::dropIfExists('emprendedores');
     }
 };

@@ -135,7 +135,7 @@ public function marcasUpdate(Request $request, $id)
         
         $request->validate([
             'nombre'       => 'required|string|max:255',
-            'descripcion'  => 'nullable|string',
+            'descripcion'  => 'required|string',
             'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
             'marca_id'     => 'nullable|exists:marcas,id',
@@ -177,7 +177,7 @@ public function marcasUpdate(Request $request, $id)
 
         $request->validate([
             'nombre'       => 'required|string|max:255',
-            'descripcion'  => 'nullable|string',
+            'descripcion'  => 'required|string',
             'precio'       => 'required|numeric',
             'categoria_id' => 'required|exists:categorias,id',
             'marca_id'     => 'nullable|exists:marcas,id',
