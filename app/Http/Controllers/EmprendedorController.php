@@ -32,7 +32,6 @@ class EmprendedorController extends Controller
         $user = Auth::user();
         $emprendedor = $user->emprendedor;
 
-        // Si el emprendedor escribió un sitio web sin http:// o https://, se lo agregamos automáticamente
         if ($request->filled('sitio_web') && !preg_match("~^(?:f|ht)tps?://~i", $request->sitio_web)) {
             $request->merge([
                 'sitio_web' => 'https://' . trim($request->sitio_web)
@@ -40,15 +39,19 @@ class EmprendedorController extends Controller
         }
 
         $request->validate([
+            'name'                => 'required|string|max:255', // F02 FIX: Validamos el nombre
             'categoria_principal' => 'nullable|string|max:255',
             'biografia'           => 'nullable|string',
-            // V01 FIX: url:http,https impide inyecciones de javascript:void(0) en los enlaces
             'facebook'            => 'nullable|url:http,https|max:255',
             'instagram'           => 'nullable|url:http,https|max:255',
             'tiktok'              => 'nullable|url:http,https|max:255',
             'sitio_web'           => 'nullable|url:http,https|max:255', 
             'imagen'              => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        // F02 FIX: Actualizamos el nombre en la tabla 'users'
+        /** @var \App\Models\User $user */
+        $user->update(['name' => $request->name]);
 
         $data = $request->only([
             'categoria_principal', 'biografia', 'facebook', 'instagram', 'tiktok', 'sitio_web'

@@ -25,9 +25,10 @@ class PublicController extends Controller
         $query = Producto::with(['marca', 'emprendedor.user', 'categoria'])
                         ->where('estado', 'activo');
 
-        // Compatible tanto con 'search' como con 'buscar'
+        // F08 FIX: Nos aseguramos de que la búsqueda sea estrictamente un texto.
+        // Esto evita el Error 500 (Array to String conversion) si manipulan la URL con corchetes.
         $busqueda = $request->input('search') ?? $request->input('buscar');
-        if ($busqueda) {
+        if ($busqueda && is_string($busqueda)) {
             $query->where('nombre', 'like', '%' . $busqueda . '%');
         }
 
@@ -45,10 +46,8 @@ class PublicController extends Controller
         $categorias = Categoria::all();
         $marcas = Marca::all(); 
         
-        // ---> NUEVA LÍNEA: Obtenemos los textos del CMS <---
         $config = Configuracion::pluck('valor', 'clave')->toArray();
 
-        // ---> MODIFICAMOS EL RETURN: agregamos 'config' al compact <---
         return view('public.productos', compact('productos', 'categorias', 'marcas', 'config'));
     }
 
@@ -64,7 +63,11 @@ class PublicController extends Controller
     // Perfil detallado de un emprendedor específico
     public function emprendedorPerfil($id)
     {
-        $emprendedor = Emprendedor::with(['user', 'marcas', 'productos.categoria', 'productos.marca'])->findOrFail($id);
+        // S04 FIX: Cargar en el perfil público SOLAMENTE los productos que estén 'activos'
+        $emprendedor = Emprendedor::with(['user', 'marcas', 'productos' => function ($query) {
+            $query->where('estado', 'activo')->with(['categoria', 'marca']);
+        }])->findOrFail($id);
+        
         return view('public.emprendedor-detalle', compact('emprendedor'));
     }
     
@@ -75,7 +78,7 @@ class PublicController extends Controller
     }
 
     // Vista Contacto
-public function contacto()
+    public function contacto()
     {
         $config = Configuracion::pluck('valor', 'clave')->toArray();
         return view('public.contacto', compact('config'));
@@ -84,7 +87,10 @@ public function contacto()
     // Vista de detalle de un producto específico
     public function productoDetalle($id)
     {
-        $producto = Producto::with(['marca', 'categoria', 'emprendedor.user'])->findOrFail($id);
+        // S04 FIX: Proteger el enlace directo. Si el producto no está 'activo', dará error 404.
+        $producto = Producto::with(['marca', 'categoria', 'emprendedor.user'])
+                    ->where('estado', 'activo')
+                    ->findOrFail($id);
         
         $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
                                         ->where('id', '!=', $producto->id)

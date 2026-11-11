@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Categoria;
 use Illuminate\Support\Str;
 use App\Models\Configuracion;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -153,16 +154,28 @@ class AdminController extends Controller
     {
         $usuario = User::findOrFail($id);
 
-        // Previene eliminar al propio usuario autenticado
         if (auth()->id() == $usuario->id) {
             return redirect()->back()->with('status', 'No puedes eliminar tu propia cuenta de administrador.');
         }
 
-        // F04 FIX Adicional: Prevenir borrar al último admin (incluso si lo intenta otro admin)
         if ($usuario->role === 'admin') {
             $adminActivos = User::where('role', 'admin')->where('status', 'activo')->where('id', '!=', $usuario->id)->count();
             if ($adminActivos === 0) {
                 return redirect()->back()->with('status', 'No puedes eliminar al único administrador activo del sistema.');
+            }
+        }
+
+        // F09 FIX: Antes de borrar al usuario, buscamos sus productos y borramos los archivos físicos de sus fotos.
+        if ($usuario->emprendedor) {
+            $productos = Producto::where('emprendedor_id', $usuario->emprendedor->id)->get();
+            foreach ($productos as $producto) {
+                foreach ($producto->imagenes as $imagen) {
+                    Storage::disk('public')->delete($imagen->ruta);
+                }
+            }
+            // También borramos la foto de perfil del emprendedor si la tiene
+            if ($usuario->emprendedor->imagen) {
+                Storage::disk('public')->delete($usuario->emprendedor->imagen);
             }
         }
 
@@ -191,9 +204,16 @@ class AdminController extends Controller
             'nombre' => 'required|string|max:255|unique:categorias,nombre',
         ]);
 
+        $slug = Str::slug($request->nombre);
+
+        // F05 FIX: Verificamos que el slug generado no exista ya en la base de datos
+        if (Categoria::where('slug', $slug)->exists()) {
+            return back()->withErrors(['nombre' => 'Este nombre genera un identificador que ya está en uso por otra categoría.'])->withInput();
+        }
+
         Categoria::create([
             'nombre' => $request->nombre,
-            'slug' => Str::slug($request->nombre), // Genera el slug automáticamente (ej. "bordados-huastecos")
+            'slug' => $slug, 
         ]);
 
         return redirect()->route('admin.categorias.index')->with('status', 'Categoría creada con éxito.');
@@ -215,9 +235,16 @@ class AdminController extends Controller
             'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $categoria->id,
         ]);
 
+        $slug = Str::slug($request->nombre);
+
+        // F05 FIX: Verificamos colisión de slug, excluyendo la categoría actual
+        if (Categoria::where('slug', $slug)->where('id', '!=', $categoria->id)->exists()) {
+            return back()->withErrors(['nombre' => 'Este nombre genera un identificador que ya está en uso por otra categoría.'])->withInput();
+        }
+
         $categoria->update([
             'nombre' => $request->nombre,
-            'slug' => Str::slug($request->nombre), // Actualiza también el slug
+            'slug' => $slug, 
         ]);
 
         return redirect()->route('admin.categorias.index')->with('status', 'Categoría actualizada con éxito.');
