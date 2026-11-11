@@ -42,7 +42,7 @@ class PublicController extends Controller
             $query->where('marca_id', $request->marca_id);
         }
 
-        $productos = $query->get();
+        $productos = $query->paginate(12)->withQueryString();
         $categorias = Categoria::all();
         $marcas = Marca::all(); 
         

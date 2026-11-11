@@ -46,13 +46,12 @@
 <!-- Listado de Productos -->
 <section class="py-5">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
             @forelse($productos as $producto)
                 <div class="col-md-6 col-lg-3">
                     <div class="card border-0 rounded-0 h-100 bg-transparent">
                         <a href="{{ route('public.producto.detalle', $producto->id) }}" class="text-decoration-none">
                             <div class="bg-light border mb-3 position-relative" style="height: 250px; width: 100%;">
-                                <!-- ACTUALIZADO: Muestra la primera imagen de la relación nueva -->
                                 @if($producto->imagenPrincipal)
                                     <img src="{{ asset('storage/' . $producto->imagenPrincipal->ruta) }}" alt="{{ $producto->nombre }}" class="w-100 h-100" style="object-fit: cover;">
                                 @else
@@ -90,9 +89,25 @@
                 </div>
             @empty
                 <div class="col-12 text-center py-5">
-                    <p class="text-muted">Aún no hay productos disponibles.</p>
+                    <!-- U05 FIX: Mensaje dinámico dependiendo de si hay filtros activos o si el sistema está vacío -->
+                    @if(request()->hasAny(['buscar', 'categoria_id', 'marca_id']))
+                        <i class="bi bi-search text-muted fs-1 mb-3 d-block"></i>
+                        <h4 class="fw-bold">No encontramos resultados</h4>
+                        <p class="text-muted mb-4">No hay productos que coincidan con tu búsqueda actual.</p>
+                        <a href="{{ route('public.productos') }}" class="btn btn-outline-danger rounded-0 fw-bold">
+                            <i class="bi bi-x-circle me-1"></i> Limpiar Filtros
+                        </a>
+                    @else
+                        <i class="bi bi-box-seam text-muted fs-1 mb-3 d-block"></i>
+                        <p class="text-muted fs-5">Aún no hay productos disponibles en el catálogo.</p>
+                    @endif
                 </div>
             @endforelse
+        </div>
+
+        <!-- U08 FIX: Paginación generada por Laravel (conservando los filtros de búsqueda en la URL) -->
+        <div class="d-flex justify-content-center">
+            {{ $productos->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </section>
