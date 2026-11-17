@@ -50,20 +50,24 @@
             background-color: #b8104c !important;
             border-color: #b8104c !important;
         }
+
     </style>
+    @include('layouts.accessibility')
 </head>
 <body>
+
+    <a href="#contenido-principal" class="visually-hidden-focusable bg-white text-dark p-3 position-absolute">Saltar al contenido</a>
 
     <!-- Navegación Pública -->
     <nav class="navbar navbar-expand-lg navbar-public py-3 sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}">
+            <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}" aria-label="Artesanos y Emprendedores en Movimiento: inicio">
                 <!-- LOGO INSTITUCIONAL -->
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded-circle border border-2 border-success">
-                <span style="color: var(--huasteca-verde);">Artesanos y Emprendedores en Movimiento</span>
+                <span class="brand-title" style="color: var(--huasteca-verde);"><span class="d-sm-none">Artesanos en Movimiento</span><span class="d-none d-sm-inline">Artesanos y Emprendedores en Movimiento</span></span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic" aria-controls="navPublic" aria-expanded="false" aria-label="Menú principal">
+                <span class="navbar-toggler-icon" aria-hidden="true"></span>
             </button>
             <div class="collapse navbar-collapse" id="navPublic">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
@@ -78,7 +82,7 @@
     </nav>
 
     <!-- Contenido Dinámico -->
-    <main>
+    <main id="contenido-principal" tabindex="-1">
         @yield('content')
     </main>
 
@@ -116,15 +120,15 @@
                     <h5 class="fw-bold mb-3" style="color: var(--huasteca-amarillo);">Síguenos</h5>
                     <div class="d-flex gap-3">
                         @if(!empty($footerConfig['footer_instagram']))
-                            <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                            <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
                         @endif
                         
                         @if(!empty($footerConfig['footer_facebook']))
-                            <a href="{{ $footerConfig['footer_facebook'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                            <a href="{{ $footerConfig['footer_facebook'] }}" target="_blank" class="text-white fs-5" aria-label="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a>
                         @endif
                         
                         @if(!empty($footerConfig['footer_tiktok']))
-                            <a href="{{ $footerConfig['footer_tiktok'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-tiktok"></i></a>
+                            <a href="{{ $footerConfig['footer_tiktok'] }}" target="_blank" class="text-white fs-5" aria-label="TikTok"><i class="bi bi-tiktok" aria-hidden="true"></i></a>
                         @endif
                     </div>
                 </div>

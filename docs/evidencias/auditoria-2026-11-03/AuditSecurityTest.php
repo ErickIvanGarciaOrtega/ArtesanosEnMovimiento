@@ -300,7 +300,8 @@ class AuditSecurityTest extends TestCase
         });
         try {
             $image = UploadedFile::fake()->createWithContent('audit.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j3ioAAAAASUVORK5CYII='));
-            $this->actingAs($this->entrepreneur())->post('/emprendedor/productos', [...$this->attributes(), 'imagenes' => [$image]])->assertServerError();
+            $this->actingAs($this->entrepreneur())->post('/emprendedor/productos', [...$this->attributes(), 'imagenes' => [$image]])
+                ->assertRedirect()->assertSessionHasErrors('imagenes');
             $this->assertDatabaseCount('productos', 0);
             $this->assertSame([], Storage::disk('public')->allFiles());
         } finally {

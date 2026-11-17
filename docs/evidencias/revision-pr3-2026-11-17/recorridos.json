@@ -1,0 +1,334 @@
+{
+  "base": "http://127.0.0.1:8023",
+  "database": "SQLite desechable browser.sqlite",
+  "checks": [
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /productos?buscar=SinCoincidenciasRevisionPr3",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Mensaje de cero coincidencias",
+      "ok": true
+    },
+    {
+      "name": "Accion para limpiar filtros",
+      "ok": true
+    },
+    {
+      "name": "HTTP /productos?buscar%5B%5D=pieza",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /login",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Login administrador",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Menu admin movil abre",
+      "ok": true
+    },
+    {
+      "name": "Teclado alcanza enlace del menu",
+      "ok": true
+    },
+    {
+      "name": "Menu movil permite abrir CMS",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/usuarios/1/editar",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Autodesactivacion muestra motivo",
+      "ok": true
+    },
+    {
+      "name": "Cuenta conserva estado activo",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/categorias/crear",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Alta categoria visible",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/usuarios/crear",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Alta emprendedor visible",
+      "ok": true
+    },
+    {
+      "name": "Logout administrador",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/login",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Login emprendedor",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/marcas/crear",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/productos/crear",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Descripcion puede quedar vacia",
+      "ok": true
+    },
+    {
+      "name": "Alta producto visible",
+      "ok": true
+    },
+    {
+      "name": "HTTP /productos?buscar=PiezaRevisionPr3",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Producto aparece en catalogo",
+      "ok": true
+    },
+    {
+      "name": "Detalle producto abre",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Nombre de perfil persiste",
+      "ok": true
+    },
+    {
+      "name": "Sitio web normalizado",
+      "ok": false
+    }
+  ],
+  "mobile": [
+    {
+      "role": "public",
+      "route": "/",
+      "viewport": 320,
+      "document": 475,
+      "overflow": true
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "viewport": 375,
+      "document": 475,
+      "overflow": true
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "viewport": 414,
+      "document": 475,
+      "overflow": true
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "viewport": 768,
+      "document": 768,
+      "overflow": false
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "viewport": 320,
+      "document": 375,
+      "overflow": true
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "viewport": 375,
+      "document": 378,
+      "overflow": true
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "viewport": 414,
+      "document": 414,
+      "overflow": false
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "viewport": 768,
+      "document": 768,
+      "overflow": false
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "viewport": 320,
+      "document": 333,
+      "overflow": true
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "viewport": 375,
+      "document": 375,
+      "overflow": false
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "viewport": 414,
+      "document": 414,
+      "overflow": false
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "viewport": 768,
+      "document": 768,
+      "overflow": false
+    }
+  ],
+  "pageErrors": [],
+  "error": "Error: Sitio web normalizado: undefined\n    at check (C:\\Users\\user\\Desktop\\Erick\\.auditoria\\integracion-pr3-2026-11-17\\browser\\recorridos.cjs:7:82)\n    at C:\\Users\\user\\Desktop\\Erick\\.auditoria\\integracion-pr3-2026-11-17\\browser\\recorridos.cjs:88:1"
+}

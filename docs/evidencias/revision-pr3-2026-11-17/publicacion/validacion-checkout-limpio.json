@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-17",
+  "base": "58c72f77a0e42cabcf8a280200aecf5d33b197e7",
+  "diagnostic_commit": "890c531d66078fe48af653f0984c56ed21e6ca19",
+  "branch": "revision/pr3-hallazgos-y-correcciones",
+  "composer_install": "passed",
+  "npm_ci_ignore_scripts": "passed",
+  "composer_validate_strict": "passed",
+  "build": "passed",
+  "git_diff_cached_check": "passed",
+  "source_copy_manifest_files": 118,
+  "source_copy_differences": 0,
+  "application_suite": {
+    "tests": 86,
+    "assertions": 572,
+    "result": "passed",
+    "duration_ms": 28296
+  },
+  "audit_suite": {
+    "tests": 35,
+    "assertions": 190,
+    "result": "passed",
+    "duration_ms": 11820
+  },
+  "environment": "PHP 8.5.0, SQLite en memoria, clave sintetica y correo/almacenamiento de prueba"
+}

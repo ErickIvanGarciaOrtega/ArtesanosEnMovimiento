@@ -44,7 +44,8 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label fw-bold">Nueva Contraseña (Opcional)</label>
-                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Dejar en blanco para mantener la actual">
+                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Dejar en blanco para mantener la actual" minlength="12" autocomplete="new-password">
+                <div class="form-text">Si la cambias, usa al menos 12 caracteres con mayúscula, minúscula, número y símbolo.</div>
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

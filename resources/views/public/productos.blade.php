@@ -18,10 +18,12 @@
         <!-- Filtros y Búsqueda -->
         <form action="{{ route('public.productos') }}" method="GET" class="row g-3 justify-content-center mt-4">
             <div class="col-md-4">
-                <input type="text" name="buscar" class="form-control rounded-0" placeholder="Buscar..." value="{{ request('buscar') }}">
+                <label for="catalogo-buscar" class="visually-hidden">Buscar productos</label>
+                <input type="text" name="buscar" id="catalogo-buscar" class="form-control rounded-0" placeholder="Buscar..." value="{{ request('buscar') }}">
             </div>
             <div class="col-md-3">
-                <select name="categoria_id" class="form-select rounded-0">
+                <label for="catalogo-categoria" class="visually-hidden">Categoría</label>
+                <select name="categoria_id" id="catalogo-categoria" class="form-select rounded-0">
                     <option value="">Todas las categorías</option>
                     @foreach($categorias as $cat)
                         <option value="{{ $cat->id }}" {{ request('categoria_id') == $cat->id ? 'selected' : '' }}>{{ $cat->nombre }}</option>
@@ -29,7 +31,8 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <select name="marca_id" class="form-select rounded-0">
+                <label for="catalogo-marca" class="visually-hidden">Marca</label>
+                <select name="marca_id" id="catalogo-marca" class="form-select rounded-0">
                     <option value="">Todas las marcas</option>
                     @foreach($marcas as $marca)
                         <option value="{{ $marca->id }}" {{ request('marca_id') == $marca->id ? 'selected' : '' }}>{{ $marca->nombre }}</option>
@@ -74,7 +77,7 @@
                                 </a>
                             </h6>
                             <p class="small text-muted mb-2">
-                                Por 
+                                Por
                                 @if($producto->emprendedor)
                                     <a href="{{ route('public.emprendedor.detalle', $producto->emprendedor->id) }}" class="text-decoration-none text-muted">
                                         {{ $producto->emprendedor->user->name ?? 'Emprendedor' }}
