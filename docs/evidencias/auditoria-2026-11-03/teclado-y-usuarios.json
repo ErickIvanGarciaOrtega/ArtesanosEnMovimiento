@@ -1,0 +1,96 @@
+{
+  "work": "C:\\Users\\user\\AppData\\Local\\Temp\\artesanos-browser-2Rb7p9",
+  "checks": [
+    {
+      "name": "GET /",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "mobile menu opens with Enter",
+      "ok": true
+    },
+    {
+      "name": "Tab reaches first public navigation link",
+      "ok": true
+    },
+    {
+      "name": "GET /productos",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "Tab reaches filter submit",
+      "ok": true
+    },
+    {
+      "name": "keyboard submits empty-result search",
+      "ok": true
+    },
+    {
+      "name": "GET /emprendedor/login",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "creator login submits with Enter",
+      "ok": true
+    },
+    {
+      "name": "GET /emprendedor/productos/1/editar",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "required name prevents browser submission",
+      "ok": true
+    },
+    {
+      "name": "product edit submits with Enter",
+      "ok": true
+    },
+    {
+      "name": "GET /login",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "login admin",
+      "ok": true,
+      "detail": "http://127.0.0.1:18765/admin/dashboard"
+    },
+    {
+      "name": "GET /admin/usuarios/crear",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "admin creates user",
+      "ok": true
+    },
+    {
+      "name": "admin deactivates user",
+      "ok": true
+    },
+    {
+      "name": "admin deletes another user",
+      "ok": true
+    },
+    {
+      "name": "GET /admin/usuarios/1/editar",
+      "ok": true,
+      "detail": 200
+    },
+    {
+      "name": "blocked self-deactivation has visible feedback",
+      "ok": false
+    },
+    {
+      "name": "blocked self-deactivation preserves active state",
+      "ok": true
+    }
+  ],
+  "axe": [],
+  "mobile": [],
+  "consoleErrors": []
+}
