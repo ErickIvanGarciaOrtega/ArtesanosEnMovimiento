@@ -24,7 +24,8 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Nueva Contraseña</label>
-                <input type="password" name="password" class="form-control" required placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                <input type="password" name="password" class="form-control" required minlength="12" autocomplete="new-password">
+                <div class="form-text">Usa al menos 12 caracteres con mayúscula, minúscula, número y símbolo.</div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Confirmar Nueva Contraseña</label>

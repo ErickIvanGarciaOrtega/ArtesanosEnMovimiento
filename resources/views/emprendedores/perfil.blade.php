@@ -4,7 +4,7 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-9">
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="fw-bold mb-0" style="color: var(--huasteca-verde);"><i class="bi bi-person-gear me-2"></i>Mi Perfil de Emprendedor</h3>
                 <a href="{{ route('emprendedor.dashboard') }}" class="btn btn-outline-secondary rounded-0 btn-sm">
@@ -14,7 +14,7 @@
 
             <div class="card border-0 shadow-sm rounded-0" style="border-top: 5px solid var(--huasteca-verde) !important;">
                 <div class="card-body p-4 p-md-5">
-                    
+
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
                             {{ session('success') }}
@@ -38,7 +38,7 @@
 
                         <!-- Fotografía / Logotipo -->
                         <div class="mb-4 bg-light p-4 border rounded-0 text-center">
-                            <label class="form-label fw-bold d-block text-start">Fotografía o Logotipo de Perfil</label>
+                            <label for="perfil-imagen" class="form-label fw-bold d-block text-start">Fotografía o Logotipo de Perfil</label>
                             <div class="d-flex flex-column align-items-start gap-3">
                                 @if(isset($emprendedor->imagen) && $emprendedor->imagen)
                                     <img src="{{ asset('storage/' . $emprendedor->imagen) }}" alt="Foto de perfil" class="rounded-circle border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
@@ -48,8 +48,8 @@
                                     </div>
                                 @endif
                                 <div class="w-100 text-start">
-                                    <input type="file" name="imagen" class="form-control rounded-0" accept="image/jpeg, image/png, image/webp">
-                                    <small class="text-muted">Sube una imagen cuadrada para que se ajuste perfectamente (Max: 2MB).</small>
+                                    <input type="file" name="imagen" id="perfil-imagen" aria-describedby="perfil-imagen-ayuda" class="form-control rounded-0" accept="image/jpeg, image/png, image/webp">
+                                    <small id="perfil-imagen-ayuda" class="text-muted">Sube una imagen cuadrada para que se ajuste perfectamente (Max: 2MB).</small>
                                 </div>
                             </div>
                         </div>

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Categoria;
+use App\Models\Configuracion;
 use App\Models\Emprendedor;
 use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Categoria;
-use Illuminate\Support\Str;
-use App\Models\Configuracion;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
 {
@@ -39,6 +40,7 @@ class AdminController extends Controller
     public function usuariosIndex()
     {
         $usuarios = User::with('emprendedor')->latest()->get();
+
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -58,7 +60,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => ['required', 'string', 'max:1024', Password::defaults()],
             'role' => 'required|in:admin,emprendedor',
             'status' => 'required|in:activo,inactivo',
         ]);
@@ -88,6 +90,7 @@ class AdminController extends Controller
     public function usuariosEdit($id)
     {
         $usuario = User::with('emprendedor')->findOrFail($id);
+
         return view('admin.usuarios.edit', compact('usuario'));
     }
 
@@ -100,10 +103,10 @@ class AdminController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'role' => 'required|in:admin,emprendedor',
             'status' => 'required|in:activo,inactivo',
-            'password' => 'nullable|string|min:6',
+            'password' => ['nullable', 'string', 'max:1024', Password::defaults()],
         ]);
 
         // Validación 1: Impedir desactivar tu propia cuenta activa
@@ -112,7 +115,7 @@ class AdminController extends Controller
         }
 
         // Validación 2: Garantizar que siempre exista al menos un administrador activo
-        // F04 FIX: Se modificó la condición para bloquear tanto el cambio de estado (inactivo) 
+        // F04 FIX: Se modificó la condición para bloquear tanto el cambio de estado (inactivo)
         // como el cambio de rol (de admin a emprendedor) si es el último admin.
         if ($usuario->role === 'admin' && ($request->status === 'inactivo' || $request->role !== 'admin')) {
             $adminActivos = User::where('role', 'admin')
@@ -137,7 +140,7 @@ class AdminController extends Controller
         $usuario->save();
 
         // Si cambió el rol a emprendedor y aún no tiene registro asociado, se lo creamos
-        if ($request->role === 'emprendedor' && !$usuario->emprendedor) {
+        if ($request->role === 'emprendedor' && ! $usuario->emprendedor) {
             Emprendedor::create([
                 'user_id' => $usuario->id,
                 'status' => 'activo',
@@ -188,6 +191,7 @@ class AdminController extends Controller
     public function categoriasIndex()
     {
         $categorias = Categoria::withCount('productos')->get();
+
         return view('admin.categorias.index', compact('categorias'));
     }
 
@@ -213,7 +217,7 @@ class AdminController extends Controller
 
         Categoria::create([
             'nombre' => $request->nombre,
-            'slug' => $slug, 
+            'slug' => $slug,
         ]);
 
         return redirect()->route('admin.categorias.index')->with('status', 'Categoría creada con éxito.');
@@ -223,6 +227,7 @@ class AdminController extends Controller
     public function categoriasEdit($id)
     {
         $categoria = Categoria::findOrFail($id);
+
         return view('admin.categorias.edit', compact('categoria'));
     }
 
@@ -232,7 +237,7 @@ class AdminController extends Controller
         $categoria = Categoria::findOrFail($id);
 
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $categoria->id,
+            'nombre' => 'required|string|max:255|unique:categorias,nombre,'.$categoria->id,
         ]);
 
         $slug = Str::slug($request->nombre);
@@ -244,7 +249,7 @@ class AdminController extends Controller
 
         $categoria->update([
             'nombre' => $request->nombre,
-            'slug' => $slug, 
+            'slug' => $slug,
         ]);
 
         return redirect()->route('admin.categorias.index')->with('status', 'Categoría actualizada con éxito.');
@@ -273,7 +278,7 @@ class AdminController extends Controller
         // Traemos todas las configuraciones y las convertimos en un formato clave => valor (pluck)
         // para que sea más fácil mostrarlas en la vista.
         $config = Configuracion::pluck('valor', 'clave')->toArray();
-        
+
         return view('admin.configuraciones', compact('config'));
     }
 
@@ -282,7 +287,7 @@ class AdminController extends Controller
         // S03 FIX: Añadimos validación estricta para asegurar que solo se suban imágenes reales
         $request->validate([
             'home_banner_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'home_promo_image'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+            'home_promo_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
         ]);
 
         // Excluimos tokens y los campos de las imágenes

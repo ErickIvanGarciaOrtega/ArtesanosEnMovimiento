@@ -1,0 +1,1339 @@
+{
+  "checks": [
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public / 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Menu con teclado public 320",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real public / 320 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Foco dentro del menu public 320",
+      "ok": true
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public / 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Menu con teclado public 375",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real public / 375 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Foco dentro del menu public 375",
+      "ok": true
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public / 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Menu con teclado public 414",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real public / 414 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Foco dentro del menu public 414",
+      "ok": true
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public / 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /productos",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public /productos 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "HTTP /productos",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public /productos 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "HTTP /productos",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public /productos 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "HTTP /productos",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real public /productos 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Enlace saltar contenido /",
+      "ok": true
+    },
+    {
+      "name": "Destino de salto enfocado /",
+      "ok": true
+    },
+    {
+      "name": "HTTP /",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe public /",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /productos",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe public /productos",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /login",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Menu con teclado admin 320",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 320 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Foco dentro del menu admin 320",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Menu con teclado admin 375",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 375 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Foco dentro del menu admin 375",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Menu con teclado admin 414",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 414 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Foco dentro del menu admin 414",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/dashboard 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/usuarios 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/usuarios 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/usuarios 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/usuarios 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/configuraciones 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/configuraciones 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/configuraciones 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real admin /admin/configuraciones 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Enlace saltar contenido /admin/dashboard",
+      "ok": true
+    },
+    {
+      "name": "Destino de salto enfocado /admin/dashboard",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe admin /admin/dashboard",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe admin /admin/usuarios",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe admin /admin/configuraciones",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /admin/configuraciones",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Todos los campos CMS tienen etiqueta",
+      "ok": true,
+      "detail": [
+        {
+          "name": "home_banner_image",
+          "id": "cms_home_banner_image",
+          "labels": 1
+        },
+        {
+          "name": "home_subtitulo",
+          "id": "cms_home_subtitulo",
+          "labels": 1
+        },
+        {
+          "name": "home_titulo",
+          "id": "cms_home_titulo",
+          "labels": 1
+        },
+        {
+          "name": "home_descripcion",
+          "id": "cms_home_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "home_promo_image",
+          "id": "cms_home_promo_image",
+          "labels": 1
+        },
+        {
+          "name": "home_promo_titulo",
+          "id": "cms_home_promo_titulo",
+          "labels": 1
+        },
+        {
+          "name": "home_promo_descripcion",
+          "id": "cms_home_promo_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "quienes_historia",
+          "id": "cms_quienes_historia",
+          "labels": 1
+        },
+        {
+          "name": "quienes_mision",
+          "id": "cms_quienes_mision",
+          "labels": 1
+        },
+        {
+          "name": "quienes_vision",
+          "id": "cms_quienes_vision",
+          "labels": 1
+        },
+        {
+          "name": "quienes_valores",
+          "id": "cms_quienes_valores",
+          "labels": 1
+        },
+        {
+          "name": "emprendedores_subtitulo",
+          "id": "cms_emprendedores_subtitulo",
+          "labels": 1
+        },
+        {
+          "name": "emprendedores_titulo",
+          "id": "cms_emprendedores_titulo",
+          "labels": 1
+        },
+        {
+          "name": "emprendedores_descripcion",
+          "id": "cms_emprendedores_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "productos_subtitulo",
+          "id": "cms_productos_subtitulo",
+          "labels": 1
+        },
+        {
+          "name": "productos_titulo",
+          "id": "cms_productos_titulo",
+          "labels": 1
+        },
+        {
+          "name": "productos_descripcion",
+          "id": "cms_productos_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "contacto_subtitulo",
+          "id": "cms_contacto_subtitulo",
+          "labels": 1
+        },
+        {
+          "name": "contacto_titulo",
+          "id": "cms_contacto_titulo",
+          "labels": 1
+        },
+        {
+          "name": "contacto_descripcion",
+          "id": "cms_contacto_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "contacto_info_titulo",
+          "id": "cms_contacto_info_titulo",
+          "labels": 1
+        },
+        {
+          "name": "contacto_dir_label",
+          "id": "cms_contacto_dir_label",
+          "labels": 1
+        },
+        {
+          "name": "contacto_dir_texto",
+          "id": "cms_contacto_dir_texto",
+          "labels": 1
+        },
+        {
+          "name": "contacto_email_label",
+          "id": "cms_contacto_email_label",
+          "labels": 1
+        },
+        {
+          "name": "contacto_email_texto",
+          "id": "cms_contacto_email_texto",
+          "labels": 1
+        },
+        {
+          "name": "contacto_tel_label",
+          "id": "cms_contacto_tel_label",
+          "labels": 1
+        },
+        {
+          "name": "contacto_tel_texto",
+          "id": "cms_contacto_tel_texto",
+          "labels": 1
+        },
+        {
+          "name": "contacto_extra_titulo",
+          "id": "cms_contacto_extra_titulo",
+          "labels": 1
+        },
+        {
+          "name": "contacto_extra_desc",
+          "id": "cms_contacto_extra_desc",
+          "labels": 1
+        },
+        {
+          "name": "footer_descripcion",
+          "id": "cms_footer_descripcion",
+          "labels": 1
+        },
+        {
+          "name": "footer_instagram",
+          "id": "cms_footer_instagram",
+          "labels": 1
+        },
+        {
+          "name": "footer_facebook",
+          "id": "cms_footer_facebook",
+          "labels": 1
+        },
+        {
+          "name": "footer_tiktok",
+          "id": "cms_footer_tiktok",
+          "labels": 1
+        },
+        {
+          "name": "footer_copyright",
+          "id": "cms_footer_copyright",
+          "labels": 1
+        }
+      ]
+    },
+    {
+      "name": "Guardar CMS conserva flujo",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Acciones usuarios con nombre",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/usuarios",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Tabla recibe foco por teclado",
+      "ok": true
+    },
+    {
+      "name": "HTTP /admin/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/login",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Menu con teclado emprendedor 320",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 320 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "Foco dentro del menu emprendedor 320",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Menu con teclado emprendedor 375",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 375 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Foco dentro del menu emprendedor 375",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Menu con teclado emprendedor 414",
+      "ok": true
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 414 abierto",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "Foco dentro del menu emprendedor 414",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/dashboard 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/perfil 320 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 320,
+        "document": 320,
+        "body": 320
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/perfil 375 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 375,
+        "document": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/perfil 414 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 414,
+        "document": 414,
+        "body": 414
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Sin desborde real emprendedor /emprendedor/perfil 768 cerrado",
+      "ok": true,
+      "detail": {
+        "viewport": 768,
+        "document": 768,
+        "body": 768
+      }
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Enlace saltar contenido /emprendedor/dashboard",
+      "ok": true
+    },
+    {
+      "name": "Destino de salto enfocado /emprendedor/dashboard",
+      "ok": true
+    },
+    {
+      "name": "HTTP /emprendedor/dashboard",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe emprendedor /emprendedor/dashboard",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Axe emprendedor /emprendedor/perfil",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "HTTP /emprendedor/perfil",
+      "ok": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "name": "Archivo perfil tiene etiqueta",
+      "ok": true
+    },
+    {
+      "name": "Guardar perfil conserva flujo",
+      "ok": true
+    }
+  ],
+  "mobile": [
+    {
+      "role": "public",
+      "route": "/",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "abierto",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "abierto",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "abierto",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "public",
+      "route": "/",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "public",
+      "route": "/productos",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "public",
+      "route": "/productos",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "public",
+      "route": "/productos",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "public",
+      "route": "/productos",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "abierto",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "abierto",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "abierto",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "admin",
+      "route": "/admin/usuarios",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "admin",
+      "route": "/admin/usuarios",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "admin",
+      "route": "/admin/usuarios",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "admin",
+      "route": "/admin/usuarios",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "admin",
+      "route": "/admin/configuraciones",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "admin",
+      "route": "/admin/configuraciones",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "admin",
+      "route": "/admin/configuraciones",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "admin",
+      "route": "/admin/configuraciones",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "abierto",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "abierto",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "abierto",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/perfil",
+      "state": "cerrado",
+      "viewport": 320,
+      "document": 320,
+      "body": 320
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/perfil",
+      "state": "cerrado",
+      "viewport": 375,
+      "document": 375,
+      "body": 375
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/perfil",
+      "state": "cerrado",
+      "viewport": 414,
+      "document": 414,
+      "body": 414
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/perfil",
+      "state": "cerrado",
+      "viewport": 768,
+      "document": 768,
+      "body": 768
+    }
+  ],
+  "axe": [
+    {
+      "role": "public",
+      "route": "/",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "public",
+      "route": "/productos",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 2
+        }
+      ]
+    },
+    {
+      "role": "admin",
+      "route": "/admin/dashboard",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "admin",
+      "route": "/admin/usuarios",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "admin",
+      "route": "/admin/configuraciones",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/dashboard",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "emprendedor",
+      "route": "/emprendedor/perfil",
+      "version": "4.14.1",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    }
+  ],
+  "pageErrors": []
+}

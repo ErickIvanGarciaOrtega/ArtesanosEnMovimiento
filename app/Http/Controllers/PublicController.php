@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Producto;
 use App\Models\Categoria;
-use App\Models\Emprendedor;
 use App\Models\Configuracion;
+use App\Models\Emprendedor;
 use App\Models\Marca;
+use App\Models\Producto;
+use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
     public function home()
     {
-        $categorias = Categoria::all(); 
+        $categorias = Categoria::all();
         $productosDestacados = Producto::where('estado', 'activo')->take(4)->get();
         $config = Configuracion::pluck('valor', 'clave')->toArray();
 
@@ -22,14 +22,20 @@ class PublicController extends Controller
 
     public function productos(Request $request)
     {
+        foreach (['buscar', 'search', 'categoria_id', 'marca_id'] as $filtro) {
+            if (! is_string($request->input($filtro))) {
+                $request->merge([$filtro => null]);
+            }
+        }
+
         $query = Producto::with(['marca', 'emprendedor.user', 'categoria'])
-                        ->where('estado', 'activo');
+            ->where('estado', 'activo');
 
         // F08 FIX: Nos aseguramos de que la búsqueda sea estrictamente un texto.
         // Esto evita el Error 500 (Array to String conversion) si manipulan la URL con corchetes.
         $busqueda = $request->input('search') ?? $request->input('buscar');
-        if ($busqueda && is_string($busqueda)) {
-            $query->where('nombre', 'like', '%' . $busqueda . '%');
+        if (is_string($busqueda) && $busqueda !== '') {
+            $query->where('nombre', 'like', '%'.$busqueda.'%');
         }
 
         // Filtrar por categoría
@@ -44,8 +50,8 @@ class PublicController extends Controller
 
         $productos = $query->paginate(12)->withQueryString();
         $categorias = Categoria::all();
-        $marcas = Marca::all(); 
-        
+        $marcas = Marca::all();
+
         $config = Configuracion::pluck('valor', 'clave')->toArray();
 
         return view('public.productos', compact('productos', 'categorias', 'marcas', 'config'));
@@ -67,20 +73,22 @@ class PublicController extends Controller
         $emprendedor = Emprendedor::with(['user', 'marcas', 'productos' => function ($query) {
             $query->where('estado', 'activo')->with(['categoria', 'marca']);
         }])->findOrFail($id);
-        
+
         return view('public.emprendedor-detalle', compact('emprendedor'));
     }
-    
+
     public function quienesSomos()
     {
         $config = Configuracion::pluck('valor', 'clave')->toArray();
-        return view('public.quienes-somos', compact('config')); 
+
+        return view('public.quienes-somos', compact('config'));
     }
 
     // Vista Contacto
     public function contacto()
     {
         $config = Configuracion::pluck('valor', 'clave')->toArray();
+
         return view('public.contacto', compact('config'));
     }
 
@@ -89,14 +97,14 @@ class PublicController extends Controller
     {
         // S04 FIX: Proteger el enlace directo. Si el producto no está 'activo', dará error 404.
         $producto = Producto::with(['marca', 'categoria', 'emprendedor.user'])
-                    ->where('estado', 'activo')
-                    ->findOrFail($id);
-        
+            ->where('estado', 'activo')
+            ->findOrFail($id);
+
         $productosRelacionados = Producto::where('categoria_id', $producto->categoria_id)
-                                        ->where('id', '!=', $producto->id)
-                                        ->where('estado', 'activo')
-                                        ->take(4)
-                                        ->get();
+            ->where('id', '!=', $producto->id)
+            ->where('estado', 'activo')
+            ->take(4)
+            ->get();
 
         return view('public.producto-detalle', compact('producto', 'productosRelacionados'));
     }

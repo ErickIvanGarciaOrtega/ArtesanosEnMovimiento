@@ -16,8 +16,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => 'web',
+        'passwords' => 'users',
     ],
 
     /*
@@ -37,27 +37,19 @@ return [
     |
     */
 
-'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
-    'emprendedor' => [
-        'driver' => 'session',
-        'provider' => 'emprendedores',
-    ],
-],
 
-'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => User::class,
+        ],
     ],
-    'emprendedores' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Emprendedor::class,
-    ],
-],
 
     /*
     |--------------------------------------------------------------------------

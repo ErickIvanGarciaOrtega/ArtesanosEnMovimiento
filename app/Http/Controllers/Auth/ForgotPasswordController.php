@@ -3,72 +3,67 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\View\View;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class ForgotPasswordController extends Controller
 {
-    // Muestra el formulario para solicitar el correo de recuperación
-    public function showLinkRequestForm()
+    public function showLinkRequestForm(): View
     {
         return view('admin.auth.forgot-password');
     }
 
-    // Envía el correo con el token de restablecimiento
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetLinkEmail(Request $request): RedirectResponse
     {
-        $request->validate(['email' => 'required|email|exists:users,email'], [
-            'email.required' => 'El campo de correo electrónico es obligatorio.',
-            'email.email' => 'Ingresa un correo electrónico válido.',
-            'email.exists' => 'No encontramos ningún administrador registrado con este correo.',
-        ]);
+        $credentials = $request->validate(['email' => ['required', 'string', 'email', 'max:255']]);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        try {
+            Password::broker('users')->sendResetLink([...$credentials, 'role' => 'admin', 'status' => 'activo']);
+        } catch (TransportExceptionInterface $exception) {
+            report($exception);
+        }
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', 'Hemos enviado el enlace de restablecimiento a tu correo electrónico.')
-            : back()->withErrors(['email' => __($status)]);
+        return back()->with('status', 'Si el correo corresponde a una cuenta administrativa activa, recibirás un enlace para restablecer la contraseña.');
     }
 
-    // Muestra la vista para ingresar la nueva contraseña
-    public function showResetForm(Request $request, $token)
+    public function showResetForm(Request $request, string $token): View
     {
+        $attributes = $request->validate(['email' => ['required', 'string', 'email', 'max:255']]);
+
         return view('admin.auth.reset-password', [
             'token' => $token,
-            'email' => $request->email,
+            'email' => $attributes['email'],
         ]);
     }
 
-    // Procesa la actualización de la contraseña en la base de datos
-    public function reset(Request $request)
+    public function reset(Request $request): RedirectResponse
     {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6|confirmed',
-        ], [
-            'password.required' => 'La nueva contraseña es obligatoria.',
-            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
+        $credentials = $request->validate([
+            'token' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'max:1024', 'confirmed', PasswordRule::defaults()],
         ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
-
+        $status = Password::broker('users')->reset(
+            [...$credentials, 'role' => 'admin', 'status' => 'activo'],
+            function (User $user, string $password): void {
+                $user->forceFill(['password' => Hash::make($password)])
+                    ->setRememberToken(Str::random(60));
                 $user->save();
-            }
+                event(new PasswordReset($user));
+            },
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', '¡Tu contraseña ha sido restablecida con éxito!')
-            : back()->withErrors(['email' => __($status)]);
+            ? redirect()->route('login')->with('status', 'Tu contraseña ha sido restablecida. Inicia sesión nuevamente.')
+            : back()->withErrors(['email' => 'El enlace de restablecimiento no es válido o ha vencido.']);
     }
 }

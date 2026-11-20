@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-17",
+  "checks": 119,
+  "passed": 119,
+  "mobile_states": 37,
+  "closed_states": 28,
+  "open_menu_states": 9,
+  "widths": [
+    320,
+    375,
+    414,
+    768
+  ],
+  "overflow_count": 0,
+  "axe_pages": 7,
+  "axe_violations": 0,
+  "axe_manual_native_selects": [
+    {
+      "route": "/productos",
+      "target": [
+        "#catalogo-categoria"
+      ],
+      "color": "rgb(33, 37, 41)",
+      "background": "rgb(255, 255, 255)",
+      "ratio": 15.43,
+      "minimum": 4.5,
+      "passed": true,
+      "note": "Axe marca bgImage por la flecha SVG de Bootstrap. El texto es oscuro sobre fondo blanco; se conserva el caso incompleto y se contrasta el par de colores calculados."
+    },
+    {
+      "route": "/productos",
+      "target": [
+        "#catalogo-marca"
+      ],
+      "color": "rgb(33, 37, 41)",
+      "background": "rgb(255, 255, 255)",
+      "ratio": 15.43,
+      "minimum": 4.5,
+      "passed": true,
+      "note": "Axe marca bgImage por la flecha SVG de Bootstrap. El texto es oscuro sobre fondo blanco; se conserva el caso incompleto y se contrasta el par de colores calculados."
+    },
+    {
+      "route": "/emprendedor/perfil",
+      "target": [
+        "#categoria_principal"
+      ],
+      "color": "rgb(33, 37, 41)",
+      "background": "rgb(255, 255, 255)",
+      "ratio": 15.43,
+      "minimum": 4.5,
+      "passed": true,
+      "note": "Axe marca bgImage por la flecha SVG de Bootstrap. El texto es oscuro sobre fondo blanco; se conserva el caso incompleto y se contrasta el par de colores calculados."
+    }
+  ],
+  "suite": {
+    "tests": 86,
+    "assertions": 572,
+    "result": "passed"
+  },
+  "database": "SQLite desechable; cuentas y contenido sinteticos",
+  "published": false
+}
