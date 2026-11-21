@@ -76,9 +76,9 @@
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.contacto') }}">Contacto</a></li>
                 </ul>
 
-                <!-- U02 FIX: Recorrido de regreso al portal según sesión activa -->
-                <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 mt-2 mt-lg-0">
-                    @auth
+                <!-- Retorno al portal solo cuando ya existe una sesión autenticada -->
+                @auth
+                    <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 mt-2 mt-lg-0">
                         @if(Auth::user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="btn bg-brand text-white btn-sm rounded-0 fw-bold px-3">
                                 <i class="bi bi-speedometer2 me-1" aria-hidden="true"></i> Panel Admin
@@ -88,12 +88,8 @@
                                 <i class="bi bi-person-workspace me-1" aria-hidden="true"></i> Mi Portal
                             </a>
                         @endif
-                    @else
-                        <a href="{{ route('emprendedor.login') }}" class="btn btn-outline-dark btn-sm rounded-0 fw-bold px-3">
-                            <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i> Acceso Portal
-                        </a>
-                    @endauth
-                </div>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>
@@ -135,9 +131,6 @@
                                     Volver a mi panel de gestión
                                 </a>
                             </li>
-                        @else
-                            <li class="mb-2"><a href="{{ route('emprendedor.login') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Portal de Emprendedores</a></li>
-                            <li class="mb-2"><a href="{{ route('login') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Acceso Administrativo</a></li>
                         @endauth
                     </ul>
                 </div>
