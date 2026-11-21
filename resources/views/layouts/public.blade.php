@@ -51,19 +51,21 @@
             border-color: #b8104c !important;
         }
     </style>
+    @include('layouts.accessibility')
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
+
+    <a href="#contenido-principal" class="visually-hidden-focusable bg-white text-dark p-3 position-absolute">Saltar al contenido</a>
 
     <!-- Navegación Pública -->
     <nav class="navbar navbar-expand-lg navbar-public py-3 sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}">
-                <!-- LOGO INSTITUCIONAL -->
+            <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}" aria-label="Artesanos y Emprendedores en Movimiento: inicio">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded-circle border border-2 border-success">
-                <span style="color: var(--huasteca-verde);">Artesanos y Emprendedores en Movimiento</span>
+                <span class="brand-title" style="color: var(--huasteca-verde);"><span class="d-sm-none">Artesanos en Movimiento</span><span class="d-none d-sm-inline">Artesanos y Emprendedores en Movimiento</span></span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic" aria-controls="navPublic" aria-expanded="false" aria-label="Menú principal">
+                <span class="navbar-toggler-icon" aria-hidden="true"></span>
             </button>
             <div class="collapse navbar-collapse" id="navPublic">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
@@ -73,12 +75,27 @@
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.productos') }}">Productos</a></li>
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.contacto') }}">Contacto</a></li>
                 </ul>
+
+                <!-- Retorno al portal solo cuando ya existe una sesión autenticada -->
+                @auth
+                    <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 mt-2 mt-lg-0">
+                        @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="btn bg-brand text-white btn-sm rounded-0 fw-bold px-3">
+                                <i class="bi bi-speedometer2 me-1" aria-hidden="true"></i> Panel Admin
+                            </a>
+                        @else
+                            <a href="{{ route('emprendedor.dashboard') }}" class="btn bg-brand text-white btn-sm rounded-0 fw-bold px-3">
+                                <i class="bi bi-person-workspace me-1" aria-hidden="true"></i> Mi Portal
+                            </a>
+                        @endif
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>
 
     <!-- Contenido Dinámico -->
-    <main>
+    <main id="contenido-principal" class="flex-grow-1" tabindex="-1">
         @yield('content')
     </main>
 
@@ -108,6 +125,13 @@
                         <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Quiénes Somos</a></li>
                         <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Catálogo de Productos</a></li>
                         <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Directorio de Emprendedores</a></li>
+                        @auth
+                            <li class="mb-2">
+                                <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('emprendedor.dashboard') }}" class="text-warning text-decoration-none small fw-bold">
+                                    Volver a mi panel de gestión
+                                </a>
+                            </li>
+                        @endauth
                     </ul>
                 </div>
                 
@@ -116,15 +140,15 @@
                     <h5 class="fw-bold mb-3" style="color: var(--huasteca-amarillo);">Síguenos</h5>
                     <div class="d-flex gap-3">
                         @if(!empty($footerConfig['footer_instagram']))
-                            <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                            <a href="{{ $footerConfig['footer_instagram'] }}" target="_blank" class="text-white fs-5" aria-label="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a>
                         @endif
                         
                         @if(!empty($footerConfig['footer_facebook']))
-                            <a href="{{ $footerConfig['footer_facebook'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                            <a href="{{ $footerConfig['footer_facebook'] }}" target="_blank" class="text-white fs-5" aria-label="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a>
                         @endif
                         
                         @if(!empty($footerConfig['footer_tiktok']))
-                            <a href="{{ $footerConfig['footer_tiktok'] }}" target="_blank" class="text-white fs-5"><i class="bi bi-tiktok"></i></a>
+                            <a href="{{ $footerConfig['footer_tiktok'] }}" target="_blank" class="text-white fs-5" aria-label="TikTok"><i class="bi bi-tiktok" aria-hidden="true"></i></a>
                         @endif
                     </div>
                 </div>

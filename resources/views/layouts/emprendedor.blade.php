@@ -31,7 +31,9 @@
             transition: color 0.2s;
         }
         .navbar-emprendedor .nav-link:hover, .navbar-emprendedor .nav-link.active {
-            color: var(--huasteca-amarillo) !important;
+            color: var(--huasteca-blanco) !important;
+            background-color: var(--huasteca-verde-activo);
+            text-decoration: underline;
         }
         .btn-primary, .btn-brand {
             background-color: var(--huasteca-magenta) !important;
@@ -45,54 +47,64 @@
         .card {
             border-color: rgba(6, 122, 88, 0.15);
         }
+
     </style>
+    @include('layouts.accessibility')
 </head>
 <body class="d-flex flex-column min-vh-100">
 
+    <a href="#contenido-principal" class="visually-hidden-focusable bg-white text-dark p-3 position-absolute">Saltar al contenido</a>
+
     <!-- Navbar del Emprendedor -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-emprendedor shadow-sm py-3">
+    <nav class="navbar navbar-expand-xl navbar-dark navbar-emprendedor shadow-sm py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-white" href="{{ route('emprendedor.dashboard') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 35px; height: 35px; object-fit: cover;" class="rounded-circle border border-2 border-warning bg-white p-1">
-                <span>Mi Portal | Emprendedor</span>
+                <span class="brand-title"><span class="d-sm-none">Mi Portal</span><span class="d-none d-sm-inline">Mi Portal | Emprendedor</span></span>
             </a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navEmprendedor">
-                <span class="navbar-toggler-icon"></span>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navEmprendedor" aria-controls="navEmprendedor" aria-expanded="false" aria-label="Menú del emprendedor">
+                <span class="navbar-toggler-icon" aria-hidden="true"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navEmprendedor">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('emprendedor.dashboard') ? 'active' : '' }}" href="{{ route('emprendedor.dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('emprendedor.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('emprendedor.dashboard') ? 'page' : 'false' }}" href="{{ route('emprendedor.dashboard') }}">
                             <i class="bi bi-house me-1"></i> Inicio
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('emprendedor.perfil') ? 'active' : '' }}" href="{{ route('emprendedor.perfil') }}">
+                        <a class="nav-link {{ request()->routeIs('emprendedor.perfil') ? 'active' : '' }}" aria-current="{{ request()->routeIs('emprendedor.perfil') ? 'page' : 'false' }}" href="{{ route('emprendedor.perfil') }}">
                             <i class="bi bi-person-gear me-1"></i> Mi Perfil
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('emprendedor.marcas*') ? 'active' : '' }}" href="{{ route('emprendedor.marcas.index') }}">
+                        <a class="nav-link {{ request()->routeIs('emprendedor.marcas*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('emprendedor.marcas*') ? 'page' : 'false' }}" href="{{ route('emprendedor.marcas.index') }}">
                             <i class="bi bi-tags me-1"></i> Mis Marcas
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('emprendedor.productos*') ? 'active' : '' }}" href="{{ route('emprendedor.productos.index') }}">
+                        <a class="nav-link {{ request()->routeIs('emprendedor.productos*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('emprendedor.productos*') ? 'page' : 'false' }}" href="{{ route('emprendedor.productos.index') }}">
                             <i class="bi bi-box-seam me-1"></i> Mis Productos
+                        </a>
+                    </li>
+                    <!-- U02 FIX: Botón extra para ir al catálogo general fácilmente -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning btn-sm mt-1 fw-bold text-dark w-100 text-start" href="{{ route('home') }}" target="_blank">
+                            <i class="bi bi-shop me-1"></i> Ver Catálogo
                         </a>
                     </li>
                 </ul>
 
-                <div class="d-flex align-items-center gap-3">
-                    <span class="text-white small d-none d-lg-inline">Hola, <strong class="text-warning">{{ Auth::user()->name }}</strong></span>
-<form action="{{ route('emprendedor.logout') }}" method="POST" class="m-0">
-    @csrf
-    <button type="submit" class="btn btn-outline-light btn-sm rounded-0 fw-bold">
-        <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
-    </button>
-</form>
+                <div class="d-flex align-items-center gap-3 mt-3 mt-xl-0">
+                    <span class="text-white small d-none d-xxl-inline">Hola, <strong>{{ Auth::user()->name }}</strong></span>
+                    <!-- U07 FIX: Eliminada la etiqueta </form> duplicada y huérfana -->
+                    <form action="{{ route('emprendedor.logout') }}" method="POST" class="m-0 w-100">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light btn-sm rounded-0 fw-bold w-100 text-start">
+                            <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                        </button>
                     </form>
                 </div>
             </div>
@@ -100,7 +112,7 @@
     </nav>
 
     <!-- Contenido Principal -->
-    <main class="flex-grow-1 py-4">
+    <main id="contenido-principal" tabindex="-1" class="flex-grow-1 py-4">
         @yield('content')
     </main>
 

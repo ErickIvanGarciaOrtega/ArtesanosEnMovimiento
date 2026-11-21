@@ -2,38 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Rules\PasswordInput;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class EmprendedorAuthController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
         return view('emprendedores.login');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', new PasswordInput],
         ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'emprendedor', 'status' => 'activo'])) {
+        $guard = Auth::guard('web');
+
+        if ($guard->attemptWhen(
+            [...$credentials, 'role' => 'emprendedor', 'status' => 'activo'],
+            fn (User $user): bool => $user->emprendedor()->where('status', 'activo')->exists(),
+        )) {
             $request->session()->regenerate();
+            $request->session()->put('password_hash_web', $guard->hashPasswordForCookie($guard->user()->getAuthPassword()));
 
             return redirect()->route('emprendedor.dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden o la cuenta no está activa.',
-        ])->onlyInput('email');
+        return back()->withErrors(['email' => 'No se pudo iniciar sesión con esas credenciales.'])->onlyInput('email');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
-        Auth::logout();
-
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

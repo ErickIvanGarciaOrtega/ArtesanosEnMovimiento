@@ -3,16 +3,16 @@
 @section('content')
 <div class="container py-4">
     <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" style="color: var(--huasteca-verde);">
-            <i class="bi bi-box-seam me-2"></i> Mis Productos
-        </h2>
-        <div>
-            <a href="{{ route('emprendedor.dashboard') }}" class="btn btn-outline-secondary rounded-0 me-2">
-                <i class="bi bi-arrow-left"></i> Volver al Inicio
+    <div class="d-flex justify-content-between flex-wrap align-items-center gap-2 mb-4">
+        <h1 class="h2 fw-bold mb-0" style="color: var(--huasteca-verde);">
+            <i class="bi bi-box-seam me-2" aria-hidden="true"></i> Mis Productos
+        </h1>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ route('emprendedor.dashboard') }}" class="btn btn-outline-secondary rounded-0">
+                <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Inicio
             </a>
             <a href="{{ route('emprendedor.productos.create') }}" class="btn text-white rounded-0 fw-bold shadow-sm" style="background-color: var(--huasteca-magenta);">
-                <i class="bi bi-plus-lg me-1"></i> Nuevo Producto
+                <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Nuevo Producto
             </a>
         </div>
     </div>
@@ -20,18 +20,18 @@
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
         </div>
     @endif
 
     <!-- Contenedor de la Tabla -->
     <div class="card border-0 shadow-sm rounded-0" style="border-top: 5px solid var(--huasteca-verde) !important;">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive" tabindex="0" role="region" aria-label="Listado de mis productos">
                 <table class="table table-hover align-middle mb-0">
                     <thead style="background-color: #f8f9fa;">
                         <tr>
-                            <th class="px-4 py-3" style="color: var(--huasteca-texto);">Nombre del Producto</th>
+                            <th class="px-4 py-3" style="color: var(--huasteca-texto);">Producto</th>
                             <th class="py-3" style="color: var(--huasteca-texto);">Marca</th>
                             <th class="py-3" style="color: var(--huasteca-texto);">Categoría</th>
                             <th class="py-3" style="color: var(--huasteca-texto);">Precio</th>
@@ -41,20 +41,41 @@
                     <tbody>
                         @forelse($productos as $producto)
                             <tr>
-                                <td class="px-4 py-3 fw-bold">{{ $producto->nombre }}</td>
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        @if($producto->imagenPrincipal)
+                                            <img src="{{ asset('storage/' . $producto->imagenPrincipal->ruta) }}" alt="{{ $producto->nombre }}" class="border" style="width: 45px; height: 45px; object-fit: cover;">
+                                        @else
+                                            <div class="bg-light border d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; min-width: 45px;">
+                                                <i class="bi bi-image text-muted" aria-hidden="true"></i>
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <span class="fw-bold d-block">{{ $producto->nombre }}</span>
+                                            @if($producto->estado !== 'activo')
+                                                <span class="badge bg-secondary">Inactivo</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="py-3 text-muted">{{ $producto->marca->nombre ?? 'Sin Marca' }}</td>
                                 <td class="py-3"><span class="badge bg-light text-dark border">{{ $producto->categoria->nombre ?? 'N/A' }}</span></td>
                                 <td class="py-3 fw-bold text-success">${{ number_format($producto->precio, 2) }}</td>
-                                <td class="py-3 text-center">
+                                <td class="py-3 text-center text-nowrap">
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{{ route('emprendedor.productos.edit', $producto->id) }}" class="btn btn-sm btn-outline-primary rounded-0 fw-bold px-3">
-                                            <i class="bi bi-pencil"></i> Editar
+                                        @if($producto->estado === 'activo')
+                                            <a href="{{ route('public.producto.detalle', $producto->id) }}" target="_blank" class="btn btn-sm btn-outline-success rounded-0 fw-bold px-2" aria-label="Ver {{ $producto->nombre }} en el catálogo público" title="Ver en catálogo">
+                                                <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                                            </a>
+                                        @endif
+                                        <a href="{{ route('emprendedor.productos.edit', $producto->id) }}" class="btn btn-sm btn-outline-primary rounded-0 fw-bold px-3" aria-label="Editar {{ $producto->nombre }}">
+                                            <i class="bi bi-pencil me-1" aria-hidden="true"></i> Editar
                                         </a>
                                         <form action="{{ route('emprendedor.productos.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');" class="m-0">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-0 fw-bold px-3">
-                                                <i class="bi bi-trash"></i>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-0 fw-bold px-3" aria-label="Eliminar {{ $producto->nombre }}">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -63,7 +84,7 @@
                         @empty
                             <tr>
                                 <td colspan="5" class="text-center py-5 text-muted">
-                                    <div class="mb-3"><i class="bi bi-inbox fs-1 text-light"></i></div>
+                                    <div class="mb-3"><i class="bi bi-inbox fs-1 text-muted" aria-hidden="true"></i></div>
                                     Aún no has publicado ningún producto. <br>
                                     <a href="{{ route('emprendedor.productos.create') }}" class="text-decoration-none fw-bold mt-2 d-inline-block" style="color: var(--huasteca-magenta);">Comienza publicando el primero aquí.</a>
                                 </td>
@@ -73,6 +94,13 @@
                 </table>
             </div>
         </div>
+        @if($productos->hasPages())
+            <div class="card-footer bg-white border-top py-3">
+                <div class="d-flex justify-content-center">
+                    {{ $productos->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

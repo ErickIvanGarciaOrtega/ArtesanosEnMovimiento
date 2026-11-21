@@ -16,19 +16,19 @@
                     </div>
                 @endif
             </div>
-            
+
             <div class="col-md-9">
                 <span class="text-uppercase tracking-wider fw-semibold mb-2 d-block text-muted small" style="letter-spacing: 2px;">Perfil del Emprendedor</span>
                 <h1 class="fw-bold text-brand mb-2">{{ $emprendedor->user->name ?? 'Emprendedor' }}</h1>
-                
+
                 @if($emprendedor->categoria_principal)
                     <p class="text-muted mb-3"><i class="bi bi-tag me-1 text-brand"></i>{{ $emprendedor->categoria_principal }}</p>
                 @endif
-                
+
                 <p class="text-dark mb-4" style="max-width: 800px;">
                     {{ $emprendedor->biografia ?? 'Este creador aún no ha agregado una biografía a su perfil.' }}
                 </p>
-                
+
                 <!-- Redes Sociales y Sitio Web (Ocultas si están vacías) -->
                 @if($emprendedor->sitio_web || $emprendedor->facebook || $emprendedor->instagram || $emprendedor->tiktok)
                     <div class="d-flex gap-3">

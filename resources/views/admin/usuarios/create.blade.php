@@ -33,7 +33,8 @@
 
             <div class="mb-3">
                 <label for="password" class="form-label fw-bold">Contraseña</label>
-                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required>
+                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required minlength="12" autocomplete="new-password">
+                <div class="form-text">Usa al menos 12 caracteres con mayúscula, minúscula, número y símbolo.</div>
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

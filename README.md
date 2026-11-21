@@ -1,58 +1,69 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+﻿# Artesanos en Movimiento
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación Laravel para administrar usuarios y perfiles de emprendedores, marcas y productos. Las vistas usan Blade y Bootstrap; Vite procesa los recursos de resources/css y resources/js.
 
-## About Laravel
+## Instalación local en PowerShell
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Requiere PHP y Composer 2, PDO SQLite y Node.js compatible con Vite 8. composer.json permite PHP 8.3+, pero hay que comprobar los requisitos de las versiones bloqueadas con composer check-platform-reqs.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Desde la carpeta del proyecto, para una base local nueva:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```powershell
+composer install
+if (-not (Test-Path -LiteralPath .env)) { Copy-Item .env.example .env }
+php artisan key:generate
+if (-not (Test-Path -LiteralPath database/database.sqlite)) {
+    New-Item -ItemType File -Path database/database.sqlite | Out-Null
+}
+php artisan migrate
+php artisan storage:link
+npm ci --ignore-scripts
+npm run build
+php artisan admin:create
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Visitar http://localhost:8000 para la portada pública. El acceso administrativo está en /login y el portal de emprendedores tiene entrada en /emprendedor/login. Configurar APP_URL con el origen real del sitio: los enlaces de recuperación se generan desde ese valor.
 
-## Contributing
+Las instrucciones anteriores están destinadas a una base local nueva. Revisar la configuración y los respaldos antes de migrar una base existente. No versionar .env. Mantener APP_DEBUG=false en producción.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+La recuperación de contraseñas requiere configurar correo: el valor local MAIL_MAILER=log escribe mensajes en el registro y no los entrega al destinatario.
 
-## Code of Conduct
+## Desarrollo y validación
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+En terminales separadas, ejecutar php artisan serve y npm run dev. Para comprobar el proyecto:
 
-## Security Vulnerabilities
+```powershell
+php artisan test
+php artisan route:list
+php artisan view:cache
+php artisan view:clear
+npm run build
+composer audit
+npm audit
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Los tests usan SQLite en memoria conforme a phpunit.xml. La auditoría de dependencias no sustituye las pruebas de permisos y reglas de negocio.
 
-## License
+Para crear la cuenta administrativa inicial, ejecutar `php artisan admin:create`. Solicita nombre, correo y una contraseña oculta con confirmación. Puede recibir nombre y correo mediante `--name` y `--email`; la contraseña siempre se introduce de forma interactiva. No sobrescribe cuentas existentes.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Los seeders no crean cuentas ni contraseñas predeterminadas. Las contraseñas nuevas y sus cambios requieren al menos 12 caracteres con mayúscula, minúscula, número y símbolo; se valida además el límite de 72 bytes de bcrypt y se rechazan caracteres nulos. Las contraseñas existentes siguen permitiendo iniciar sesión; estos cambios no modifican credenciales guardadas.
+
+Ambos portales usan la sesión `web` sobre `users`: `/login` admite administradores activos y `/emprendedor/login` admite emprendedores activos con perfil activo. Una sesión solo puede representar una cuenta a la vez. El acceso a la otra área devuelve 403; al desactivar una cuenta se cierra su sesión en la siguiente petición protegida. Un cambio de contraseña invalida las sesiones anteriores cuando intenten volver a entrar a rutas protegidas.
+
+La recuperación por correo corresponde a administradores activos. Los emprendedores mantienen el flujo existente de contactar al administrador, quien cambia la contraseña desde la edición de usuarios. La URL antigua `/admin/emprendedores` redirige al CRUD de usuarios, que incluye ambos roles. Se retiraron las acciones antiguas de emprendedores que apuntaban a métodos inexistentes.
+
+Los intentos de login se limitan a 5 por minuto por combinación de correo/IP y 30 por minuto por IP, compartidos por ambos portales. La recuperación y el restablecimiento tienen un límite compartido de 5 solicitudes por minuto por IP.
+
+## Organización
+
+| Carpeta | Responsabilidad |
+| --- | --- |
+| app/Http/Controllers | Acciones administrativas, inicio de sesión y portal de emprendedores |
+| app/Models | Usuarios, perfiles, marcas, categorías, productos y secciones web |
+| routes | Rutas HTTP y comandos de consola |
+| database | Migraciones, fábricas y seeders |
+| resources/views | Vistas Blade y layouts |
+| tests | Pruebas automatizadas |
+
+Ver [el diagnóstico del PR #3 sin correcciones complementarias](docs/hallazgos-pr3-sin-correcciones-2026-11-17.md) y [el informe de correcciones y validación](docs/informe-revision-pr3-2026-11-17.md). Ambos distinguen el código original, los cambios aplicados, los resultados reproducidos y los puntos pendientes.

@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-public function up()
-{
-    Schema::table('emprendedores', function (Blueprint $table) {
-        $table->string('sitio_web')->nullable()->after('tiktok');
-    });
-}
+    public function up(): void
+    {
+        Schema::table('emprendedores', function (Blueprint $table) {
+            $table->string('sitio_web')->nullable()->after('tiktok');
+        });
+    }
 
-public function down()
-{
-    Schema::table('emprendedores', function (Blueprint $table) {
-        $table->dropColumn('sitio_web');
-    });
-}
+    public function down(): void
+    {
+        Schema::table('emprendedores', function (Blueprint $table) {
+            $table->dropColumn('sitio_web');
+        });
+    }
 };

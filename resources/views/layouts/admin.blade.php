@@ -21,6 +21,17 @@
             color: var(--huasteca-texto);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        /* U01 FIX: Ajustes para el botón hamburguesa en móviles */
+        .mobile-header {
+            background-color: var(--huasteca-verde);
+            color: white;
+            padding: 10px 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         /* Sidebar Institucional */
         .sidebar {
             min-height: 100vh;
@@ -28,15 +39,30 @@
             color: #fff;
         }
         .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--huasteca-blanco);
             font-weight: 500;
             padding: 12px 20px;
             transition: all 0.2s;
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: var(--huasteca-amarillo);
+            background-color: var(--huasteca-verde-activo);
+            color: var(--huasteca-blanco);
+            text-decoration: underline;
         }
+
+        /* Ocultar barra lateral en móviles por defecto */
+        @media (max-width: 767.98px) {
+            .mobile-header {
+                display: flex; /* Mostrar header móvil */
+            }
+            .sidebar {
+                min-height: auto;
+                position: absolute;
+                z-index: 1050;
+                width: 100%;
+            }
+        }
+
         /* Botones y elementos generales */
         .btn-primary, .btn-brand {
             background-color: var(--huasteca-magenta) !important;
@@ -50,45 +76,68 @@
         .card {
             border-color: rgba(6, 122, 88, 0.15);
         }
+
     </style>
+    @include('layouts.accessibility')
 </head>
 <body>
+
+    <a href="#contenido-principal" class="visually-hidden-focusable bg-white text-dark p-3 position-absolute">Saltar al contenido</a>
+
+    <!-- U01 FIX: Cabecera visible solo en móviles para abrir el menú -->
+    <div class="mobile-header d-md-none border-bottom border-warning border-3">
+        <div class="d-flex align-items-center gap-2">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 35px; height: 35px; object-fit: cover;" class="rounded-circle bg-white p-1">
+            <h6 class="mb-0 fw-bold">Panel Admin</h6>
+        </div>
+        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Menú de administración">
+            <i class="bi bi-list fs-2" aria-hidden="true"></i>
+        </button>
+    </div>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar / Barra Lateral -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-0 shadow-sm">
+            <!-- U01 FIX: Añadimos el ID 'sidebarMenu' y la clase collapse -->
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse p-0 shadow-sm">
                 <div class="position-sticky pt-4">
-                    <div class="text-center mb-4 px-3">
+                    <div class="text-center mb-4 px-3 d-none d-md-block">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 50px; height: 50px; object-fit: cover;" class="rounded-circle border border-2 border-warning bg-white p-1 mb-2">
                         <h6 class="fw-bold text-white mb-0">Panel Admin</h6>
-                        <small class="text-warning">Control Maestro</small>
+                        <small class="text-white">Control Maestro</small>
                     </div>
-                    
+
                     <ul class="nav flex-column gap-1">
+                        <!-- U02 FIX: Botón claro para regresar a la vista pública -->
+                        <li class="nav-item mb-2 px-3">
+                            <a href="{{ route('home') }}" class="btn btn-warning btn-sm w-100 text-start fw-bold" target="_blank">
+                                <i class="bi bi-shop me-2"></i> Ver Sitio Público
+                            </a>
+                        </li>
+
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.dashboard') ? 'page' : 'false' }}" href="{{ route('admin.dashboard') }}">
                                 <i class="bi bi-speedometer2 me-2"></i> Inicio
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.usuarios*') ? 'active' : '' }}" href="{{ route('admin.usuarios.index') }}">
-                                <i class="bi bi-people me-2"></i> Emprendedores / Usuarios
+                            <a class="nav-link {{ request()->routeIs('admin.usuarios*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.usuarios*') ? 'page' : 'false' }}" href="{{ route('admin.usuarios.index') }}">
+                                <i class="bi bi-people me-2"></i> Usuarios
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.categorias*') ? 'active' : '' }}" href="{{ route('admin.categorias.index') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.categorias*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.categorias*') ? 'page' : 'false' }}" href="{{ route('admin.categorias.index') }}">
                                 <i class="bi bi-tags me-2"></i> Categorías
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.configuraciones*') ? 'active' : '' }}" href="{{ route('admin.configuraciones.index') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.configuraciones*') ? 'active' : '' }}" aria-current="{{ request()->routeIs('admin.configuraciones*') ? 'page' : 'false' }}" href="{{ route('admin.configuraciones.index') }}">
                                 <i class="bi bi-gear me-2"></i> CMS / Configuración
                             </a>
                         </li>
                     </ul>
 
-                    <div class="px-3 mt-5">
+                    <div class="px-3 mt-5 pb-4">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-light w-100 rounded-0 text-start sm-btn">
@@ -100,7 +149,7 @@
             </nav>
 
             <!-- Contenido Principal -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <main id="contenido-principal" tabindex="-1" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h4 class="fw-bold" style="color: var(--huasteca-verde);">Gestión del Sistema</h4>
                     <span class="badge bg-warning text-dark fw-bold">Admin: {{ Auth::user()->name ?? 'Sistema' }}</span>

@@ -20,30 +20,33 @@
 <!-- Listado de Emprendedores -->
 <section class="py-5">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
             @forelse($emprendedores as $emprendedor)
                 <div class="col-md-6 col-lg-4">
                     <div class="card border-0 shadow-sm rounded-0 p-4 h-100 bg-white">
                         <div class="d-flex align-items-center mb-3">
-                            
-                            <!-- NUEVO: Validación de Imagen de Perfil -->
                             @if(isset($emprendedor->imagen) && $emprendedor->imagen)
                                 <img src="{{ asset('storage/' . $emprendedor->imagen) }}" alt="{{ $emprendedor->user->name ?? 'Emprendedor' }}" class="rounded-circle border me-3 shadow-sm" style="width: 70px; height: 70px; min-width: 70px; object-fit: cover;">
                             @else
                                 <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 70px; height: 70px; min-width: 70px;">
-                                    <i class="bi bi-person text-muted fs-3"></i>
+                                    <i class="bi bi-person text-muted fs-3" aria-hidden="true"></i>
                                 </div>
                             @endif
 
                             <div>
                                 <h5 class="fw-bold text-dark mb-1">{{ $emprendedor->user->name ?? 'Emprendedor' }}</h5>
-                                <p class="small text-brand mb-0"><i class="bi bi-tag me-1"></i>{{ $emprendedor->categoria_principal ?? 'Sin categoría' }}</p>
+                                <p class="small text-brand mb-1">
+                                    <i class="bi bi-tag me-1" aria-hidden="true"></i>{{ $emprendedor->categoria_principal ?? 'Sin categoría' }}
+                                </p>
+                                <span class="badge bg-light text-dark border fw-normal">
+                                    {{ $emprendedor->productos_count ?? 0 }} {{ ($emprendedor->productos_count ?? 0) === 1 ? 'producto activo' : 'productos activos' }}
+                                </span>
                             </div>
                         </div>
                         <p class="text-muted small mb-4">{{ Str::limit($emprendedor->biografia ?? 'Sin descripción disponible.', 120) }}</p>
                         
                         <div class="mt-auto">
-                            <a href="{{ route('public.emprendedor.detalle', $emprendedor->id) }}" class="btn btn-outline-dark rounded-0 w-100 fw-bold">
+                            <a href="{{ route('public.emprendedor.detalle', $emprendedor->id) }}" class="btn btn-outline-dark rounded-0 w-100 fw-bold" aria-label="Ver perfil de {{ $emprendedor->user->name ?? 'Emprendedor' }}">
                                 Ver Perfil
                             </a>
                         </div>
@@ -54,6 +57,11 @@
                     <p class="text-muted">Aún no hay emprendedores registrados.</p>
                 </div>
             @endforelse
+        </div>
+
+        <!-- U08 FIX: Paginación del directorio de emprendedores -->
+        <div class="d-flex justify-content-center">
+            {{ $emprendedores->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </section>

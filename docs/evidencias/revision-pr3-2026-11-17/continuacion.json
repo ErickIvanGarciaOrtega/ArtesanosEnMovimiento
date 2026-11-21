@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "name": "Perfil guardado con mensaje de exito",
+      "ok": true
+    },
+    {
+      "name": "Nombre persistido",
+      "ok": true
+    },
+    {
+      "name": "Sitio web normalizado",
+      "ok": true
+    },
+    {
+      "name": "Perfil publico actualizado",
+      "ok": true
+    },
+    {
+      "name": "Imagen del producto cargada",
+      "ok": true,
+      "detail": [
+        {
+          "src": "http://127.0.0.1:8023/storage/productos/A04jfgP3BFbNs5LnnN1mnPe8jIMOFbZVXjs0FzTp.png",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "name": "Borrado producto desde interfaz",
+      "ok": true
+    },
+    {
+      "name": "Detalle borrado responde 404",
+      "ok": true,
+      "detail": {
+        "status": 404
+      }
+    },
+    {
+      "name": "Logout emprendedor",
+      "ok": true
+    }
+  ],
+  "note": "Se completa el perfil seleccionando la categoria obligatoria que el primer recorrido omitio.",
+  "productImages": [
+    {
+      "src": "http://127.0.0.1:8023/storage/productos/A04jfgP3BFbNs5LnnN1mnPe8jIMOFbZVXjs0FzTp.png",
+      "width": 1
+    }
+  ]
+}

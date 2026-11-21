@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,11 +13,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias(['role' => EnsureUserRole::class]);
+        $middleware->redirectUsersTo(function (Request $request) {
+            return route($request->user('web')?->role === 'emprendedor'
+                ? 'emprendedor.dashboard'
+                : 'admin.dashboard');
+        });
         // Redirección condicional precisa para usuarios no autenticados
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('emprendedor/*') || $request->is('emprendedor')) {
                 return route('emprendedor.login');
             }
+
             return route('login');
         });
     })
