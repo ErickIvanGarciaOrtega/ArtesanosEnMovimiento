@@ -76,7 +76,10 @@ class EmprendedorController extends Controller
     // ==========================================
     public function marcasIndex()
     {
-        $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
+        $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)
+            ->withCount('productos')
+            ->latest()
+            ->paginate(10);
 
         return view('emprendedores.marcas.index', compact('marcas'));
     }
@@ -128,7 +131,10 @@ class EmprendedorController extends Controller
     // ==========================================
     public function productosIndex()
     {
-        $productos = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
+        $productos = Producto::with(['categoria', 'marca', 'imagenPrincipal'])
+            ->where('emprendedor_id', Auth::user()->emprendedor->id)
+            ->latest()
+            ->paginate(10);
 
         return view('emprendedores.productos.index', compact('productos'));
     }
@@ -197,7 +203,7 @@ class EmprendedorController extends Controller
 
     public function productosEdit($id)
     {
-        $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
+        $producto = Producto::with('imagenes')->where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
         $categorias = Categoria::all();
         $marcas = Marca::where('emprendedor_id', Auth::user()->emprendedor->id)->get();
 
@@ -270,7 +276,7 @@ class EmprendedorController extends Controller
 
     public function productosDestroy($id)
     {
-        $producto = Producto::where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
+        $producto = Producto::with('imagenes')->where('emprendedor_id', Auth::user()->emprendedor->id)->findOrFail($id);
 
         if ($producto->imagenes->count() > 0) {
             foreach ($producto->imagenes as $imagen) {

@@ -50,11 +50,10 @@
             background-color: #b8104c !important;
             border-color: #b8104c !important;
         }
-
     </style>
     @include('layouts.accessibility')
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <a href="#contenido-principal" class="visually-hidden-focusable bg-white text-dark p-3 position-absolute">Saltar al contenido</a>
 
@@ -62,7 +61,6 @@
     <nav class="navbar navbar-expand-lg navbar-public py-3 sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 text-brand text-decoration-none fw-bold fs-5" href="{{ route('home') }}" aria-label="Artesanos y Emprendedores en Movimiento: inicio">
-                <!-- LOGO INSTITUCIONAL -->
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" style="width: 40px; height: 40px; object-fit: cover;" class="rounded-circle border border-2 border-success">
                 <span class="brand-title" style="color: var(--huasteca-verde);"><span class="d-sm-none">Artesanos en Movimiento</span><span class="d-none d-sm-inline">Artesanos y Emprendedores en Movimiento</span></span>
             </a>
@@ -77,12 +75,31 @@
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.productos') }}">Productos</a></li>
                     <li class="nav-item"><a class="nav-link px-2" href="{{ route('public.contacto') }}">Contacto</a></li>
                 </ul>
+
+                <!-- U02 FIX: Recorrido de regreso al portal según sesión activa -->
+                <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 mt-2 mt-lg-0">
+                    @auth
+                        @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="btn bg-brand text-white btn-sm rounded-0 fw-bold px-3">
+                                <i class="bi bi-speedometer2 me-1" aria-hidden="true"></i> Panel Admin
+                            </a>
+                        @else
+                            <a href="{{ route('emprendedor.dashboard') }}" class="btn bg-brand text-white btn-sm rounded-0 fw-bold px-3">
+                                <i class="bi bi-person-workspace me-1" aria-hidden="true"></i> Mi Portal
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('emprendedor.login') }}" class="btn btn-outline-dark btn-sm rounded-0 fw-bold px-3">
+                            <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i> Acceso Portal
+                        </a>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Contenido Dinámico -->
-    <main id="contenido-principal" tabindex="-1">
+    <main id="contenido-principal" class="flex-grow-1" tabindex="-1">
         @yield('content')
     </main>
 
@@ -112,6 +129,16 @@
                         <li class="mb-2"><a href="{{ route('public.quienes_somos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Quiénes Somos</a></li>
                         <li class="mb-2"><a href="{{ route('public.productos') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Catálogo de Productos</a></li>
                         <li class="mb-2"><a href="{{ route('public.emprendedores') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Directorio de Emprendedores</a></li>
+                        @auth
+                            <li class="mb-2">
+                                <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('emprendedor.dashboard') }}" class="text-warning text-decoration-none small fw-bold">
+                                    Volver a mi panel de gestión
+                                </a>
+                            </li>
+                        @else
+                            <li class="mb-2"><a href="{{ route('emprendedor.login') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Portal de Emprendedores</a></li>
+                            <li class="mb-2"><a href="{{ route('login') }}" class="text-light text-decoration-none small" style="opacity: 0.9;">Acceso Administrativo</a></li>
+                        @endauth
                     </ul>
                 </div>
                 

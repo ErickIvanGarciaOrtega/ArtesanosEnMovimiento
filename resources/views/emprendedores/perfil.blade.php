@@ -5,11 +5,20 @@
     <div class="row justify-content-center">
         <div class="col-lg-9">
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="fw-bold mb-0" style="color: var(--huasteca-verde);"><i class="bi bi-person-gear me-2"></i>Mi Perfil de Emprendedor</h3>
-                <a href="{{ route('emprendedor.dashboard') }}" class="btn btn-outline-secondary rounded-0 btn-sm">
-                    <i class="bi bi-arrow-left me-1"></i> Volver al Inicio
-                </a>
+            <div class="d-flex justify-content-between flex-wrap align-items-center gap-2 mb-4">
+                <h1 class="h3 fw-bold mb-0" style="color: var(--huasteca-verde);">
+                    <i class="bi bi-person-gear me-2" aria-hidden="true"></i>Mi Perfil de Emprendedor
+                </h1>
+                <div class="d-flex flex-wrap gap-2">
+                    @if(isset($emprendedor) && $emprendedor)
+                        <a href="{{ route('public.emprendedor.detalle', $emprendedor->id) }}" target="_blank" class="btn btn-outline-success rounded-0 btn-sm fw-bold" aria-label="Ver mi perfil público en el directorio">
+                            <i class="bi bi-box-arrow-up-right me-1" aria-hidden="true"></i> Ver mi perfil público
+                        </a>
+                    @endif
+                    <a href="{{ route('emprendedor.dashboard') }}" class="btn btn-outline-secondary rounded-0 btn-sm">
+                        <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Volver al Inicio
+                    </a>
+                </div>
             </div>
 
             <div class="card border-0 shadow-sm rounded-0" style="border-top: 5px solid var(--huasteca-verde) !important;">
@@ -18,7 +27,7 @@
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show rounded-0" role="alert">
                             {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
                         </div>
                     @endif
 
@@ -44,7 +53,7 @@
                                     <img src="{{ asset('storage/' . $emprendedor->imagen) }}" alt="Foto de perfil" class="rounded-circle border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
                                 @else
                                     <div class="bg-white border rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 100px; height: 100px;">
-                                        <i class="bi bi-person text-muted fs-1"></i>
+                                        <i class="bi bi-person text-muted fs-1" aria-hidden="true"></i>
                                     </div>
                                 @endif
                                 <div class="w-100 text-start">
@@ -82,13 +91,15 @@
                         <hr class="mb-4 border-light">
 
                         <!-- Redes Sociales y Sitio Web -->
-                        <h6 class="fw-bold mb-3" style="color: var(--huasteca-texto);"><i class="bi bi-share me-2"></i>Redes Sociales y Sitio Web (Opcional)</h6>
+                        <h2 class="h6 fw-bold mb-3" style="color: var(--huasteca-texto);">
+                            <i class="bi bi-share me-2" aria-hidden="true"></i>Redes Sociales y Sitio Web (Opcional)
+                        </h2>
 
                         <!-- Sitio Web Propio -->
                         <div class="mb-3">
                             <label for="sitio_web" class="form-label small fw-bold">Sitio Web Propio</label>
                             <div class="input-group">
-                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-globe text-primary"></i></span>
+                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-globe text-primary" aria-hidden="true"></i></span>
                                 <input type="text" name="sitio_web" id="sitio_web" class="form-control rounded-0" placeholder="https://tu-pagina-web.com o tu-pagina.com" value="{{ old('sitio_web', $emprendedor->sitio_web ?? '') }}">
                             </div>
                         </div>
@@ -96,7 +107,7 @@
                         <div class="mb-3">
                             <label for="facebook" class="form-label small fw-bold">Facebook</label>
                             <div class="input-group">
-                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-facebook" style="color: #1877F2;"></i></span>
+                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-facebook" style="color: #1877F2;" aria-hidden="true"></i></span>
                                 <input type="text" name="facebook" id="facebook" class="form-control rounded-0" placeholder="https://facebook.com/tupagina" value="{{ old('facebook', $emprendedor->facebook ?? '') }}">
                             </div>
                         </div>
@@ -104,7 +115,7 @@
                         <div class="mb-3">
                             <label for="instagram" class="form-label small fw-bold">Instagram</label>
                             <div class="input-group">
-                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-instagram" style="color: #E4405F;"></i></span>
+                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-instagram" style="color: #E4405F;" aria-hidden="true"></i></span>
                                 <input type="text" name="instagram" id="instagram" class="form-control rounded-0" placeholder="https://instagram.com/tuusuario" value="{{ old('instagram', $emprendedor->instagram ?? '') }}">
                             </div>
                         </div>
@@ -112,7 +123,7 @@
                         <div class="mb-4">
                             <label for="tiktok" class="form-label small fw-bold">TikTok</label>
                             <div class="input-group">
-                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-tiktok text-dark"></i></span>
+                                <span class="input-group-text rounded-0 bg-light"><i class="bi bi-tiktok text-dark" aria-hidden="true"></i></span>
                                 <input type="text" name="tiktok" id="tiktok" class="form-control rounded-0" placeholder="https://tiktok.com/@tuusuario" value="{{ old('tiktok', $emprendedor->tiktok ?? '') }}">
                             </div>
                         </div>
@@ -120,7 +131,7 @@
                         <!-- Botón Guardar -->
                         <div class="text-end mt-4">
                             <button type="submit" class="btn text-white px-4 fw-bold rounded-0 shadow-sm" style="background-color: var(--huasteca-magenta);">
-                                <i class="bi bi-save me-1"></i> Guardar Perfil
+                                <i class="bi bi-save me-1" aria-hidden="true"></i> Guardar Perfil
                             </button>
                         </div>
                     </form>

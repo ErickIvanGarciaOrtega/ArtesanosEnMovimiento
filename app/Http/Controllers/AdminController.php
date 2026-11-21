@@ -35,11 +35,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Muestra el listado completo de usuarios y sus perfiles de emprendedor.
+     * Muestra el listado paginado de usuarios y sus perfiles de emprendedor.
      */
     public function usuariosIndex()
     {
-        $usuarios = User::with('emprendedor')->latest()->get();
+        $usuarios = User::with('emprendedor')->latest()->paginate(15);
 
         return view('admin.usuarios.index', compact('usuarios'));
     }
@@ -170,7 +170,7 @@ class AdminController extends Controller
 
         // F09 FIX: Antes de borrar al usuario, buscamos sus productos y borramos los archivos físicos de sus fotos.
         if ($usuario->emprendedor) {
-            $productos = Producto::where('emprendedor_id', $usuario->emprendedor->id)->get();
+            $productos = Producto::with('imagenes')->where('emprendedor_id', $usuario->emprendedor->id)->get();
             foreach ($productos as $producto) {
                 foreach ($producto->imagenes as $imagen) {
                     Storage::disk('public')->delete($imagen->ruta);
@@ -190,7 +190,7 @@ class AdminController extends Controller
     // Listar categorías
     public function categoriasIndex()
     {
-        $categorias = Categoria::withCount('productos')->get();
+        $categorias = Categoria::withCount('productos')->paginate(15);
 
         return view('admin.categorias.index', compact('categorias'));
     }
